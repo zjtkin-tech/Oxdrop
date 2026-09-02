@@ -5,2146 +5,942 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oxdrop — Открывай кейсы и зарабатывай! 🎰</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: sans-serif;
-        }
-        body {
-            min-height: 100vh;
-            background: linear-gradient(145deg, #0b0e1a, #1a1f2f);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-        }
-        .container {
-            max-width: 950px;
-            width: 100%;
-            border-radius: 48px;
-            padding: 20px;
-            border: 1px solid rgba(255, 215, 0, 0.15);
-            background: rgba(255, 255, 255, 0.05);
-        }
-        h1 {
-            text-align: center;
-            font-size: 2rem;
-            background: linear-gradient(135deg, #f7d875, #f5b342);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 12px;
-            cursor: pointer;
-        }
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            padding: 10px;
-            background: rgba(30, 38, 59, 0.85);
-            border-radius: 15px;
-            border: 1px solid #2f3a55;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-        .menu-toggle span {
-            display: block;
-            width: 28px;
-            height: 3px;
-            background: #b9c8e6;
-            border-radius: 5px;
-            transition: 0.3s;
-        }
-        .menu-toggle.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-        .menu-toggle.active span:nth-child(2) {
-            opacity: 0;
-        }
-        .menu-toggle.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
-        }
-        .mobile-menu {
-            display: none;
-            flex-direction: column;
-            gap: 8px;
-            padding: 10px 0;
-            border-top: 1px solid #2f3a55;
-            margin-bottom: 15px;
-        }
-        .mobile-menu.show {
-            display: flex;
-        }
-        .mobile-menu button {
-            background: rgba(30, 38, 59, 0.85);
-            border: 1px solid #2f3a55;
-            color: #b9c8e6;
-            padding: 10px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: 0.2s;
-            text-align: center;
-        }
-        .mobile-menu button:hover {
-            background: rgba(42, 51, 73, 0.9);
-        }
-        .mobile-menu button .icon {
-            font-size: 1.2rem;
-            margin-right: 8px;
-        }
-        .mobile-menu button.cases-btn {
-            background: #f5b342;
-            color: #0b0e1a;
-            border-color: #f5b342;
-        }
-        .mobile-menu button.cases-btn:hover {
-            background: #e8922a;
-        }
-        .donate-notice {
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid #f5b34255;
-            border-radius: 20px;
-            padding: 12px 18px;
-            margin: 10px 0;
-            display: block;
-            text-align: center;
-        }
-        .donate-notice p {
-            color: #ffd966;
-            font-size: 0.85rem;
-            margin: 4px 0;
-        }
-        .donate-notice .highlight {
-            color: #ff6b35;
-            font-weight: 700;
-        }
-        .stats-row {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin: 10px 0;
-            padding: 10px 15px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 20px;
-            border: 1px solid #2f3a55;
-            justify-content: center;
-        }
-        .stats-row .stat-item {
-            color: #96a9d1;
-            font-size: 0.8rem;
-            text-align: center;
-        }
-        .stats-row .stat-item .stat-value {
-            color: #f5b342;
-            font-weight: 700;
-            display: block;
-            font-size: 1.1rem;
-            margin-top: 2px;
-        }
-        .tabs {
-            display: flex;
-            gap: 8px;
-            margin: 15px 0;
-            flex-wrap: wrap;
-        }
-        .tabs button {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: 0.3s;
-            background: #2a3349;
-            color: #96a9d1;
-            border: 1px solid #3d4a66;
-        }
-        .tabs button.active {
-            background: #f5b342;
-            color: #0b0e1a;
-            border-color: #f5b342;
-            box-shadow: 0 0 25px #f5b34233;
-        }
-        .tabs button:active {
-            transform: scale(0.95);
-        }
-        .tab-content {
-            display: none;
-            animation: fade 0.3s ease;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        @keyframes fade {
-            0% {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .balance-box {
-            text-align: right;
-            color: #b9c8e6;
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .balance-box span {
-            background: #0e121f;
-            padding: 6px 20px;
-            border-radius: 60px;
-            border: 1px solid #ffd96655;
-            color: #ffd966;
-            font-weight: 700;
-            font-size: 1.4rem;
-        }
-        .balance-box .donate-btn {
-            display: inline-block;
-            background: linear-gradient(135deg, #ff6b35, #f7931e);
-            border: none;
-            color: white;
-            padding: 6px 18px;
-            border-radius: 40px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            text-decoration: none;
-            border: 1px solid #ff6b3566;
-            transition: 0.2s;
-        }
-        .balance-box .donate-btn:hover {
-            opacity: 0.8;
-            transform: scale(1.02);
-        }
-        .nick-input {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .nick-input label {
-            color: #96a9d1;
-            font-size: 0.9rem;
-        }
-        .nick-input input {
-            flex: 1;
-            padding: 8px 15px;
-            border-radius: 20px;
-            border: 1px solid #2f3a55;
-            background: #0e121f;
-            color: white;
-            min-width: 100px;
-        }
-        .nick-input button {
-            background: #f5b342;
-            border: none;
-            color: #0b0e1a;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-        .nick-error {
-            color: #ff4444;
-            font-size: 0.8rem;
-            margin-top: 5px;
-            display: none;
-            text-align: center;
-        }
-        .nick-success {
-            color: #00ff88;
-            font-size: 0.8rem;
-            margin-top: 5px;
-            display: none;
-            text-align: center;
-        }
-        .case-menu {
-            display: flex;
-            gap: 12px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .case-menu button {
-            background: rgba(30, 38, 59, 0.85);
-            border: 2px solid #2f3a55;
-            color: #b9c8e6;
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            min-width: 70px;
-            position: relative;
-        }
-        .case-menu button img {
-            width: 55px;
-            height: 55px;
-            object-fit: contain;
-            border-radius: 12px;
-            background: rgba(12, 16, 30, 0.7);
-            padding: 5px;
-        }
-        .case-menu button .case-name {
-            font-size: 0.65rem;
-            color: #96a9d1;
-            text-align: center;
-        }
-        .case-menu button .case-price {
-            font-size: 0.55rem;
-            color: #ffd966;
-            background: #0e121f;
-            padding: 1px 10px;
-            border-radius: 20px;
-        }
-        .case-menu button .preview-btn {
-            font-size: 0.5rem;
-            background: #2a3349;
-            border: 1px solid #4f5b7a;
-            color: white;
-            padding: 2px 12px;
-            border-radius: 20px;
-            margin-top: 2px;
-            cursor: pointer;
-        }
-        .case-menu button .preview-btn:hover {
-            background: #3d4a66;
-        }
-        .case-menu button.active {
-            border-color: #f5b342;
-            background: rgba(42, 51, 73, 0.9);
-            box-shadow: 0 0 25px #f5b34233;
-            transform: translateY(-3px);
-        }
-        .case-menu button .badge {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            background: #f5b342;
-            color: #0b0e1a;
-            font-size: 0.5rem;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 20px;
-        }
-        .slot-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            margin: 25px 0;
-            padding: 30px;
-            background: rgba(12, 16, 30, 0.7);
-            border-radius: 30px;
-            border: 2px solid rgba(47, 58, 85, 0.5);
-            min-height: 260px;
-            position: relative;
-        }
-        .slot {
-            aspect-ratio: 1/1;
-            max-width: 200px;
-            width: 100%;
-            background: #111624;
-            border-radius: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: 3px solid #4a5a7a;
-            color: #eaf0ff;
-            font-weight: 700;
-            transition: 0.3s;
-            padding: 10px;
-        }
-        .slot img {
-            width: 90%;
-            height: 80%;
-            object-fit: contain;
-            border-radius: 12px;
-        }
-        .slot .label {
-            font-size: 1rem;
-            margin-top: 8px;
-            background: #1e263b;
-            padding: 4px 16px;
-            border-radius: 30px;
-            color: #a2b6e0;
-        }
-        .slot .rainbow-text {
-            background: linear-gradient(90deg, #ff0000, #ff7700, #ffff00, #00ff00, #0000ff, #8b00ff, #ff0000);
-            background-size: 300% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: rainbowMove 3s linear infinite;
-            font-weight: 900;
-        }
-        @keyframes rainbowMove {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 300% 50%;
-            }
-        }
-        .slot .corrosion-text {
-            background: linear-gradient(90deg, #8B4513, #A0522D, #CD853F, #8B4513);
-            background-size: 300% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: corrosionMove 4s linear infinite;
-            font-weight: 900;
-            letter-spacing: 1px;
-        }
-        @keyframes corrosionMove {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 300% 50%;
-            }
-        }
-        .slot .wood-text {
-            background: linear-gradient(90deg, #8B5A2B, #A0522D, #CD853F, #8B5A2B);
-            background-size: 300% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: woodMove 5s linear infinite;
-            font-weight: 900;
-            letter-spacing: 2px;
-        }
-        @keyframes woodMove {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 300% 50%;
-            }
-        }
-        .slot .revolver-text {
-            background: linear-gradient(90deg, #C0C0C0, #E8E8E8, #A9A9A9, #C0C0C0);
-            background-size: 300% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: revolverMove 3s linear infinite;
-            font-weight: 900;
-            letter-spacing: 1px;
-        }
-        @keyframes revolverMove {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 300% 50%;
-            }
-        }
-        .slot .box-text {
-            background: linear-gradient(90deg, #8B7355, #A0845C, #C4A882, #8B7355);
-            background-size: 300% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: boxMove 4s linear infinite;
-            font-weight: 900;
-            letter-spacing: 2px;
-        }
-        @keyframes boxMove {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 300% 50%;
-            }
-        }
-        .slot .spider-text {
-            background: linear-gradient(90deg, #ff0044, #cc0033, #ff0044);
-            background-size: 300% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: spiderMove 1.8s linear infinite;
-            font-weight: 900;
-            letter-spacing: 1px;
-        }
-        @keyframes spiderMove {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 300% 50%;
-            }
-        }
-        .slot .gold-text {
-            background: linear-gradient(90deg, #FFD700, #FFA500, #FFD700);
-            background-size: 300% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: goldMove 2.5s linear infinite;
-            font-weight: 900;
-            letter-spacing: 1px;
-        }
-        @keyframes goldMove {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 300% 50%;
-            }
-        }
-        .slot .claw-text {
-            background: linear-gradient(90deg, #C0C0C0, #E8E8E8, #A9A9A9, #C0C0C0);
-            background-size: 300% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: clawMove 2s linear infinite;
-            font-weight: 900;
-            letter-spacing: 1px;
-        }
-        @keyframes clawMove {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 300% 50%;
-            }
-        }
-        .slot .wolf-text {
-            background: linear-gradient(90deg, #FFD700, #FF8C00, #FFD700);
-            background-size: 300% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: wolfMove 2.5s linear infinite;
-            font-weight: 900;
-            letter-spacing: 1px;
-        }
-        @keyframes wolfMove {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 300% 50%;
-            }
-        }
-        .slot .verdict-text {
-            background: linear-gradient(90deg, #C0C0C0, #E8E8E8, #A9A9A9, #C0C0C0);
-            background-size: 300% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: verdictMove 2s linear infinite;
-            font-weight: 900;
-            letter-spacing: 1px;
-        }
-        @keyframes verdictMove {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 300% 50%;
-            }
-        }
-        .slot .snake-text {
-            background: linear-gradient(90deg, #00cc66, #00ff88, #00cc66);
-            background-size: 300% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: snakeMove 2.5s linear infinite;
-            font-weight: 900;
-            letter-spacing: 1px;
-        }
-        @keyframes snakeMove {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 300% 50%;
-            }
-        }
-        .slot .toxic-text {
-            background: linear-gradient(90deg, #00ff00, #ccff00, #00ff00);
-            background-size: 300% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: toxicMove 1.8s linear infinite;
-            font-weight: 900;
-            letter-spacing: 1px;
-        }
-        @keyframes toxicMove {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 300% 50%;
-            }
-        }
-        .slot.winner {
-            border-color: #f5b342;
-            box-shadow: 0 0 50px #f5b34266;
-            transform: scale(1.05);
-        }
-        .item-price {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-top: 10px;
-            color: #b9c8e6;
-            background: rgba(14, 18, 31, 0.8);
-            padding: 6px 20px;
-            border-radius: 40px;
-            border: 1px solid #2f3a55;
-            display: none;
-        }
-        .item-price.show {
-            display: block;
-        }
-        .item-price .value {
-            color: #ffd966;
-        }
-        .sell-btn {
-            background: linear-gradient(135deg, #4CAF50, #2e7d32);
-            border: none;
-            color: white;
-            padding: 8px 24px;
-            border-radius: 40px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            margin-top: 8px;
-            display: none;
-            transition: 0.2s;
-            box-shadow: 0 4px 0 #1b5e20;
-        }
-        .sell-btn.show {
-            display: inline-block;
-        }
-        .sell-btn:active {
-            transform: translateY(3px);
-            box-shadow: 0 1px 0 #1b5e20;
-        }
-        .case-btn {
-            display: block;
-            width: 100%;
-            padding: 16px;
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #f5b342, #e8922a);
-            border: none;
-            border-radius: 60px;
-            color: #0b0e1a;
-            cursor: pointer;
-            box-shadow: 0 8px 0 #a3641e;
-            text-transform: uppercase;
-            transition: 0.1s;
-        }
-        .case-btn:active {
-            transform: translateY(5px);
-            box-shadow: 0 3px 0 #a3641e;
-        }
-        .case-btn:disabled {
-            opacity: 0.5;
-            transform: translateY(5px);
-            box-shadow: 0 3px 0 #a3641e;
-            pointer-events: none;
-        }
-        .history {
-            margin-top: 20px;
-            background: rgba(12, 16, 30, 0.7);
-            border-radius: 30px;
-            padding: 14px 18px;
-            border: 1px solid #29324b;
-        }
-        .history h3 {
-            color: #96a9d1;
-            font-weight: 400;
-            font-size: 0.85rem;
-            margin-bottom: 8px;
-        }
-        .history-items {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-        .history-items span {
-            background: #1b2339;
-            padding: 4px 14px;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            color: #d3defa;
-            border-left: 3px solid #f5b342;
-        }
-        .rarity-legend {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin: 15px 0 10px;
-            color: #919fc2;
-            font-size: 0.7rem;
-            flex-wrap: wrap;
-        }
-        .rarity-legend i {
-            font-style: normal;
-            padding: 2px 10px;
-            border-radius: 40px;
-        }
-        .price-tag {
-            text-align: center;
-            color: #ffd966;
-            font-size: 1.1rem;
-            margin: 10px 0;
-            font-weight: 600;
-        }
-        .inventory-btn {
-            background: #2a3349;
-            border: 1px solid #4f5b7a;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: 0.2s;
-        }
-        .inventory-btn:hover {
-            background: #3d4a66;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .modal.show {
-            display: flex;
-        }
-        .modal-content {
-            background: #1a1f2f;
-            border-radius: 30px;
-            padding: 25px;
-            max-width: 600px;
-            width: 100%;
-            max-height: 80vh;
-            overflow-y: auto;
-            border: 1px solid #f5b34233;
-        }
-        .modal-content h2 {
-            color: #f5b342;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        .modal-close {
-            float: right;
-            background: #b34747;
-            border: none;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 30px;
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-        .inv-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin: 15px 0;
-            max-height: 250px;
-            overflow-y: auto;
-            padding-right: 5px;
-        }
-        .inv-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(12, 16, 30, 0.7);
-            padding: 10px 15px;
-            border-radius: 15px;
-            border-left: 4px solid #4a5a7a;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .inv-item:hover {
-            background: rgba(12, 16, 30, 0.9);
-        }
-        .inv-item.selected {
-            border-color: #f5b342;
-            background: rgba(42, 51, 73, 0.9);
-            box-shadow: 0 0 20px #f5b34233;
-        }
-        .inv-item img {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-            border-radius: 8px;
-        }
-        .inv-item .inv-name {
-            color: #eaf0ff;
-            font-weight: 600;
-            flex: 1;
-            margin-left: 12px;
-        }
-        .inv-item .inv-value {
-            color: #ffd966;
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-        .inv-item .inv-sell {
-            background: #4CAF50;
-            border: none;
-            color: white;
-            padding: 4px 14px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .inv-item .inv-sell:active {
-            transform: scale(0.95);
-        }
-        .empty-inv {
-            color: #96a9d1;
-            text-align: center;
-            padding: 30px;
-        }
-        .preview-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(12, 16, 30, 0.6);
-            padding: 10px 15px;
-            border-radius: 15px;
-            margin-bottom: 8px;
-            border-left: 4px solid #4a5a7a;
-        }
-        .preview-item img {
-            width: 45px;
-            height: 45px;
-            object-fit: contain;
-            border-radius: 8px;
-        }
-        .preview-item .p-name {
-            color: #eaf0ff;
-            font-weight: 600;
-            flex: 1;
-        }
-        .preview-item .p-rarity {
-            font-size: 0.7rem;
-            padding: 2px 12px;
-            border-radius: 20px;
-            background: #1e263b;
-            color: #96a9d1;
-        }
-        .preview-item .p-value {
-            color: #ffd966;
-            font-weight: 700;
-            font-size: 0.85rem;
-        }
-        .upgrade-levels {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 15px 0;
-        }
-        .upgrade-level {
-            background: rgba(12, 16, 30, 0.7);
-            border: 2px solid #2f3a55;
-            border-radius: 20px;
-            padding: 12px 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-            color: #b9c8e6;
-        }
-        .upgrade-level:hover {
-            background: rgba(30, 38, 59, 0.9);
-            transform: scale(1.02);
-        }
-        .upgrade-level.selected {
-            border-color: #f5b342;
-            background: rgba(42, 51, 73, 0.9);
-            box-shadow: 0 0 20px #f5b34233;
-        }
-        .upgrade-level .level-mult {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #ffd966;
-        }
-        .upgrade-level .level-desc {
-            font-size: 0.7rem;
-            color: #96a9d1;
-            margin-top: 4px;
-        }
-        .upgrade-level .level-chance {
-            font-size: 0.6rem;
-            color: #00ff88;
-            margin-top: 2px;
-        }
-        .wheel-container {
-            display: none;
-            margin-top: 20px;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 30px;
-            border: 2px solid #ffd96655;
-        }
-        .wheel-container.show {
-            display: block;
-        }
-        .wheel-title {
-            color: #ffd966;
-            text-align: center;
-            font-size: 0.9rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        .wheel {
-            position: relative;
-            width: 100%;
-            max-width: 320px;
-            height: 320px;
-            margin: 0 auto;
-            border-radius: 50%;
-            border: 4px solid #f5b342;
-            overflow: hidden;
-            background: #1a1f2f;
-        }
-        .wheel-segment {
-            position: absolute;
-            width: 50%;
-            height: 50%;
-            top: 0;
-            left: 50%;
-            transform-origin: 0% 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: white;
-            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
-            padding-left: 15px;
-            cursor: default;
-            transition: 0.1s;
-        }
-        .wheel-segment .seg-text {
-            transform: rotate(90deg);
-            white-space: nowrap;
-        }
-        .wheel-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #f5b342, #e8922a);
-            border-radius: 50%;
-            border: 3px solid #fff;
-            z-index: 10;
-            box-shadow: 0 0 20px #f5b34266;
-        }
-        .wheel-pointer {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 30px solid #ff0000;
-            z-index: 11;
-            filter: drop-shadow(0 0 10px #ff0000);
-        }
-        .wheel-result {
-            text-align: center;
-            margin-top: 12px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #00ff88;
-            min-height: 30px;
-        }
-        .wheel-btn {
-            background: linear-gradient(135deg, #ff6b35, #f7931e);
-            border: none;
-            color: white;
-            padding: 10px;
-            border-radius: 40px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            width: 100%;
-            transition: 0.2s;
-            margin-top: 10px;
-            box-shadow: 0 4px 0 #c0551a;
-        }
-        .wheel-btn:active {
-            transform: translateY(3px);
-            box-shadow: 0 1px 0 #c0551a;
-        }
-        .wheel-btn:disabled {
-            opacity: 0.5;
-            transform: translateY(3px);
-            box-shadow: 0 1px 0 #c0551a;
-            pointer-events: none;
-        }
-        .result-box {
-            margin-top: 15px;
-            padding: 15px;
-            border-radius: 20px;
-            text-align: center;
-            display: none;
-        }
-        .result-box.show {
-            display: block;
-        }
-        .result-box.success {
-            background: #00ff8833;
-            border: 1px solid #00ff88;
-        }
-        .result-box.fail {
-            background: #ff220033;
-            border: 1px solid #ff2200;
-        }
-        .result-box .result-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
-        .result-box .result-desc {
-            color: #b9c8e6;
-            font-size: 0.9rem;
-            margin-top: 5px;
-        }
-        @media(max-width:600px) {
-            .case-menu button {
-                min-width: 60px;
-                padding: 6px 10px;
-            }
-            .case-menu button img {
-                width: 40px;
-                height: 40px;
-            }
-            .wheel {
-                width: 220px;
-                height: 220px;
-            }
-            .upgrade-levels {
-                grid-template-columns: 1fr 1fr;
-            }
-            .menu-toggle {
-                display: flex;
-            }
-            .tabs {
-                display: none;
-            }
-        }
-        .admin-panel {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-        }
-        .admin-panel.open {
-            display: flex;
-        }
-        .admin-box {
-            background: #1a1f2f;
-            border-radius: 30px;
-            padding: 30px;
-            max-width: 450px;
-            width: 100%;
-            border: 2px solid #f5b34233;
-            text-align: center;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        .admin-box h2 {
-            color: #f5b342;
-            margin-bottom: 20px;
-        }
-        .admin-box .close-btn {
-            float: right;
-            background: #b34747;
-            border: none;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 30px;
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-        .admin-box input[type="password"],
-        .admin-box input[type="text"],
-        .admin-box input[type="number"] {
-            width: 100%;
-            padding: 12px;
-            border-radius: 20px;
-            border: 1px solid #2f3a55;
-            background: #0e121f;
-            color: white;
-            font-size: 1rem;
-            margin-bottom: 12px;
-            text-align: center;
-        }
-        .admin-box .login-btn {
-            background: #f5b342;
-            border: none;
-            color: #0b0e1a;
-            padding: 12px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            width: 100%;
-            transition: 0.2s;
-        }
-        .admin-box .login-btn:hover {
-            opacity: 0.8;
-        }
-        .admin-box .login-btn:active {
-            transform: scale(0.95);
-        }
-        .admin-box .admin-content {
-            display: none;
-            margin-top: 15px;
-        }
-        .admin-box .admin-content .give-btn {
-            background: #4CAF50;
-            border: none;
-            color: white;
-            padding: 10px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            width: 100%;
-            transition: 0.2s;
-        }
-        .admin-box .admin-content .give-btn:hover {
-            opacity: 0.8;
-        }
-        .admin-box .admin-content .give-btn:active {
-            transform: scale(0.95);
-        }
-        .admin-box .error {
-            color: #ff4444;
-            font-size: 0.9rem;
-            margin-top: 8px;
-            display: none;
-        }
-        .admin-box .success {
-            color: #00ff88;
-            font-size: 0.9rem;
-            margin-top: 8px;
-            display: none;
-        }
-        .admin-box .withdraw-requests {
-            margin-top: 15px;
-            text-align: left;
-        }
-        .admin-box .withdraw-requests .wr-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 12px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            margin-bottom: 5px;
-            font-size: 0.8rem;
-            color: #eaf0ff;
-        }
-        .admin-box .withdraw-requests .wr-item .wr-info {
-            flex: 1;
-        }
-        .admin-box .withdraw-requests .wr-item .wr-info .wr-nick {
-            color: #f5b342;
-            font-weight: 700;
-        }
-        .admin-box .withdraw-requests .wr-item .wr-info .wr-method {
-            font-size: 0.7rem;
-            padding: 2px 8px;
-            border-radius: 20px;
-            margin-left: 8px;
-            display: inline-block;
-        }
-        .admin-box .withdraw-requests .wr-item .wr-info .wr-method.card {
-            background: #4a7db5;
-            color: white;
-        }
-        .admin-box .withdraw-requests .wr-item .wr-info .wr-method.game {
-            background: #7a4f9e;
-            color: white;
-        }
-        .admin-box .withdraw-requests .wr-item .wr-info .wr-detail {
-            font-size: 0.7rem;
-            color: #96a9d1;
-            margin-top: 2px;
-            display: block;
-        }
-        .admin-box .withdraw-requests .wr-item .wr-actions button {
-            background: #4CAF50;
-            border: none;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.7rem;
-            margin-left: 5px;
-        }
-        .admin-box .withdraw-requests .wr-item .wr-actions button.reject {
-            background: #b34747;
-        }
-        .admin-box .withdraw-requests .wr-item .wr-actions button:active {
-            transform: scale(0.95);
-        }
-        .admin-box .withdraw-requests .empty {
-            color: #96a9d1;
-            text-align: center;
-            padding: 15px;
-            font-size: 0.8rem;
-        }
-        .withdraw-box {
-            background: rgba(12, 16, 30, 0.7);
-            border-radius: 20px;
-            padding: 20px;
-            border: 1px solid #2f3a55;
-            margin: 15px 0;
-            text-align: center;
-        }
-        .withdraw-box .balance-info {
-            font-size: 1.1rem;
-            color: #b9c8e6;
-            margin-bottom: 10px;
-        }
-        .withdraw-box .balance-info span {
-            color: #ffd966;
-            font-weight: 700;
-        }
-        .withdraw-box input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 20px;
-            border: 1px solid #2f3a55;
-            background: #0e121f;
-            color: white;
-            font-size: 1rem;
-            margin: 10px 0;
-            text-align: center;
-        }
-        .withdraw-box input:focus {
-            outline: 1px solid #f5b342;
-        }
-        .withdraw-methods {
-            display: flex;
-            gap: 10px;
-            margin: 10px 0;
-        }
-        .withdraw-methods button {
-            flex: 1;
-            padding: 10px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: 0.2s;
-            border: 2px solid #2f3a55;
-            background: rgba(12, 16, 30, 0.5);
-            color: #96a9d1;
-        }
-        .withdraw-methods button:hover {
-            background: rgba(30, 38, 59, 0.8);
-        }
-        .withdraw-methods button.selected {
-            border-color: #f5b342;
-            background: rgba(42, 51, 73, 0.9);
-            color: #f5b342;
-            box-shadow: 0 0 20px #f5b34233;
-        }
-        .withdraw-methods button .method-icon {
-            font-size: 1.2rem;
-            display: block;
-            margin-bottom: 3px;
-        }
-        .withdraw-detail-input {
-            display: none;
-            margin: 10px 0;
-        }
-        .withdraw-detail-input.show {
-            display: block;
-        }
-        .withdraw-detail-input input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 20px;
-            border: 1px solid #2f3a55;
-            background: #0e121f;
-            color: white;
-            font-size: 0.9rem;
-            text-align: center;
-        }
-        .withdraw-detail-input input::placeholder {
-            color: #6a7a9a;
-        }
-        .withdraw-btn {
-            background: linear-gradient(135deg, #f5b342, #e8922a);
-            border: none;
-            color: #0b0e1a;
-            padding: 12px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            width: 100%;
-            transition: 0.2s;
-            margin-top: 10px;
-        }
-        .withdraw-btn:hover {
-            opacity: 0.8;
-        }
-        .withdraw-btn:active {
-            transform: scale(0.95);
-        }
-        .withdraw-btn:disabled {
-            opacity: 0.4;
-            pointer-events: none;
-        }
-        .withdraw-history {
-            margin-top: 15px;
-            text-align: left;
-        }
-        .withdraw-history .wh-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 12px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            margin-bottom: 5px;
-            font-size: 0.8rem;
-            color: #96a9d1;
-        }
-        .withdraw-history .wh-item .wh-status {
-            font-weight: 700;
-        }
-        .withdraw-history .wh-item .wh-status.pending {
-            color: #ffd966;
-        }
-        .withdraw-history .wh-item .wh-status.done {
-            color: #00ff88;
-        }
-        .withdraw-history .wh-item .wh-status.rejected {
-            color: #ff4444;
-        }
-    </style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
+body{min-height:100vh;background:linear-gradient(145deg,#0b0e1a,#1a1f2f);display:flex;justify-content:center;align-items:center;padding:15px}
+.container{max-width:950px;width:100%;border-radius:48px;padding:20px;border:1px solid rgba(255,215,0,0.15);background:rgba(255,255,255,0.05)}
+h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f5b342);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px;cursor:pointer}
+.menu-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:10px;background:rgba(30,38,59,0.85);border-radius:15px;border:1px solid #2f3a55;margin-bottom:10px;align-items:center}
+.menu-toggle span{display:block;width:28px;height:3px;background:#b9c8e6;border-radius:5px;transition:0.3s}
+.menu-toggle.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.menu-toggle.active span:nth-child(2){opacity:0}
+.menu-toggle.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mobile-menu{display:none;flex-direction:column;gap:8px;padding:10px 0;border-top:1px solid #2f3a55;margin-bottom:15px}
+.mobile-menu.show{display:flex}
+.mobile-menu button{background:rgba(30,38,59,0.85);border:1px solid #2f3a55;color:#b9c8e6;padding:10px;border-radius:20px;font-weight:700;font-size:0.9rem;cursor:pointer;transition:0.2s;text-align:center}
+.mobile-menu button:hover{background:rgba(42,51,73,0.9)}
+.mobile-menu button .icon{font-size:1.2rem;margin-right:8px}
+.mobile-menu button.cases-btn{background:#f5b342;color:#0b0e1a;border-color:#f5b342}
+.mobile-menu button.cases-btn:hover{background:#e8922a}
+.donate-notice{background:rgba(255,215,0,0.1);border:1px solid #f5b34255;border-radius:20px;padding:12px 18px;margin:10px 0;display:block;text-align:center}
+.donate-notice p{color:#ffd966;font-size:0.85rem;margin:4px 0}
+.donate-notice .highlight{color:#ff6b35;font-weight:700}
+.stats-row{display:flex;gap:15px;flex-wrap:wrap;margin:10px 0;padding:10px 15px;background:rgba(0,0,0,0.3);border-radius:20px;border:1px solid #2f3a55;justify-content:center}
+.stats-row .stat-item{color:#96a9d1;font-size:0.8rem;text-align:center}
+.stats-row .stat-item .stat-value{color:#f5b342;font-weight:700;display:block;font-size:1.1rem;margin-top:2px}
+.tabs{display:flex;gap:8px;margin:15px 0;flex-wrap:wrap}
+.tabs button{flex:1;padding:10px;border:none;border-radius:30px;font-weight:700;font-size:0.9rem;cursor:pointer;transition:0.3s;background:#2a3349;color:#96a9d1;border:1px solid #3d4a66}
+.tabs button.active{background:#f5b342;color:#0b0e1a;border-color:#f5b342;box-shadow:0 0 25px #f5b34233}
+.tabs button:active{transform:scale(0.95)}
+.tab-content{display:none;animation:fade 0.3s ease}
+.tab-content.active{display:block}
+@keyframes fade{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:translateY(0)}}
+.balance-box{text-align:right;color:#b9c8e6;font-size:1.1rem;margin-bottom:15px;display:flex;justify-content:flex-end;align-items:center;gap:12px;flex-wrap:wrap}
+.balance-box span{background:#0e121f;padding:6px 20px;border-radius:60px;border:1px solid #ffd96655;color:#ffd966;font-weight:700;font-size:1.4rem}
+.balance-box .donate-btn{display:inline-block;background:linear-gradient(135deg,#ff6b35,#f7931e);border:none;color:white;padding:6px 18px;border-radius:40px;font-weight:700;font-size:0.9rem;cursor:pointer;text-decoration:none;border:1px solid #ff6b3566;transition:0.2s}
+.balance-box .donate-btn:hover{opacity:0.8;transform:scale(1.02)}
+.nick-input{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
+.nick-input label{color:#96a9d1;font-size:0.9rem}
+.nick-input input{flex:1;padding:8px 15px;border-radius:20px;border:1px solid #2f3a55;background:#0e121f;color:white;min-width:100px}
+.nick-input button{background:#f5b342;border:none;color:#0b0e1a;padding:8px 20px;border-radius:20px;font-weight:700;cursor:pointer}
+.nick-error{color:#ff4444;font-size:0.8rem;margin-top:5px;display:none;text-align:center}
+.nick-success{color:#00ff88;font-size:0.8rem;margin-top:5px;display:none;text-align:center}
+.case-menu{display:flex;gap:12px;margin:20px 0;flex-wrap:wrap;justify-content:center}
+.case-menu button{background:rgba(30,38,59,0.85);border:2px solid #2f3a55;color:#b9c8e6;padding:8px 16px;border-radius:30px;font-weight:700;font-size:0.75rem;cursor:pointer;transition:0.3s;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:70px;position:relative}
+.case-menu button img{width:55px;height:55px;object-fit:contain;border-radius:12px;background:rgba(12,16,30,0.7);padding:5px}
+.case-menu button .case-name{font-size:0.65rem;color:#96a9d1;text-align:center}
+.case-menu button .case-price{font-size:0.55rem;color:#ffd966;background:#0e121f;padding:1px 10px;border-radius:20px}
+.case-menu button .preview-btn{font-size:0.5rem;background:#2a3349;border:1px solid #4f5b7a;color:white;padding:2px 12px;border-radius:20px;margin-top:2px;cursor:pointer}
+.case-menu button .preview-btn:hover{background:#3d4a66}
+.case-menu button.active{border-color:#f5b342;background:rgba(42,51,73,0.9);box-shadow:0 0 25px #f5b34233;transform:translateY(-3px)}
+.case-menu button .badge{position:absolute;top:-6px;right:-6px;background:#f5b342;color:#0b0e1a;font-size:0.5rem;font-weight:700;padding:2px 8px;border-radius:20px}
+.slot-container{display:flex;flex-direction:column;justify-content:center;align-items:center;margin:25px 0;padding:30px;background:rgba(12,16,30,0.7);border-radius:30px;border:2px solid rgba(47,58,85,0.5);min-height:260px;position:relative}
+.slot{aspect-ratio:1/1;max-width:200px;width:100%;background:#111624;border-radius:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid #4a5a7a;color:#eaf0ff;font-weight:700;transition:0.3s;padding:10px}
+.slot img{width:90%;height:80%;object-fit:contain;border-radius:12px}
+.slot .label{font-size:1rem;margin-top:8px;background:#1e263b;padding:4px 16px;border-radius:30px;color:#a2b6e0}
+.slot .rainbow-text{background:linear-gradient(90deg,#ff0000,#ff7700,#ffff00,#00ff00,#0000ff,#8b00ff,#ff0000);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:rainbowMove 3s linear infinite;font-weight:900}
+@keyframes rainbowMove{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+.slot .corrosion-text{background:linear-gradient(90deg,#8B4513,#A0522D,#CD853F,#8B4513);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:corrosionMove 4s linear infinite;font-weight:900;letter-spacing:1px}
+@keyframes corrosionMove{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+.slot .wood-text{background:linear-gradient(90deg,#8B5A2B,#A0522D,#CD853F,#8B5A2B);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:woodMove 5s linear infinite;font-weight:900;letter-spacing:2px}
+@keyframes woodMove{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+.slot .revolver-text{background:linear-gradient(90deg,#C0C0C0,#E8E8E8,#A9A9A9,#C0C0C0);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:revolverMove 3s linear infinite;font-weight:900;letter-spacing:1px}
+@keyframes revolverMove{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+.slot .box-text{background:linear-gradient(90deg,#8B7355,#A0845C,#C4A882,#8B7355);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:boxMove 4s linear infinite;font-weight:900;letter-spacing:2px}
+@keyframes boxMove{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+.slot .spider-text{background:linear-gradient(90deg,#ff0044,#cc0033,#ff0044);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:spiderMove 1.8s linear infinite;font-weight:900;letter-spacing:1px}
+@keyframes spiderMove{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+.slot .gold-text{background:linear-gradient(90deg,#FFD700,#FFA500,#FFD700);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:goldMove 2.5s linear infinite;font-weight:900;letter-spacing:1px}
+@keyframes goldMove{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+.slot .claw-text{background:linear-gradient(90deg,#C0C0C0,#E8E8E8,#A9A9A9,#C0C0C0);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:clawMove 2s linear infinite;font-weight:900;letter-spacing:1px}
+@keyframes clawMove{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+.slot .wolf-text{background:linear-gradient(90deg,#FFD700,#FF8C00,#FFD700);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:wolfMove 2.5s linear infinite;font-weight:900;letter-spacing:1px}
+@keyframes wolfMove{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+.slot .verdict-text{background:linear-gradient(90deg,#C0C0C0,#E8E8E8,#A9A9A9,#C0C0C0);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:verdictMove 2s linear infinite;font-weight:900;letter-spacing:1px}
+@keyframes verdictMove{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+.slot .snake-text{background:linear-gradient(90deg,#00cc66,#00ff88,#00cc66);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:snakeMove 2.5s linear infinite;font-weight:900;letter-spacing:1px}
+@keyframes snakeMove{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+.slot .toxic-text{background:linear-gradient(90deg,#00ff00,#ccff00,#00ff00);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:toxicMove 1.8s linear infinite;font-weight:900;letter-spacing:1px}
+@keyframes toxicMove{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+.slot.winner{border-color:#f5b342;box-shadow:0 0 50px #f5b34266;transform:scale(1.05)}
+.item-price{font-size:1.1rem;font-weight:700;margin-top:10px;color:#b9c8e6;background:rgba(14,18,31,0.8);padding:6px 20px;border-radius:40px;border:1px solid #2f3a55;display:none}
+.item-price.show{display:block}
+.item-price .value{color:#ffd966}
+.sell-btn{background:linear-gradient(135deg,#4CAF50,#2e7d32);border:none;color:white;padding:8px 24px;border-radius:40px;font-weight:700;font-size:0.9rem;cursor:pointer;margin-top:8px;display:none;transition:0.2s;box-shadow:0 4px 0 #1b5e20}
+.sell-btn.show{display:inline-block}
+.sell-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #1b5e20}
+.case-btn{display:block;width:100%;padding:16px;font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,#f5b342,#e8922a);border:none;border-radius:60px;color:#0b0e1a;cursor:pointer;box-shadow:0 8px 0 #a3641e;text-transform:uppercase;transition:0.1s}
+.case-btn:active{transform:translateY(5px);box-shadow:0 3px 0 #a3641e}
+.case-btn:disabled{opacity:0.5;transform:translateY(5px);box-shadow:0 3px 0 #a3641e;pointer-events:none}
+.history{margin-top:20px;background:rgba(12,16,30,0.7);border-radius:30px;padding:14px 18px;border:1px solid #29324b}
+.history h3{color:#96a9d1;font-weight:400;font-size:0.85rem;margin-bottom:8px}
+.history-items{display:flex;flex-wrap:wrap;gap:6px}
+.history-items span{background:#1b2339;padding:4px 14px;border-radius:40px;font-size:0.8rem;color:#d3defa;border-left:3px solid #f5b342}
+.rarity-legend{display:flex;justify-content:center;gap:12px;margin:15px 0 10px;color:#919fc2;font-size:0.7rem;flex-wrap:wrap}
+.rarity-legend i{font-style:normal;padding:2px 10px;border-radius:40px}
+.price-tag{text-align:center;color:#ffd966;font-size:1.1rem;margin:10px 0;font-weight:600}
+.inventory-btn{background:#2a3349;border:1px solid #4f5b7a;color:white;padding:8px 20px;border-radius:40px;font-weight:600;cursor:pointer;margin-top:10px;transition:0.2s}
+.inventory-btn:hover{background:#3d4a66}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1000;justify-content:center;align-items:center;padding:20px}
+.modal.show{display:flex}
+.modal-content{background:#1a1f2f;border-radius:30px;padding:25px;max-width:600px;width:100%;max-height:80vh;overflow-y:auto;border:1px solid #f5b34233}
+.modal-content h2{color:#f5b342;margin-bottom:10px;text-align:center}
+.modal-close{float:right;background:#b34747;border:none;color:white;padding:5px 15px;border-radius:30px;font-size:1.2rem;cursor:pointer}
+.inv-list{display:flex;flex-direction:column;gap:8px;margin:15px 0;max-height:250px;overflow-y:auto;padding-right:5px}
+.inv-item{display:flex;align-items:center;justify-content:space-between;background:rgba(12,16,30,0.7);padding:10px 15px;border-radius:15px;border-left:4px solid #4a5a7a;cursor:pointer;transition:0.2s}
+.inv-item:hover{background:rgba(12,16,30,0.9)}
+.inv-item.selected{border-color:#f5b342;background:rgba(42,51,73,0.9);box-shadow:0 0 20px #f5b34233}
+.inv-item img{width:40px;height:40px;object-fit:contain;border-radius:8px}
+.inv-item .inv-name{color:#eaf0ff;font-weight:600;flex:1;margin-left:12px}
+.inv-item .inv-value{color:#ffd966;font-weight:700;font-size:0.9rem}
+.inv-item .inv-sell{background:#4CAF50;border:none;color:white;padding:4px 14px;border-radius:20px;cursor:pointer;font-weight:600}
+.inv-item .inv-sell:active{transform:scale(0.95)}
+.empty-inv{color:#96a9d1;text-align:center;padding:30px}
+.preview-item{display:flex;align-items:center;gap:12px;background:rgba(12,16,30,0.6);padding:10px 15px;border-radius:15px;margin-bottom:8px;border-left:4px solid #4a5a7a}
+.preview-item img{width:45px;height:45px;object-fit:contain;border-radius:8px}
+.preview-item .p-name{color:#eaf0ff;font-weight:600;flex:1}
+.preview-item .p-rarity{font-size:0.7rem;padding:2px 12px;border-radius:20px;background:#1e263b;color:#96a9d1}
+.preview-item .p-value{color:#ffd966;font-weight:700;font-size:0.85rem}
+.upgrade-levels{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}
+.upgrade-level{background:rgba(12,16,30,0.7);border:2px solid #2f3a55;border-radius:20px;padding:12px 10px;text-align:center;cursor:pointer;transition:0.3s;color:#b9c8e6}
+.upgrade-level:hover{background:rgba(30,38,59,0.9);transform:scale(1.02)}
+.upgrade-level.selected{border-color:#f5b342;background:rgba(42,51,73,0.9);box-shadow:0 0 20px #f5b34233}
+.upgrade-level .level-mult{font-size:1.3rem;font-weight:700;color:#ffd966}
+.upgrade-level .level-desc{font-size:0.7rem;color:#96a9d1;margin-top:4px}
+.upgrade-level .level-chance{font-size:0.6rem;color:#00ff88;margin-top:2px}
+.wheel-container{display:none;margin-top:20px;padding:20px;background:rgba(0,0,0,0.6);border-radius:30px;border:2px solid #ffd96655}
+.wheel-container.show{display:block}
+.wheel-title{color:#ffd966;text-align:center;font-size:0.9rem;font-weight:700;margin-bottom:10px}
+.wheel{position:relative;width:100%;max-width:320px;height:320px;margin:0 auto;border-radius:50%;border:4px solid #f5b342;overflow:hidden;background:#1a1f2f}
+.wheel-segment{position:absolute;width:50%;height:50%;top:0;left:50%;transform-origin:0% 100%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:white;text-shadow:0 0 5px rgba(0,0,0,0.8);padding-left:15px;cursor:default;transition:0.1s}
+.wheel-segment .seg-text{transform:rotate(90deg);white-space:nowrap}
+.wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;background:linear-gradient(135deg,#f5b342,#e8922a);border-radius:50%;border:3px solid #fff;z-index:10;box-shadow:0 0 20px #f5b34266}
+.wheel-pointer{position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:15px solid transparent;border-right:15px solid transparent;border-top:30px solid #ff0000;z-index:11;filter:drop-shadow(0 0 10px #ff0000)}
+.wheel-result{text-align:center;margin-top:12px;font-size:1.1rem;font-weight:700;color:#00ff88;min-height:30px}
+.wheel-btn{background:linear-gradient(135deg,#ff6b35,#f7931e);border:none;color:white;padding:10px;border-radius:40px;font-weight:700;font-size:1rem;cursor:pointer;width:100%;transition:0.2s;margin-top:10px;box-shadow:0 4px 0 #c0551a}
+.wheel-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #c0551a}
+.wheel-btn:disabled{opacity:0.5;transform:translateY(3px);box-shadow:0 1px 0 #c0551a;pointer-events:none}
+.result-box{margin-top:15px;padding:15px;border-radius:20px;text-align:center;display:none}
+.result-box.show{display:block}
+.result-box.success{background:#00ff8833;border:1px solid #00ff88}
+.result-box.fail{background:#ff220033;border:1px solid #ff2200}
+.result-box .result-title{font-size:1.2rem;font-weight:700}
+.result-box .result-desc{color:#b9c8e6;font-size:0.9rem;margin-top:5px}
+@media(max-width:600px){.case-menu button{min-width:60px;padding:6px 10px}.case-menu button img{width:40px;height:40px}.wheel{width:220px;height:220px}.upgrade-levels{grid-template-columns:1fr 1fr}.menu-toggle{display:flex}.tabs{display:none}}
+.admin-panel{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;justify-content:center;align-items:center}
+.admin-panel.open{display:flex}
+.admin-box{background:#1a1f2f;border-radius:30px;padding:30px;max-width:450px;width:100%;border:2px solid #f5b34233;text-align:center;max-height:90vh;overflow-y:auto}
+.admin-box h2{color:#f5b342;margin-bottom:20px}
+.admin-box .close-btn{float:right;background:#b34747;border:none;color:white;padding:5px 15px;border-radius:30px;font-size:1.2rem;cursor:pointer}
+.admin-box input[type="password"], .admin-box input[type="text"], .admin-box input[type="number"]{width:100%;padding:12px;border-radius:20px;border:1px solid #2f3a55;background:#0e121f;color:white;font-size:1rem;margin-bottom:12px;text-align:center}
+.admin-box .login-btn{background:#f5b342;border:none;color:#0b0e1a;padding:12px;border-radius:30px;font-weight:700;font-size:1rem;cursor:pointer;width:100%;transition:0.2s}
+.admin-box .login-btn:hover{opacity:0.8}
+.admin-box .login-btn:active{transform:scale(0.95)}
+.admin-box .admin-content{display:none;margin-top:15px}
+.admin-box .admin-content .give-btn{background:#4CAF50;border:none;color:white;padding:10px;border-radius:30px;font-weight:700;font-size:1rem;cursor:pointer;width:100%;transition:0.2s}
+.admin-box .admin-content .give-btn:hover{opacity:0.8}
+.admin-box .admin-content .give-btn:active{transform:scale(0.95)}
+.admin-box .error{color:#ff4444;font-size:0.9rem;margin-top:8px;display:none}
+.admin-box .success{color:#00ff88;font-size:0.9rem;margin-top:8px;display:none}
+.admin-box .withdraw-requests{margin-top:15px;text-align:left}
+.admin-box .withdraw-requests .wr-item{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(0,0,0,0.3);border-radius:10px;margin-bottom:5px;font-size:0.8rem;color:#eaf0ff}
+.admin-box .withdraw-requests .wr-item .wr-info{flex:1}
+.admin-box .withdraw-requests .wr-item .wr-info .wr-nick{color:#f5b342;font-weight:700}
+.admin-box .withdraw-requests .wr-item .wr-info .wr-method{font-size:0.7rem;padding:2px 8px;border-radius:20px;margin-left:8px;display:inline-block}
+.admin-box .withdraw-requests .wr-item .wr-info .wr-method.card{background:#4a7db5;color:white}
+.admin-box .withdraw-requests .wr-item .wr-info .wr-method.game{background:#7a4f9e;color:white}
+.admin-box .withdraw-requests .wr-item .wr-info .wr-detail{font-size:0.7rem;color:#96a9d1;margin-top:2px;display:block}
+.admin-box .withdraw-requests .wr-item .wr-actions button{background:#4CAF50;border:none;color:white;padding:4px 12px;border-radius:20px;cursor:pointer;font-size:0.7rem;margin-left:5px}
+.admin-box .withdraw-requests .wr-item .wr-actions button.reject{background:#b34747}
+.admin-box .withdraw-requests .wr-item .wr-actions button:active{transform:scale(0.95)}
+.admin-box .withdraw-requests .empty{color:#96a9d1;text-align:center;padding:15px;font-size:0.8rem}
+.withdraw-box{background:rgba(12,16,30,0.7);border-radius:20px;padding:20px;border:1px solid #2f3a55;margin:15px 0;text-align:center}
+.withdraw-box .balance-info{font-size:1.1rem;color:#b9c8e6;margin-bottom:10px}
+.withdraw-box .balance-info span{color:#ffd966;font-weight:700}
+.withdraw-box input{width:100%;padding:12px;border-radius:20px;border:1px solid #2f3a55;background:#0e121f;color:white;font-size:1rem;margin:10px 0;text-align:center}
+.withdraw-box input:focus{outline:1px solid #f5b342}
+.withdraw-methods{display:flex;gap:10px;margin:10px 0}
+.withdraw-methods button{flex:1;padding:10px;border-radius:30px;font-weight:700;font-size:0.9rem;cursor:pointer;transition:0.2s;border:2px solid #2f3a55;background:rgba(12,16,30,0.5);color:#96a9d1}
+.withdraw-methods button:hover{background:rgba(30,38,59,0.8)}
+.withdraw-methods button.selected{border-color:#f5b342;background:rgba(42,51,73,0.9);color:#f5b342;box-shadow:0 0 20px #f5b34233}
+.withdraw-methods button .method-icon{font-size:1.2rem;display:block;margin-bottom:3px}
+.withdraw-detail-input{display:none;margin:10px 0}
+.withdraw-detail-input.show{display:block}
+.withdraw-detail-input input{width:100%;padding:12px;border-radius:20px;border:1px solid #2f3a55;background:#0e121f;color:white;font-size:0.9rem;text-align:center}
+.withdraw-detail-input input::placeholder{color:#6a7a9a}
+.withdraw-btn{background:linear-gradient(135deg,#f5b342,#e8922a);border:none;color:#0b0e1a;padding:12px;border-radius:30px;font-weight:700;font-size:1rem;cursor:pointer;width:100%;transition:0.2s;margin-top:10px}
+.withdraw-btn:hover{opacity:0.8}
+.withdraw-btn:active{transform:scale(0.95)}
+.withdraw-btn:disabled{opacity:0.4;pointer-events:none}
+.withdraw-history{margin-top:15px;text-align:left}
+.withdraw-history .wh-item{display:flex;justify-content:space-between;padding:8px 12px;background:rgba(0,0,0,0.3);border-radius:10px;margin-bottom:5px;font-size:0.8rem;color:#96a9d1}
+.withdraw-history .wh-item .wh-status{font-weight:700}
+.withdraw-history .wh-item .wh-status.pending{color:#ffd966}
+.withdraw-history .wh-item .wh-status.done{color:#00ff88}
+.withdraw-history .wh-item .wh-status.rejected{color:#ff4444}
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1 id="mainTitle">🐂 OXDROP</h1>
-        <div class="menu-toggle" id="menuToggle">
-            <span></span><span></span><span></span>
+<div class="container">
+    <h1 id="mainTitle">🐂 OXDROP</h1>
+    <div class="menu-toggle" id="menuToggle">
+        <span></span><span></span><span></span>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="cases-btn" onclick="switchTab('cases')"><span class="icon">📦</span> Кейсы</button>
+        <button onclick="switchTab('withdraw')"><span class="icon">💳</span> Вывод</button>
+        <button onclick="document.getElementById('donateBtn').click()"><span class="icon">💰</span> Пополнить</button>
+        <button onclick="switchTab('inventory')"><span class="icon">📦</span> Инвентарь</button>
+        <button onclick="switchTab('upgrade')"><span class="icon">⬆</span> Апгрейд</button>
+    </div>
+    <div class="nick-input">
+        <label>👤 Ваш ник:</label>
+        <input type="text" id="nickInput" placeholder="Введите уникальный ник" value="Игрок1">
+        <button id="saveNickBtn">✅ Сохранить</button>
+    </div>
+    <div class="nick-error" id="nickError">❌ Этот ник уже занят! Выберите другой.</div>
+    <div class="nick-success" id="nickSuccess">✅ Ник успешно сохранён!</div>
+    <div class="donate-notice" id="donateNotice">
+        <p>💳 <span class="highlight">ВНИМАНИЕ!</span> При пополнении через донат <span class="highlight">ОБЯЗАТЕЛЬНО</span> укажите свой ник в комментарии к платежу!</p>
+        <p>📝 Без указания ника баланс не будет начислен автоматически.</p>
+        <p>⏳ После оплаты баланс появится вручную в течение 5-15 минут.</p>
+    </div>
+    <div class="stats-row">
+        <div class="stat-item">👁️ Посещений<span class="stat-value" id="visitCount">0</span></div>
+        <div class="stat-item">📦 Открыто кейсов<span class="stat-value" id="caseOpenCount">0</span></div>
+        <div class="stat-item">💰 Всего продано<span class="stat-value" id="totalSales">0</span></div>
+        <div class="stat-item">🏆 Лучший предмет<span class="stat-value" id="bestItem">—</span></div>
+    </div>
+    <div class="tabs" id="mainTabs">
+        <button class="active" data-tab="cases">📦 Кейсы</button>
+        <button data-tab="upgrade">⬆ Апгрейд</button>
+        <button data-tab="inventory">📦 Инвентарь</button>
+        <button data-tab="withdraw">💳 Вывод</button>
+    </div>
+    <div class="tab-content active" id="tab-cases">
+        <div class="balance-box">💰 <span id="balanceDisplay">0</span>
+            <a href="https://www.donationalerts.com/r/phff" id="donateBtn" class="donate-btn" target="_blank">💳 Пополнить</a>
         </div>
-        <div class="mobile-menu" id="mobileMenu">
-            <button class="cases-btn" onclick="switchTab('cases')"><span class="icon">📦</span> Кейсы</button>
-            <button onclick="switchTab('withdraw')"><span class="icon">💳</span> Вывод</button>
-            <button onclick="document.getElementById('donateBtn').click()"><span class="icon">💰</span> Пополнить</button>
-            <button onclick="switchTab('inventory')"><span class="icon">📦</span> Инвентарь</button>
-            <button onclick="switchTab('upgrade')"><span class="icon">⬆</span> Апгрейд</button>
+        <div class="case-menu" id="caseMenu">
+            <button class="active" data-case="0">
+                <img src="https://i.postimg.cc/28mQjPKk/37PNMy44Mdf-Qq71KUvp-Pr-XLRHC6Vttjwu8Yc-Mk-HMn-O4-SXl-E22e-Ii-Sc-Uw-TYs-KFAa0Vvp-UIc4BZOOug-VLu-G6d4.jpg" alt="Мумия">
+                <span class="case-name">🧟 Мумия</span>
+                <span class="case-price">100$</span>
+                <span class="badge">🔥</span>
+                <span class="preview-btn" onclick="event.stopPropagation(); openPreview(0)">🔍 Осмотреть</span>
+            </button>
+            <button data-case="1">
+                <img src="https://i.postimg.cc/DySShhrC/lv-0-20260830201333.png" alt="Человек-паук">
+                <span class="case-name">🕷️ Человек-паук</span>
+                <span class="case-price">50$</span>
+                <span class="badge">🕸️</span>
+                <span class="preview-btn" onclick="event.stopPropagation(); openPreview(1)">🔍 Осмотреть</span>
+            </button>
         </div>
-        <div class="nick-input">
-            <label>👤 Ваш ник:</label>
-            <input type="text" id="nickInput" placeholder="Введите уникальный ник" value="Игрок1">
-            <button id="saveNickBtn">✅ Сохранить</button>
+        <div class="price-tag">💰 Цена открытия: <span id="priceDisplay">100</span>$</div>
+        <div class="slot-container">
+            <div class="slot" id="mainSlot"><span style="font-size:3rem;">🎰</span><span class="label">Нажми открыть</span></div>
+            <div class="item-price" id="itemPrice">💰 Стоимость: <span class="value" id="priceValue">0</span> $</div>
+            <button class="sell-btn" id="sellBtn">💰 Продать предмет</button>
         </div>
-        <div class="nick-error" id="nickError">❌ Этот ник уже занят! Выберите другой.</div>
-        <div class="nick-success" id="nickSuccess">✅ Ник успешно сохранён!</div>
-        <div class="donate-notice" id="donateNotice">
-            <p>💳 <span class="highlight">ВНИМАНИЕ!</span> При пополнении через донат <span class="highlight">ОБЯЗАТЕЛЬНО</span> укажите свой ник в комментарии к платежу!</p>
-            <p>📝 Без указания ника баланс не будет начислен автоматически.</p>
-            <p>⏳ После оплаты баланс появится вручную в течение 5-15 минут.</p>
-        </div>
-        <div class="stats-row">
-            <div class="stat-item">👁️ Посещений<span class="stat-value" id="visitCount">0</span></div>
-            <div class="stat-item">📦 Открыто кейсов<span class="stat-value" id="caseOpenCount">0</span></div>
-            <div class="stat-item">💰 Всего продано<span class="stat-value" id="totalSales">0</span></div>
-            <div class="stat-item">🏆 Лучший предмет<span class="stat-value" id="bestItem">—</span></div>
-        </div>
-        <div class="tabs" id="mainTabs">
-            <button class="active" data-tab="cases">📦 Кейсы</button>
-            <button data-tab="upgrade">⬆ Апгрейд</button>
-            <button data-tab="inventory">📦 Инвентарь</button>
-            <button data-tab="withdraw">💳 Вывод</button>
-        </div>
-        <div class="tab-content active" id="tab-cases">
-            <div class="balance-box">💰 <span id="balanceDisplay">0</span>
-                <a href="https://www.donationalerts.com/r/phff" id="donateBtn" class="donate-btn" target="_blank">💳 Пополнить</a>
-            </div>
-            <div class="case-menu" id="caseMenu">
-                <button class="active" data-case="0">
-                    <img src="https://i.postimg.cc/28mQjPKk/37PNMy44Mdf-Qq71KUvp-Pr-XLRHC6Vttjwu8Yc-Mk-HMn-O4-SXl-E22e-Ii-Sc-Uw-TYs-KFAa0Vvp-UIc4BZOOug-VLu-G6d4.jpg" alt="Мумия">
-                    <span class="case-name">🧟 Мумия</span>
-                    <span class="case-price">100$</span>
-                    <span class="badge">🔥</span>
-                    <span class="preview-btn" onclick="event.stopPropagation(); openPreview(0)">🔍 Осмотреть</span>
-                </button>
-                <button data-case="1">
-                    <img src="https://i.postimg.cc/DySShhrC/lv-0-20260830201333.png" alt="Человек-паук">
-                    <span class="case-name">🕷️ Человек-паук</span>
-                    <span class="case-price">50$</span>
-                    <span class="badge">🕸️</span>
-                    <span class="preview-btn" onclick="event.stopPropagation(); openPreview(1)">🔍 Осмотреть</span>
-                </button>
-            </div>
-            <div class="price-tag">💰 Цена открытия: <span id="priceDisplay">100</span>$</div>
-            <div class="slot-container">
-                <div class="slot" id="mainSlot"><span style="font-size:3rem;">🎰</span><span class="label">Нажми открыть</span></div>
-                <div class="item-price" id="itemPrice">💰 Стоимость: <span class="value" id="priceValue">0</span> $</div>
-                <button class="sell-btn" id="sellBtn">💰 Продать предмет</button>
-            </div>
-            <button class="case-btn" id="openCaseBtn">🎲 Открыть кейс</button>
-            <div class="rarity-legend"><i style="background:#2e3a5a;">⚪ Обычный</i><i style="background:#3f4e7a;">🔵 Редкий</i><i style="background:#7a4f9e;">🟣 Эпический</i><i style="background:#b34747;">🔴 Легендарный</i></div>
-            <div class="history"><h3>📋 История</h3><div class="history-items" id="historyList"></div></div>
-        </div>
-        <div class="tab-content" id="tab-upgrade">
-            <h2 style="color:#f5b342;text-align:center;font-size:1.3rem;margin-bottom:10px;">⬆ Апгрейд предмета</h2>
-            <p style="color:#96a9d1;font-size:0.9rem;margin-bottom:10px;text-align:center;">Выберите предмет и уровень улучшения</p>
-            <div class="inv-list" id="upgradeInvList"><div class="empty-inv">📭 Инвентарь пуст. Откройте кейс!</div></div>
-            <div style="margin-top:15px;">
-                <p style="color:#96a9d1;font-size:0.8rem;margin-bottom:8px;">🎯 Выберите уровень апгрейда:</p>
-                <div class="upgrade-levels" id="upgradeLevels">
-                    <div class="upgrade-level selected" data-mult="1.2" data-name="x1.2"><div class="level-mult">x1.2</div><div class="level-desc">+20% стоимости</div><div class="level-chance">🟢 75% успеха</div></div>
-                    <div class="upgrade-level" data-mult="1.5" data-name="x1.5"><div class="level-mult">x1.5</div><div class="level-desc">+50% стоимости</div><div class="level-chance">🟡 50% успеха</div></div>
-                    <div class="upgrade-level" data-mult="2.0" data-name="x2.0"><div class="level-mult">x2.0</div><div class="level-desc">+100% стоимости</div><div class="level-chance">🟠 25% успеха</div></div>
-                    <div class="upgrade-level" data-mult="4.0" data-name="x4.0"><div class="level-mult">x4.0</div><div class="level-desc">+300% стоимости</div><div class="level-chance">🔴 2% успеха</div></div>
-                </div>
-            </div>
-            <button class="wheel-btn" id="openWheelBtn">🎡 Открыть колесо</button>
-            <div class="wheel-container" id="wheelContainer">
-                <div class="wheel-title">🎡 КОЛЕСО АПГРЕЙДА</div>
-                <div class="wheel" id="wheel"><div class="wheel-pointer"></div><div class="wheel-center"></div></div>
-                <div class="wheel-result" id="wheelResult">Нажмите "Крутить"</div>
-                <button class="wheel-btn" id="wheelSpinBtn">🎰 Крутить!</button>
-                <div class="result-box" id="resultBox"><div class="result-title" id="resultTitle"></div><div class="result-desc" id="resultDesc"></div></div>
+        <button class="case-btn" id="openCaseBtn">🎲 Открыть кейс</button>
+        <div class="rarity-legend"><i style="background:#2e3a5a;">⚪ Обычный</i><i style="background:#3f4e7a;">🔵 Редкий</i><i style="background:#7a4f9e;">🟣 Эпический</i><i style="background:#b34747;">🔴 Легендарный</i></div>
+        <div class="history"><h3>📋 История</h3><div class="history-items" id="historyList"></div></div>
+    </div>
+    <div class="tab-content" id="tab-upgrade">
+        <h2 style="color:#f5b342;text-align:center;font-size:1.3rem;margin-bottom:10px;">⬆ Апгрейд предмета</h2>
+        <p style="color:#96a9d1;font-size:0.9rem;margin-bottom:10px;text-align:center;">Выберите предмет и уровень улучшения</p>
+        <div class="inv-list" id="upgradeInvList"><div class="empty-inv">📭 Инвентарь пуст. Откройте кейс!</div></div>
+        <div style="margin-top:15px;">
+            <p style="color:#96a9d1;font-size:0.8rem;margin-bottom:8px;">🎯 Выберите уровень апгрейда:</p>
+            <div class="upgrade-levels" id="upgradeLevels">
+                <div class="upgrade-level selected" data-mult="1.2" data-name="x1.2"><div class="level-mult">x1.2</div><div class="level-desc">+20% стоимости</div><div class="level-chance">🟢 75% успеха</div></div>
+                <div class="upgrade-level" data-mult="1.5" data-name="x1.5"><div class="level-mult">x1.5</div><div class="level-desc">+50% стоимости</div><div class="level-chance">🟡 50% успеха</div></div>
+                <div class="upgrade-level" data-mult="2.0" data-name="x2.0"><div class="level-mult">x2.0</div><div class="level-desc">+100% стоимости</div><div class="level-chance">🟠 25% успеха</div></div>
+                <div class="upgrade-level" data-mult="4.0" data-name="x4.0"><div class="level-mult">x4.0</div><div class="level-desc">+300% стоимости</div><div class="level-chance">🔴 2% успеха</div></div>
             </div>
         </div>
-        <div class="tab-content" id="tab-inventory">
-            <h2 style="color:#f5b342;text-align:center;font-size:1.3rem;margin-bottom:10px;">📦 Мой инвентарь</h2>
-            <div id="inventoryList"></div>
-        </div>
-        <div class="tab-content" id="tab-withdraw">
-            <h2 style="color:#f5b342;text-align:center;font-size:1.3rem;margin-bottom:15px;">💳 Вывод средств</h2>
-            <div class="withdraw-box">
-                <div class="balance-info">💰 Ваш баланс: <span id="withdrawBalance">0</span> $</div>
-                <input type="number" id="withdrawAmount" placeholder="Введите сумму для вывода" min="1" value="100">
-                <div class="withdraw-methods">
-                    <button class="selected" data-method="card"><span class="method-icon">💳</span> На карту</button>
-                    <button data-method="game"><span class="method-icon">🎮</span> В игру</button>
-                </div>
-                <div class="withdraw-detail-input" id="detailInput"><input type="text" id="withdrawDetail" placeholder="Введите номер карты или ID игры"></div>
-                <button class="withdraw-btn" id="withdrawBtn">📤 Отправить заявку</button>
-                <div style="margin-top:15px;font-size:0.8rem;color:#96a9d1;text-align:center;border-top:1px solid #2f3a55;padding-top:10px;">⚡ Минимальная сумма: <span style="color:#ffd966;font-weight:700;">10$</span></div>
-            </div>
-            <div class="withdraw-history" id="withdrawHistory">
-                <h3 style="color:#96a9d1;font-size:0.85rem;margin-bottom:8px;">📋 История заявок</h3>
-                <div id="withdrawHistoryList"><div style="color:#96a9d1;text-align:center;padding:15px;">Заявок пока нет</div></div>
-            </div>
+        <button class="wheel-btn" id="openWheelBtn">🎡 Открыть колесо</button>
+        <div class="wheel-container" id="wheelContainer">
+            <div class="wheel-title">🎡 КОЛЕСО АПГРЕЙДА</div>
+            <div class="wheel" id="wheel"><div class="wheel-pointer"></div><div class="wheel-center"></div></div>
+            <div class="wheel-result" id="wheelResult">Нажмите "Крутить"</div>
+            <button class="wheel-btn" id="wheelSpinBtn">🎰 Крутить!</button>
+            <div class="result-box" id="resultBox"><div class="result-title" id="resultTitle"></div><div class="result-desc" id="resultDesc"></div></div>
         </div>
     </div>
-    <div class="admin-panel" id="adminPanel">
-        <div class="admin-box">
-            <button class="close-btn" id="adminClose">✕</button>
-            <h2>👑 Админ-панель</h2>
-            <div id="adminLogin">
-                <input type="password" id="adminPass" placeholder="Введите пароль">
-                <button class="login-btn" id="adminLoginBtn">🔑 Войти</button>
-                <div class="error" id="adminError">❌ Неверный пароль!</div>
+    <div class="tab-content" id="tab-inventory">
+        <h2 style="color:#f5b342;text-align:center;font-size:1.3rem;margin-bottom:10px;">📦 Мой инвентарь</h2>
+        <div id="inventoryList"></div>
+    </div>
+    <div class="tab-content" id="tab-withdraw">
+        <h2 style="color:#f5b342;text-align:center;font-size:1.3rem;margin-bottom:15px;">💳 Вывод средств</h2>
+        <div class="withdraw-box">
+            <div class="balance-info">💰 Ваш баланс: <span id="withdrawBalance">0</span> $</div>
+            <input type="number" id="withdrawAmount" placeholder="Введите сумму для вывода" min="1" value="100">
+            <div class="withdraw-methods">
+                <button class="selected" data-method="card"><span class="method-icon">💳</span> На карту</button>
+                <button data-method="game"><span class="method-icon">🎮</span> В игру</button>
             </div>
-            <div class="admin-content" id="adminContent">
-                <h3 style="color:#96a9d1;font-size:0.9rem;margin-bottom:10px;">💰 Выдать баланс</h3>
-                <input type="text" id="adminNick" placeholder="Ник игрока" value="Игрок1">
-                <input type="number" id="adminAmount" value="100" min="1">
-                <button class="give-btn" id="adminAddBtn">💰 Выдать баланс</button>
-                <div class="success" id="adminSuccess">✅ Баланс выдан!</div>
-                <hr style="border-color:#2f3a55;margin:15px 0;">
-                <h3 style="color:#96a9d1;font-size:0.9rem;margin-bottom:10px;">📤 Заявки на вывод</h3>
-                <div class="withdraw-requests" id="withdrawRequests"><div class="empty">Нет заявок</div></div>
-            </div>
+            <div class="withdraw-detail-input" id="detailInput"><input type="text" id="withdrawDetail" placeholder="Введите номер карты или ID игры"></div>
+            <button class="withdraw-btn" id="withdrawBtn">📤 Отправить заявку</button>
+            <div style="margin-top:15px;font-size:0.8rem;color:#96a9d1;text-align:center;border-top:1px solid #2f3a55;padding-top:10px;">⚡ Минимальная сумма: <span style="color:#ffd966;font-weight:700;">10$</span></div>
+        </div>
+        <div class="withdraw-history" id="withdrawHistory">
+            <h3 style="color:#96a9d1;font-size:0.85rem;margin-bottom:8px;">📋 История заявок</h3>
+            <div id="withdrawHistoryList"><div style="color:#96a9d1;text-align:center;padding:15px;">Заявок пока нет</div></div>
         </div>
     </div>
-    <div class="modal" id="previewModal">
-        <div class="modal-content">
-            <button class="modal-close" id="previewClose">✕</button>
-            <h2 id="previewTitle">📦 Оружейный кейс</h2>
-            <div class="modal-sub" id="previewSub" style="color:#96a9d1;text-align:center;font-size:0.9rem;margin-bottom:15px;">💰 Цена открытия: 100$</div>
-            <div id="previewList"></div>
+</div>
+<div class="admin-panel" id="adminPanel">
+    <div class="admin-box">
+        <button class="close-btn" id="adminClose">✕</button>
+        <h2>👑 Админ-панель</h2>
+        <div id="adminLogin">
+            <input type="password" id="adminPass" placeholder="Введите пароль">
+            <button class="login-btn" id="adminLoginBtn">🔑 Войти</button>
+            <div class="error" id="adminError">❌ Неверный пароль!</div>
+        </div>
+        <div class="admin-content" id="adminContent">
+            <h3 style="color:#96a9d1;font-size:0.9rem;margin-bottom:10px;">💰 Выдать баланс</h3>
+            <input type="text" id="adminNick" placeholder="Ник игрока" value="Игрок1">
+            <input type="number" id="adminAmount" value="100" min="1">
+            <button class="give-btn" id="adminAddBtn">💰 Выдать баланс</button>
+            <div class="success" id="adminSuccess">✅ Баланс выдан!</div>
+            <hr style="border-color:#2f3a55;margin:15px 0;">
+            <h3 style="color:#96a9d1;font-size:0.9rem;margin-bottom:10px;">📤 Заявки на вывод</h3>
+            <div class="withdraw-requests" id="withdrawRequests"><div class="empty">Нет заявок</div></div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        // ===== ПОДКЛЮЧЕНИЕ К SUPABASE =====
-        const SUPABASE_URL = 'https://umebqlddrqoomsjkesiv.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_IjUYueqoZsBRawM4SAbAHQ_zDtRHQCa';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+</div>
+<div class="modal" id="previewModal">
+    <div class="modal-content">
+        <button class="modal-close" id="previewClose">✕</button>
+        <h2 id="previewTitle">📦 Оружейный кейс</h2>
+        <div class="modal-sub" id="previewSub" style="color:#96a9d1;text-align:center;font-size:0.9rem;margin-bottom:15px;">💰 Цена открытия: 100$</div>
+        <div id="previewList"></div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ===== ПОДКЛЮЧЕНИЕ К SUPABASE =====
+const SUPABASE_URL = 'https://warm-project-pool.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_IjUYueqoZsBRawM4SAbAHQ_zDtRHQCa';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // ===== ФУНКЦИИ РАБОТЫ С БАЗОЙ =====
-        async function getPlayer(nick) {
-            const { data, error } = await supabase
-                .from('players')
-                .select('*')
-                .eq('nick', nick)
-                .maybeSingle();
-            if (error) { console.error(error); return null; }
-            return data;
+// ===== ФУНКЦИИ РАБОТЫ С БАЗОЙ =====
+async function getPlayer(nick) {
+    const { data, error } = await supabase
+        .from('players')
+        .select('*')
+        .eq('nick', nick)
+        .maybeSingle();
+    if (error) { console.error(error); return null; }
+    return data;
+}
+async function createPlayer(nick) {
+    const { data, error } = await supabase
+        .from('players')
+        .insert([{ nick, balance: 0, inventory: [] }])
+        .select()
+        .maybeSingle();
+    if (error) { console.error(error); return null; }
+    return data;
+}
+async function updatePlayer(nick, balance, inventory) {
+    const { error } = await supabase
+        .from('players')
+        .update({ balance, inventory })
+        .eq('nick', nick);
+    if (error) console.error(error);
+}
+async function getWithdrawRequests() {
+    const { data, error } = await supabase
+        .from('withdraw_requests')
+        .select('*')
+        .order('id', { ascending: false });
+    if (error) return [];
+    return data;
+}
+async function addWithdrawRequest(nick, amount, method, detail) {
+    const { error } = await supabase
+        .from('withdraw_requests')
+        .insert([{ nick, amount, method, detail, status: 'pending', date: new Date().toLocaleString() }]);
+    if (error) console.error(error);
+}
+async function updateWithdrawStatus(id, status) {
+    const { error } = await supabase
+        .from('withdraw_requests')
+        .update({ status })
+        .eq('id', id);
+    if (error) console.error(error);
+}
+
+// ===== ДАННЫЕ КЕЙСОВ =====
+const cases = [
+  {
+    name: 'Мумия',
+    price: 100,
+    items: [
+      {name:'Радужная Ярость', img:'https://i.postimg.cc/1XvPV8DM/Screenshot-20260830-143556.jpg', rarity:'Легендарный', color:'#d4a03a', value:500, chance:4},
+      {name:'AK-47 | Полная Коррозия', img:'https://i.postimg.cc/SKQKRp0h/Screenshot-20260830-184043.jpg', rarity:'Редкий', color:'#8B4513', value:350, chance:8},
+      {name:'Револьвер', img:'https://i.postimg.cc/433LQZmt/Screenshot-20260830-233108.jpg', rarity:'Редкий', color:'#C0C0C0', value:100, chance:23},
+      {name:'Маленький ящик', img:'https://i.postimg.cc/2S117DcT/Screenshot-20260830-191916.jpg', rarity:'Обычный', color:'#8B7355', value:40, chance:45},
+      {name:'Деревянная дверь', img:'https://i.postimg.cc/yNq4fDzz/Screenshot-20260830-232405.jpg', rarity:'Обычный', color:'#8B5A2B', value:80, chance:20}
+    ]
+  },
+  {
+    name: 'Человек-паук',
+    price: 50,
+    items: [
+      {name:'Револьвер Позолоченный бык', img:'https://i.postimg.cc/wvPkVpLC/Screenshot-20260830-201522.jpg', rarity:'Легендарный', color:'#FFD700', value:76, chance:23},
+      {name:'Стикер Острые когти', img:'https://i.postimg.cc/VNhMyFvg/Screenshot-20260830-201457.jpg', rarity:'Эпический', color:'#C0C0C0', value:30, chance:20},
+      {name:'Стикер Позолоченные волки', img:'https://i.postimg.cc/YC1q2Ch0/Screenshot-20260830-201534.jpg', rarity:'Эпический', color:'#FFD700', value:25, chance:27},
+      {name:'Дигл Вердикт', img:'https://i.postimg.cc/MpHRTLhN/Screenshot-20260830-205349.jpg', rarity:'Эпический', color:'#C0C0C0', value:150, chance:4},
+      {name:'СНГ Змеиное логово', img:'https://i.postimg.cc/hP9ZsXvF/Screenshot-20260830-205146.jpg', rarity:'Редкий', color:'#00cc66', value:100, chance:14},
+      {name:'Токсичный Дрейк', img:'https://i.postimg.cc/TPQxhkgP/Screenshot-20260830-205118.jpg', rarity:'Легендарный', color:'#00ff00', value:35, chance:12}
+    ]
+  }
+];
+
+// ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ =====
+let currentNick = localStorage.getItem('oxdrop_nick') || 'Игрок1';
+let inventory = [];
+let balance = 0;
+let isOpening = false;
+let currentCaseIndex = 0;
+let history = [];
+let lastItem = null;
+let selectedUpgradeIndex = -1;
+let selectedUpgradeItem = null;
+let selectedLevel = { mult: 1.2, chance: 75 };
+let selectedMethod = 'card';
+let stats = { visits: 0, caseOpens: 0, totalSales: 0, bestItem: { name: '—', value: 0 } };
+
+// ===== ЗАГРУЗКА ДАННЫХ ИГРОКА =====
+async function loadPlayerData() {
+    try {
+        let player = await getPlayer(currentNick);
+        if (!player) {
+            player = await createPlayer(currentNick);
         }
-
-        async function createPlayer(nick) {
-            const { data, error } = await supabase
-                .from('players')
-                .insert([{ nick, balance: 0, inventory: [] }])
-                .select()
-                .maybeSingle();
-            if (error) { console.error(error); return null; }
-            return data;
+        if (player) {
+            balance = player.balance;
+            inventory = player.inventory || [];
         }
-
-        async function updatePlayer(nick, balance, inventory) {
-            const { error } = await supabase
-                .from('players')
-                .update({ balance, inventory })
-                .eq('nick', nick);
-            if (error) console.error(error);
+        updateBalanceUI();
+        updateInventoryUI();
+        document.getElementById('nickInput').value = currentNick;
+    } catch (e) {
+        console.error('Ошибка загрузки данных:', e);
+        loadLocalData();
+    }
+}
+function loadLocalData() {
+    try {
+        const data = localStorage.getItem('oxdrop_player');
+        if (data) {
+            const parsed = JSON.parse(data);
+            balance = parsed.balance || 0;
+            inventory = parsed.inventory || [];
         }
+    } catch (e) {}
+    updateBalanceUI();
+    updateInventoryUI();
+}
+function saveLocalData() {
+    try {
+        localStorage.setItem('oxdrop_player', JSON.stringify({ balance, inventory }));
+    } catch (e) {}
+}
 
-        async function getWithdrawRequests() {
-            const { data, error } = await supabase
-                .from('withdraw_requests')
-                .select('*')
-                .order('id', { ascending: false });
-            if (error) return [];
-            return data;
-        }
+function updateBalanceUI() {
+    document.getElementById('balanceDisplay').textContent = balance;
+    document.getElementById('withdrawBalance').textContent = balance;
+    if (balance <= 0) {
+        document.getElementById('donateBtn').classList.add('show');
+        document.getElementById('donateNotice').classList.add('show');
+    } else {
+        document.getElementById('donateBtn').classList.remove('show');
+        document.getElementById('donateNotice').classList.remove('show');
+    }
+}
 
-        async function addWithdrawRequest(nick, amount, method, detail) {
-            const { error } = await supabase
-                .from('withdraw_requests')
-                .insert([{ nick, amount, method, detail, status: 'pending', date: new Date().toLocaleString() }]);
-            if (error) console.error(error);
-        }
-
-        async function updateWithdrawStatus(id, status) {
-            const { error } = await supabase
-                .from('withdraw_requests')
-                .update({ status })
-                .eq('id', id);
-            if (error) console.error(error);
-        }
-
-        // ===== ДАННЫЕ КЕЙСОВ =====
-        const cases = [{
-            name: 'Мумия',
-            price: 100,
-            items: [
-                { name: 'Радужная Ярость', img: 'https://i.postimg.cc/1XvPV8DM/Screenshot-20260830-143556.jpg', rarity: 'Легендарный', color: '#d4a03a', value: 500, chance: 4 },
-                { name: 'AK-47 | Полная Коррозия', img: 'https://i.postimg.cc/SKQKRp0h/Screenshot-20260830-184043.jpg', rarity: 'Редкий', color: '#8B4513', value: 350, chance: 8 },
-                { name: 'Револьвер', img: 'https://i.postimg.cc/433LQZmt/Screenshot-20260830-233108.jpg', rarity: 'Редкий', color: '#C0C0C0', value: 100, chance: 23 },
-                { name: 'Маленький ящик', img: 'https://i.postimg.cc/2S117DcT/Screenshot-20260830-191916.jpg', rarity: 'Обычный', color: '#8B7355', value: 40, chance: 45 },
-                { name: 'Деревянная дверь', img: 'https://i.postimg.cc/yNq4fDzz/Screenshot-20260830-232405.jpg', rarity: 'Обычный', color: '#8B5A2B', value: 80, chance: 20 }
-            ]
-        }, {
-            name: 'Человек-паук',
-            price: 50,
-            items: [
-                { name: 'Револьвер Позолоченный бык', img: 'https://i.postimg.cc/wvPkVpLC/Screenshot-20260830-201522.jpg', rarity: 'Легендарный', color: '#FFD700', value: 76, chance: 23 },
-                { name: 'Стикер Острые когти', img: 'https://i.postimg.cc/VNhMyFvg/Screenshot-20260830-201457.jpg', rarity: 'Эпический', color: '#C0C0C0', value: 30, chance: 20 },
-                { name: 'Стикер Позолоченные волки', img: 'https://i.postimg.cc/YC1q2Ch0/Screenshot-20260830-201534.jpg', rarity: 'Эпический', color: '#FFD700', value: 25, chance: 27 },
-                { name: 'Дигл Вердикт', img: 'https://i.postimg.cc/MpHRTLhN/Screenshot-20260830-205349.jpg', rarity: 'Эпический', color: '#C0C0C0', value: 150, chance: 4 },
-                { name: 'СНГ Змеиное логово', img: 'https://i.postimg.cc/hP9ZsXvF/Screenshot-20260830-205146.jpg', rarity: 'Редкий', color: '#00cc66', value: 100, chance: 14 },
-                { name: 'Токсичный Дрейк', img: 'https://i.postimg.cc/TPQxhkgP/Screenshot-20260830-205118.jpg', rarity: 'Легендарный', color: '#00ff00', value: 35, chance: 12 }
-            ]
-        }];
-
-        // ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ =====
-        let currentNick = localStorage.getItem('oxdrop_nick') || 'Игрок1';
-        let inventory = [];
-        let balance = 0;
-        let isOpening = false;
-        let currentCaseIndex = 0;
-        let history = [];
-        let lastItem = null;
-        let selectedUpgradeIndex = -1;
-        let selectedUpgradeItem = null;
-        let selectedLevel = { mult: 1.2, chance: 75 };
-        let selectedMethod = 'card';
-        let stats = { visits: 0, caseOpens: 0, totalSales: 0, bestItem: { name: '—', value: 0 } };
-
-        // ===== ЗАГРУЗКА ДАННЫХ ИГРОКА =====
-        async function loadPlayerData() {
-            try {
-                let player = await getPlayer(currentNick);
-                if (!player) {
-                    player = await createPlayer(currentNick);
-                }
-                if (player) {
-                    balance = player.balance;
-                    inventory = player.inventory || [];
-                }
-                updateBalanceUI();
-                updateInventoryUI();
-                document.getElementById('nickInput').value = currentNick;
-            } catch (e) {
-                console.error('Ошибка загрузки данных:', e);
-                // Если ошибка, пробуем использовать локальное хранилище как запасной вариант
-                loadLocalData();
-            }
-        }
-
-        // Запасной вариант — локальное хранилище
-        function loadLocalData() {
-            try {
-                const data = localStorage.getItem('oxdrop_player');
-                if (data) {
-                    const parsed = JSON.parse(data);
-                    balance = parsed.balance || 0;
-                    inventory = parsed.inventory || [];
-                }
-            } catch (e) {}
+function updateInventoryUI() {
+    if (inventory.length === 0) {
+        document.getElementById('inventoryList').innerHTML = '<div class="empty-inv">📭 Инвентарь пуст. Откройте кейс!</div>';
+        document.getElementById('upgradeInvList').innerHTML = '<div class="empty-inv">📭 Инвентарь пуст. Откройте кейс!</div>';
+        document.getElementById('openWheelBtn').disabled = true;
+        return;
+    }
+    document.getElementById('inventoryList').innerHTML = inventory.map((item, index) => `
+        <div class="inv-item" style="border-left-color:${item.color || '#4a5a7a'}">
+            <img src="${item.img}" alt="${item.name}">
+            <span class="inv-name">${item.name}</span>
+            <span class="inv-value">${item.value}$</span>
+            <button class="inv-sell" data-index="${index}">💰 Продать</button>
+        </div>
+    `).join('');
+    document.querySelectorAll('#inventoryList .inv-sell').forEach(btn => {
+        btn.addEventListener('click', async function(){
+            const idx = parseInt(this.dataset.index);
+            const item = inventory[idx];
+            balance += item.value;
+            inventory.splice(idx, 1);
+            try { await updatePlayer(currentNick, balance, inventory); } catch(e) { saveLocalData(); }
             updateBalanceUI();
             updateInventoryUI();
-        }
+            alert('✅ ' + item.name + ' продан за ' + item.value + '$');
+        });
+    });
+    renderUpgradeInventory();
+}
 
-        function saveLocalData() {
-            try {
-                localStorage.setItem('oxdrop_player', JSON.stringify({ balance, inventory }));
-            } catch (e) {}
-        }
+function renderUpgradeInventory() {
+    if (inventory.length === 0) {
+        document.getElementById('upgradeInvList').innerHTML = '<div class="empty-inv">📭 Инвентарь пуст. Откройте кейс!</div>';
+        document.getElementById('openWheelBtn').disabled = true;
+        return;
+    }
+    document.getElementById('upgradeInvList').innerHTML = inventory.map((item, index) => `
+        <div class="inv-item" data-index="${index}" style="border-left-color:${item.color || '#4a5a7a'}">
+            <img src="${item.img}" alt="${item.name}">
+            <span class="inv-name">${item.name}</span>
+            <span class="inv-value">${item.value}$</span>
+        </div>
+    `).join('');
+    document.querySelectorAll('#upgradeInvList .inv-item').forEach(el => {
+        el.addEventListener('click', function(){
+            const idx = parseInt(this.dataset.index);
+            selectUpgradeItem(idx);
+        });
+    });
+    if (inventory.length > 0 && selectedUpgradeIndex === -1) selectUpgradeItem(0);
+    document.getElementById('openWheelBtn').disabled = false;
+}
 
-        // ===== ОБНОВЛЕНИЕ UI =====
-        function updateBalanceUI() {
-            document.getElementById('balanceDisplay').textContent = balance;
-            document.getElementById('withdrawBalance').textContent = balance;
-            if (balance <= 0) {
-                document.getElementById('donateBtn').classList.add('show');
-                document.getElementById('donateNotice').classList.add('show');
-            } else {
-                document.getElementById('donateBtn').classList.remove('show');
-                document.getElementById('donateNotice').classList.remove('show');
-            }
-        }
+function selectUpgradeItem(index) {
+    selectedUpgradeIndex = index;
+    selectedUpgradeItem = inventory[index];
+    document.querySelectorAll('#upgradeInvList .inv-item').forEach((el, i) => {
+        el.classList.toggle('selected', i === index);
+    });
+}
 
-        function updateInventoryUI() {
-            if (inventory.length === 0) {
-                document.getElementById('inventoryList').innerHTML = '<div class="empty-inv">📭 Инвентарь пуст. Откройте кейс!</div>';
-                document.getElementById('upgradeInvList').innerHTML = '<div class="empty-inv">📭 Инвентарь пуст. Откройте кейс!</div>';
-                document.getElementById('openWheelBtn').disabled = true;
-                return;
-            }
-            document.getElementById('inventoryList').innerHTML = inventory.map((item, index) => `
-                        <div class="inv-item" style="border-left-color:${item.color || '#4a5a7a'}">
-                            <img src="${item.img}" alt="${item.name}">
-                            <span class="inv-name">${item.name}</span>
-                            <span class="inv-value">${item.value}$</span>
-                            <button class="inv-sell" data-index="${index}">💰 Продать</button>
-                        </div>
-                    `).join('');
-            document.querySelectorAll('#inventoryList .inv-sell').forEach(btn => {
-                btn.addEventListener('click', async function() {
-                    const idx = parseInt(this.dataset.index);
-                    const item = inventory[idx];
-                    balance += item.value;
-                    inventory.splice(idx, 1);
-                    try {
-                        await updatePlayer(currentNick, balance, inventory);
-                    } catch (e) {
-                        saveLocalData();
-                    }
-                    updateBalanceUI();
-                    updateInventoryUI();
-                    alert('✅ ' + item.name + ' продан за ' + item.value + '$');
-                });
-            });
-            renderUpgradeInventory();
+function getRandomItemFromCase(caseIndex) {
+    const pool = cases[caseIndex].items;
+    const itemsWithChance = pool.filter(item => item.chance !== undefined && item.chance > 0);
+    if (itemsWithChance.length > 0) {
+        const totalChance = itemsWithChance.reduce((sum, item) => sum + item.chance, 0);
+        let random = Math.random() * totalChance;
+        for (const item of itemsWithChance) {
+            random -= item.chance;
+            if (random <= 0) return item;
         }
+        return itemsWithChance[0];
+    }
+    return pool[Math.floor(Math.random() * pool.length)];
+}
 
-        function renderUpgradeInventory() {
-            if (inventory.length === 0) {
-                document.getElementById('upgradeInvList').innerHTML = '<div class="empty-inv">📭 Инвентарь пуст. Откройте кейс!</div>';
-                document.getElementById('openWheelBtn').disabled = true;
-                return;
-            }
-            document.getElementById('upgradeInvList').innerHTML = inventory.map((item, index) => `
-                        <div class="inv-item" data-index="${index}" style="border-left-color:${item.color || '#4a5a7a'}">
-                            <img src="${item.img}" alt="${item.name}">
-                            <span class="inv-name">${item.name}</span>
-                            <span class="inv-value">${item.value}$</span>
-                        </div>
-                    `).join('');
-            document.querySelectorAll('#upgradeInvList .inv-item').forEach(el => {
-                el.addEventListener('click', function() {
-                    const idx = parseInt(this.dataset.index);
-                    selectUpgradeItem(idx);
-                });
-            });
-            if (inventory.length > 0 && selectedUpgradeIndex === -1) selectUpgradeItem(0);
-            document.getElementById('openWheelBtn').disabled = false;
+function renderSlot(item) {
+    const slot = document.getElementById('mainSlot');
+    if (item) {
+        let className = 'label';
+        if (item.name === 'Радужная Ярость') className += ' rainbow-text';
+        else if (item.name === 'AK-47 | Полная Коррозия') className += ' corrosion-text';
+        else if (item.name === 'Деревянная дверь') className += ' wood-text';
+        else if (item.name === 'Револьвер') className += ' revolver-text';
+        else if (item.name === 'Маленький ящик') className += ' box-text';
+        else if (item.name === 'Револьвер Позолоченный бык') className += ' gold-text';
+        else if (item.name === 'Стикер Острые когти') className += ' claw-text';
+        else if (item.name === 'Стикер Позолоченные волки') className += ' wolf-text';
+        else if (item.name === 'Дигл Вердикт') className += ' verdict-text';
+        else if (item.name === 'СНГ Змеиное логово') className += ' snake-text';
+        else if (item.name === 'Токсичный Дрейк') className += ' toxic-text';
+        slot.innerHTML = `<img src="${item.img}" alt="${item.name}"><span class="${className}">${item.name}</span>`;
+        slot.style.borderColor = item.color;
+        slot.classList.remove('winner');
+        document.getElementById('itemPrice').classList.remove('show');
+        document.getElementById('sellBtn').classList.remove('show');
+    } else {
+        slot.innerHTML = '<span style="font-size:3rem;">🎰</span><span class="label">Нажми открыть</span>';
+        slot.style.borderColor = '#4a5a7a';
+        slot.classList.remove('winner');
+        document.getElementById('itemPrice').classList.remove('show');
+        document.getElementById('sellBtn').classList.remove('show');
+    }
+}
+
+function showWinner(item) {
+    const slot = document.getElementById('mainSlot');
+    slot.classList.add('winner');
+    slot.style.borderColor = item.color;
+    document.getElementById('priceValue').textContent = item.value;
+    document.getElementById('itemPrice').classList.add('show');
+    document.getElementById('sellBtn').classList.add('show');
+    lastItem = item;
+}
+
+function spinSlot(cb) {
+    let count = 0;
+    const maxSteps = 15 + Math.floor(Math.random() * 10);
+    const timer = setInterval(() => {
+        const randomItem = getRandomItemFromCase(currentCaseIndex);
+        renderSlot(randomItem);
+        count++;
+        if (count >= maxSteps) {
+            clearInterval(timer);
+            const finalItem = getRandomItemFromCase(currentCaseIndex);
+            renderSlot(finalItem);
+            showWinner(finalItem);
+            cb(finalItem);
         }
+    }, 70);
+}
 
-        function selectUpgradeItem(index) {
-            selectedUpgradeIndex = index;
-            selectedUpgradeItem = inventory[index];
-            document.querySelectorAll('#upgradeInvList .inv-item').forEach((el, i) => {
-                el.classList.toggle('selected', i === index);
-            });
-        }
+async function openCase() {
+    if (isOpening) return;
+    const price = cases[currentCaseIndex].price;
+    if (balance < price) { alert('❌ Недостаточно баланса! Пополните через донат.'); return; }
+    balance -= price;
+    try { await updatePlayer(currentNick, balance, inventory); } catch(e) { saveLocalData(); }
+    updateBalanceUI();
+    isOpening = true;
+    document.getElementById('openCaseBtn').disabled = true;
+    document.getElementById('itemPrice').classList.remove('show');
+    document.getElementById('sellBtn').classList.remove('show');
+    spinSlot(async (chosen) => {
+        inventory.push({...chosen});
+        try { await updatePlayer(currentNick, balance, inventory); } catch(e) { saveLocalData(); }
+        updateInventoryUI();
+        history.unshift(chosen.name + ' (' + chosen.rarity + ') - ' + chosen.value + '$');
+        if (history.length > 12) history.pop();
+        document.getElementById('historyList').innerHTML = history.map(t => `<span>${t}</span>`).join('');
+        isOpening = false;
+        document.getElementById('openCaseBtn').disabled = false;
+    });
+}
 
-        // ===== ИГРОВАЯ ЛОГИКА =====
-        function getRandomItemFromCase(caseIndex) {
-            const pool = cases[caseIndex].items;
-            const itemsWithChance = pool.filter(item => item.chance !== undefined && item.chance > 0);
-            if (itemsWithChance.length > 0) {
-                const totalChance = itemsWithChance.reduce((sum, item) => sum + item.chance, 0);
-                let random = Math.random() * totalChance;
-                for (const item of itemsWithChance) {
-                    random -= item.chance;
-                    if (random <= 0) return item;
-                }
-                return itemsWithChance[0];
-            }
-            return pool[Math.floor(Math.random() * pool.length)];
-        }
+async function sellLastItem() {
+    if (!lastItem) return;
+    const index = inventory.findIndex(item => item.name === lastItem.name);
+    if (index >= 0) {
+        const soldValue = lastItem.value;
+        balance += soldValue;
+        inventory.splice(index, 1);
+        try { await updatePlayer(currentNick, balance, inventory); } catch(e) { saveLocalData(); }
+        updateBalanceUI();
+        updateInventoryUI();
+        lastItem = null;
+        document.getElementById('sellBtn').classList.remove('show');
+        document.getElementById('itemPrice').classList.remove('show');
+        renderSlot(null);
+        alert('✅ Предмет продан за ' + soldValue + '$');
+    }
+}
 
-        function renderSlot(item) {
-            const slot = document.getElementById('mainSlot');
-            if (item) {
-                let className = 'label';
-                if (item.name === 'Радужная Ярость') className += ' rainbow-text';
-                else if (item.name === 'AK-47 | Полная Коррозия') className += ' corrosion-text';
-                else if (item.name === 'Деревянная дверь') className += ' wood-text';
-                else if (item.name === 'Револьвер') className += ' revolver-text';
-                else if (item.name === 'Маленький ящик') className += ' box-text';
-                else if (item.name === 'Револьвер Позолоченный бык') className += ' gold-text';
-                else if (item.name === 'Стикер Острые когти') className += ' claw-text';
-                else if (item.name === 'Стикер Позолоченные волки') className += ' wolf-text';
-                else if (item.name === 'Дигл Вердикт') className += ' verdict-text';
-                else if (item.name === 'СНГ Змеиное логово') className += ' snake-text';
-                else if (item.name === 'Токсичный Дрейк') className += ' toxic-text';
-                slot.innerHTML = `<img src="${item.img}" alt="${item.name}"><span class="${className}">${item.name}</span>`;
-                slot.style.borderColor = item.color;
-                slot.classList.remove('winner');
-                document.getElementById('itemPrice').classList.remove('show');
-                document.getElementById('sellBtn').classList.remove('show');
-            } else {
-                slot.innerHTML = '<span style="font-size:3rem;">🎰</span><span class="label">Нажми открыть</span>';
-                slot.style.borderColor = '#4a5a7a';
-                slot.classList.remove('winner');
-                document.getElementById('itemPrice').classList.remove('show');
-                document.getElementById('sellBtn').classList.remove('show');
-            }
-        }
-
-        function showWinner(item) {
-            const slot = document.getElementById('mainSlot');
-            slot.classList.add('winner');
-            slot.style.borderColor = item.color;
-            document.getElementById('priceValue').textContent = item.value;
-            document.getElementById('itemPrice').classList.add('show');
-            document.getElementById('sellBtn').classList.add('show');
-            lastItem = item;
-        }
-
-        function spinSlot(cb) {
-            let count = 0;
-            const maxSteps = 15 + Math.floor(Math.random() * 10);
-            const timer = setInterval(() => {
-                const randomItem = getRandomItemFromCase(currentCaseIndex);
-                renderSlot(randomItem);
-                count++;
-                if (count >= maxSteps) {
-                    clearInterval(timer);
-                    const finalItem = getRandomItemFromCase(currentCaseIndex);
-                    renderSlot(finalItem);
-                    showWinner(finalItem);
-                    cb(finalItem);
-                }
-            }, 70);
-        }
-
-        async function openCase() {
-            if (isOpening) return;
-            const price = cases[currentCaseIndex].price;
-            if (balance < price) { alert('❌ Недостаточно баланса! Пополните через донат.'); return; }
-            balance -= price;
-            try {
-                await updatePlayer(currentNick, balance, inventory);
-            } catch (e) {
-                saveLocalData();
-            }
-            updateBalanceUI();
-            isOpening = true;
-            document.getElementById('openCaseBtn').disabled = true;
-            document.getElementById('itemPrice').classList.remove('show');
-            document.getElementById('sellBtn').classList.remove('show');
-            spinSlot(async (chosen) => {
-                inventory.push({ ...chosen });
-                try {
-                    await updatePlayer(currentNick, balance, inventory);
-                } catch (e) {
-                    saveLocalData();
-                }
-                updateInventoryUI();
-                history.unshift(chosen.name + ' (' + chosen.rarity + ') - ' + chosen.value + '$');
-                if (history.length > 12) history.pop();
-                document.getElementById('historyList').innerHTML = history.map(t => `<span>${t}</span>`).join('');
-                isOpening = false;
-                document.getElementById('openCaseBtn').disabled = false;
-            });
-        }
-
-        async function sellLastItem() {
-            if (!lastItem) return;
-            const index = inventory.findIndex(item => item.name === lastItem.name);
-            if (index >= 0) {
-                const soldValue = lastItem.value;
-                balance += soldValue;
-                inventory.splice(index, 1);
-                try {
-                    await updatePlayer(currentNick, balance, inventory);
-                } catch (e) {
-                    saveLocalData();
-                }
+// ===== АДМИН-ПАНЕЛЬ =====
+document.getElementById('mainTitle').addEventListener('dblclick', function() {
+    document.getElementById('adminPanel').classList.add('open');
+});
+document.getElementById('adminClose').addEventListener('click', function() {
+    document.getElementById('adminPanel').classList.remove('open');
+});
+document.getElementById('adminLoginBtn').addEventListener('click', function() {
+    const pass = document.getElementById('adminPass').value.trim();
+    if (pass === 'admin123') {
+        document.getElementById('adminError').style.display = 'none';
+        document.getElementById('adminLogin').style.display = 'none';
+        document.getElementById('adminContent').style.display = 'block';
+        loadWithdrawRequests();
+    } else {
+        document.getElementById('adminError').style.display = 'block';
+        setTimeout(() => document.getElementById('adminError').style.display = 'none', 3000);
+    }
+});
+document.getElementById('adminAddBtn').addEventListener('click', async function() {
+    const nick = document.getElementById('adminNick').value.trim() || 'Игрок1';
+    const amount = parseInt(document.getElementById('adminAmount').value) || 0;
+    if (amount > 0) {
+        let player = await getPlayer(nick);
+        if (!player) player = await createPlayer(nick);
+        if (player) {
+            const newBalance = (player.balance || 0) + amount;
+            await updatePlayer(nick, newBalance, player.inventory || []);
+            document.getElementById('adminSuccess').style.display = 'block';
+            setTimeout(() => document.getElementById('adminSuccess').style.display = 'none', 3000);
+            if (nick === currentNick) {
+                balance = newBalance;
                 updateBalanceUI();
+            }
+            alert('✅ Игроку ' + nick + ' выдано ' + amount + '$');
+        }
+    }
+});
+
+// ===== ЗАЯВКИ НА ВЫВОД =====
+async function loadWithdrawRequests() {
+    const requests = await getWithdrawRequests();
+    const container = document.getElementById('withdrawRequests');
+    const pending = requests.filter(r => r.status === 'pending');
+    if (pending.length === 0) { container.innerHTML = '<div class="empty">Нет заявок</div>'; return; }
+    container.innerHTML = pending.map(r => `
+        <div class="wr-item">
+            <div class="wr-info">
+                <span class="wr-nick">${r.nick}</span>
+                <span style="color:#ffd966;font-weight:700;">${r.amount}$</span>
+                <span class="wr-method card">💳 ${r.method}</span>
+                <span class="wr-detail">📌 ${r.detail}</span>
+                <span style="color:#96a9d1;font-size:0.7rem;margin-left:8px;">${r.date}</span>
+            </div>
+            <div class="wr-actions">
+                <button onclick="confirmWithdraw(${r.id})">✅</button>
+                <button class="reject" onclick="rejectWithdraw(${r.id})">✕</button>
+            </div>
+        </div>
+    `).join('');
+}
+window.confirmWithdraw = async function(id) {
+    if (confirm('Перевели деньги игроку?')) {
+        await updateWithdrawStatus(id, 'done');
+        loadWithdrawRequests();
+        renderWithdrawHistory();
+    }
+};
+window.rejectWithdraw = async function(id) {
+    if (confirm('Отклонить заявку?')) {
+        await updateWithdrawStatus(id, 'rejected');
+        loadWithdrawRequests();
+        renderWithdrawHistory();
+    }
+};
+async function renderWithdrawHistory() {
+    const requests = await getWithdrawRequests();
+    const userRequests = requests.filter(r => r.nick === currentNick);
+    const list = document.getElementById('withdrawHistoryList');
+    if (userRequests.length === 0) {
+        list.innerHTML = '<div style="color:#96a9d1;text-align:center;padding:15px;">Заявок пока нет</div>';
+        return;
+    }
+    list.innerHTML = userRequests.map(r => `
+        <div class="wh-item">
+            <span>${r.date}</span>
+            <span>${r.amount}$</span>
+            <span style="font-size:0.7rem;color:#96a9d1;">${r.method}</span>
+            <span class="wh-status ${r.status}">${r.status === 'pending' ? '⏳ Ожидает' : r.status === 'done' ? '✅ Выполнено' : '❌ Отклонено'}</span>
+        </div>
+    `).join('');
+}
+
+// ===== ВЫВОД СРЕДСТВ =====
+document.getElementById('withdrawBtn').addEventListener('click', async function() {
+    const amount = parseInt(document.getElementById('withdrawAmount').value) || 0;
+    const detail = document.getElementById('withdrawDetail').value.trim();
+    if (amount < 10) { alert('❌ Минимальная сумма: 10$'); return; }
+    if (amount > balance) { alert('❌ Недостаточно баланса!'); return; }
+    if (!detail) { alert('❌ Укажите реквизиты!'); return; }
+    if (confirm('Вывести ' + amount + '$?')) {
+        await addWithdrawRequest(currentNick, amount, selectedMethod, detail);
+        renderWithdrawHistory();
+        loadWithdrawRequests();
+        alert('✅ Заявка отправлена!');
+        document.getElementById('withdrawAmount').value = '';
+        document.getElementById('withdrawDetail').value = '';
+        document.getElementById('detailInput').classList.remove('show');
+    }
+});
+
+// ===== НИК =====
+document.getElementById('saveNickBtn').addEventListener('click', async function() {
+    const nick = document.getElementById('nickInput').value.trim();
+    if (!nick) { alert('❌ Введите ник!'); return; }
+    const errorEl = document.getElementById('nickError');
+    const successEl = document.getElementById('nickSuccess');
+    errorEl.style.display = 'none';
+    successEl.style.display = 'none';
+    const existing = await getPlayer(nick);
+    if (existing && nick !== currentNick) {
+        errorEl.style.display = 'block';
+        setTimeout(() => errorEl.style.display = 'none', 3000);
+        return;
+    }
+    currentNick = nick;
+    localStorage.setItem('oxdrop_nick', nick);
+    await loadPlayerData();
+    successEl.style.display = 'block';
+    setTimeout(() => successEl.style.display = 'none', 3000);
+    alert('✅ Переключено на: ' + nick);
+});
+
+// ===== ПРОЧИЕ =====
+function switchTab(tabId) {
+    document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.querySelector(`.tabs button[data-tab="${tabId}"]`).classList.add('active');
+    document.getElementById('tab-' + tabId).classList.add('active');
+    if (tabId === 'inventory' || tabId === 'upgrade') updateInventoryUI();
+    if (tabId === 'withdraw') renderWithdrawHistory();
+}
+function switchCase(index) {
+    currentCaseIndex = index;
+    document.getElementById('priceDisplay').textContent = cases[index].price;
+    const preview = cases[index].items[0];
+    renderSlot(preview);
+    document.getElementById('itemPrice').classList.remove('show');
+    document.getElementById('sellBtn').classList.remove('show');
+    lastItem = null;
+    document.querySelectorAll('.case-menu button').forEach((btn, i) => {
+        btn.classList.toggle('active', i === index);
+    });
+}
+function openPreview(index) {
+    const c = cases[index];
+    document.getElementById('previewTitle').textContent = '📦 ' + c.name + ' кейс';
+    document.getElementById('previewSub').textContent = '💰 Цена открытия: ' + c.price + '$';
+    document.getElementById('previewList').innerHTML = c.items.map(item => `
+        <div class="preview-item" style="border-left-color:${item.color || '#4a5a7a'}">
+            <img src="${item.img}" alt="${item.name}">
+            <span class="p-name">${item.name}</span>
+            <span class="p-rarity" style="color:${item.color}">${item.rarity}</span>
+            <span class="p-value">${item.value}$</span>
+        </div>
+    `).join('');
+    document.getElementById('previewModal').classList.add('show');
+}
+document.getElementById('previewClose').addEventListener('click', () => document.getElementById('previewModal').classList.remove('show'));
+
+function buildWheel() {
+    const wheel = document.getElementById('wheel');
+    wheel.innerHTML = '<div class="wheel-pointer"></div><div class="wheel-center"></div>';
+    const items = [
+        { name: 'Успех ✅', color: '#00ff88', type: 'upgrade' },
+        { name: 'Сгорел 💥', color: '#ff2200', type: 'burn' }
+    ];
+    const angleStep = 360 / items.length;
+    items.forEach((item, index) => {
+        const angle = index * angleStep;
+        const seg = document.createElement('div');
+        seg.className = 'wheel-segment';
+        seg.style.transform = 'rotate(' + angle + 'deg)';
+        seg.style.background = item.color;
+        seg.innerHTML = `<span class="seg-text" style="transform:rotate(90deg)">${item.name}</span>`;
+        wheel.appendChild(seg);
+    });
+    return items;
+}
+async function openWheel() {
+    if (!selectedUpgradeItem) { alert('❌ Выберите предмет!'); return; }
+    document.getElementById('wheelContainer').classList.add('show');
+    document.getElementById('openWheelBtn').disabled = true;
+    document.getElementById('wheelSpinBtn').disabled = false;
+    document.getElementById('wheelResult').textContent = '🌀 Крутим...';
+    document.getElementById('resultBox').classList.remove('show', 'success', 'fail');
+
+    const wheelItems = buildWheel();
+    const chance = selectedLevel.chance / 100;
+    const rand = Math.random();
+    const resultIndex = rand < chance ? 0 : 1;
+    const selected = wheelItems[resultIndex];
+    const spins = 6 + Math.floor(Math.random() * 3);
+    const targetAngle = spins * 360 + (resultIndex * 180);
+    let currentAngle = 0, step = 0;
+    const totalSteps = 60;
+    const stepAngle = targetAngle / totalSteps;
+
+    const interval = setInterval(() => {
+        step++;
+        currentAngle += stepAngle;
+        document.getElementById('wheel').style.transform = 'rotate(' + currentAngle + 'deg)';
+        if (step >= totalSteps) {
+            clearInterval(interval);
+            document.getElementById('wheel').style.transform = 'rotate(' + targetAngle + 'deg)';
+            if (selected.type === 'upgrade') {
+                const newValue = Math.round(selectedUpgradeItem.value * selectedLevel.mult);
+                document.getElementById('resultBox').className = 'result-box show success';
+                document.getElementById('resultTitle').textContent = '🎉 Апгрейд успешен!';
+                document.getElementById('resultDesc').textContent = `${selectedUpgradeItem.name} → ${newValue}$`;
+                document.getElementById('wheelResult').textContent = '✅ Успех!';
+                document.getElementById('wheelResult').style.color = '#00ff88';
+                inventory[selectedUpgradeIndex].value = newValue;
+                try { await updatePlayer(currentNick, balance, inventory); } catch(e) { saveLocalData(); }
                 updateInventoryUI();
-                lastItem = null;
-                document.getElementById('sellBtn').classList.remove('show');
-                document.getElementById('itemPrice').classList.remove('show');
-                renderSlot(null);
-                alert('✅ Предмет продан за ' + soldValue + '$');
-            }
-        }
-
-        // ===== АДМИН-ПАНЕЛЬ =====
-        document.getElementById('mainTitle').addEventListener('dblclick', function() {
-            document.getElementById('adminPanel').classList.add('open');
-        });
-        document.getElementById('adminClose').addEventListener('click', function() {
-            document.getElementById('adminPanel').classList.remove('open');
-        });
-        document.getElementById('adminLoginBtn').addEventListener('click', function() {
-            const pass = document.getElementById('adminPass').value.trim();
-            if (pass === 'admin123') {
-                document.getElementById('adminError').style.display = 'none';
-                document.getElementById('adminLogin').style.display = 'none';
-                document.getElementById('adminContent').style.display = 'block';
-                loadWithdrawRequests();
+                updateBalanceUI();
             } else {
-                document.getElementById('adminError').style.display = 'block';
-                setTimeout(() => document.getElementById('adminError').style.display = 'none', 3000);
+                document.getElementById('resultBox').className = 'result-box show fail';
+                document.getElementById('resultTitle').textContent = '💥 Сгорел!';
+                document.getElementById('resultDesc').textContent = `${selectedUpgradeItem.name} уничтожен!`;
+                document.getElementById('wheelResult').textContent = '💥 Сгорел!';
+                document.getElementById('wheelResult').style.color = '#ff2200';
+                inventory.splice(selectedUpgradeIndex, 1);
+                selectedUpgradeIndex = -1;
+                selectedUpgradeItem = null;
+                try { await updatePlayer(currentNick, balance, inventory); } catch(e) { saveLocalData(); }
+                updateInventoryUI();
+                updateBalanceUI();
             }
-        });
-        document.getElementById('adminAddBtn').addEventListener('click', async function() {
-            const nick = document.getElementById('adminNick').value.trim() || 'Игрок1';
-            const amount = parseInt(document.getElementById('adminAmount').value) || 0;
-            if (amount > 0) {
-                let player = await getPlayer(nick);
-                if (!player) player = await createPlayer(nick);
-                if (player) {
-                    const newBalance = (player.balance || 0) + amount;
-                    await updatePlayer(nick, newBalance, player.inventory || []);
-                    document.getElementById('adminSuccess').style.display = 'block';
-                    setTimeout(() => document.getElementById('adminSuccess').style.display = 'none', 3000);
-                    if (nick === currentNick) {
-                        balance = newBalance;
-                        updateBalanceUI();
-                    }
-                    alert('✅ Игроку ' + nick + ' выдано ' + amount + '$');
-                }
-            }
-        });
-
-        // ===== ЗАЯВКИ НА ВЫВОД =====
-        async function loadWithdrawRequests() {
-            const requests = await getWithdrawRequests();
-            const container = document.getElementById('withdrawRequests');
-            const pending = requests.filter(r => r.status === 'pending');
-            if (pending.length === 0) { container.innerHTML = '<div class="empty">Нет заявок</div>'; return; }
-            container.innerHTML = pending.map(r => `
-                        <div class="wr-item">
-                            <div class="wr-info">
-                                <span class="wr-nick">${r.nick}</span>
-                                <span style="color:#ffd966;font-weight:700;">${r.amount}$</span>
-                                <span class="wr-method card">💳 ${r.method}</span>
-                                <span class="wr-detail">📌 ${r.detail}</span>
-                                <span style="color:#96a9d1;font-size:0.7rem;margin-left:8px;">${r.date}</span>
-                            </div>
-                            <div class="wr-actions">
-                                <button onclick="confirmWithdraw(${r.id})">✅</button>
-                                <button class="reject" onclick="rejectWithdraw(${r.id})">✕</button>
-                            </div>
-                        </div>
-                    `).join('');
+            document.getElementById('openWheelBtn').disabled = false;
+            document.getElementById('wheelSpinBtn').disabled = true;
         }
+    }, 30);
+}
+document.getElementById('openWheelBtn').addEventListener('click', openWheel);
+document.getElementById('wheelSpinBtn').addEventListener('click', openWheel);
 
-        window.confirmWithdraw = async function(id) {
-            if (confirm('Перевели деньги игроку?')) {
-                await updateWithdrawStatus(id, 'done');
-                loadWithdrawRequests();
-                renderWithdrawHistory();
-            }
-        };
-
-        window.rejectWithdraw = async function(id) {
-            if (confirm('Отклонить заявку?')) {
-                await updateWithdrawStatus(id, 'rejected');
-                loadWithdrawRequests();
-                renderWithdrawHistory();
-            }
-        };
-
-        async function renderWithdrawHistory() {
-            const requests = await getWithdrawRequests();
-            const userRequests = requests.filter(r => r.nick === currentNick);
-            const list = document.getElementById('withdrawHistoryList');
-            if (userRequests.length === 0) {
-                list.innerHTML = '<div style="color:#96a9d1;text-align:center;padding:15px;">Заявок пока нет</div>';
-                return;
-            }
-            list.innerHTML = userRequests.map(r => `
-                        <div class="wh-item">
-                            <span>${r.date}</span>
-                            <span>${r.amount}$</span>
-                            <span style="font-size:0.7rem;color:#96a9d1;">${r.method}</span>
-                            <span class="wh-status ${r.status}">${r.status === 'pending' ? '⏳ Ожидает' : r.status === 'done' ? '✅ Выполнено' : '❌ Отклонено'}</span>
-                        </div>
-                    `).join('');
-        }
-
-        // ===== ВЫВОД СРЕДСТВ =====
-        document.getElementById('withdrawBtn').addEventListener('click', async function() {
-            const amount = parseInt(document.getElementById('withdrawAmount').value) || 0;
-            const detail = document.getElementById('withdrawDetail').value.trim();
-            if (amount < 10) { alert('❌ Минимальная сумма: 10$'); return; }
-            if (amount > balance) { alert('❌ Недостаточно баланса!'); return; }
-            if (!detail) { alert('❌ Укажите реквизиты!'); return; }
-            if (confirm('Вывести ' + amount + '$?')) {
-                await addWithdrawRequest(currentNick, amount, selectedMethod, detail);
-                renderWithdrawHistory();
-                loadWithdrawRequests();
-                alert('✅ Заявка отправлена!');
-                document.getElementById('withdrawAmount').value = '';
-                document.getElementById('withdrawDetail').value = '';
-                document.getElementById('detailInput').classList.remove('show');
-            }
-        });
-
-        // ===== НИК =====
-        document.getElementById('saveNickBtn').addEventListener('click', async function() {
-            const nick = document.getElementById('nickInput').value.trim();
-            if (!nick) { alert('❌ Введите ник!'); return; }
-            const errorEl = document.getElementById('nickError');
-            const successEl = document.getElementById('nickSuccess');
-            errorEl.style.display = 'none';
-            successEl.style.display = 'none';
-            const existing = await getPlayer(nick);
-            if (existing && nick !== currentNick) {
-                errorEl.style.display = 'block';
-                setTimeout(() => errorEl.style.display = 'none', 3000);
-                return;
-            }
-            currentNick = nick;
-            localStorage.setItem('oxdrop_nick', nick);
-            await loadPlayerData();
-            successEl.style.display = 'block';
-            setTimeout(() => successEl.style.display = 'none', 3000);
-            alert('✅ Переключено на: ' + nick);
-        });
-
-        // ===== ПРОЧИЕ ФУНКЦИИ =====
-        function switchTab(tabId) {
-            document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelector(`.tabs button[data-tab="${tabId}"]`).classList.add('active');
-            document.getElementById('tab-' + tabId).classList.add('active');
-            if (tabId === 'inventory' || tabId === 'upgrade') updateInventoryUI();
-            if (tabId === 'withdraw') renderWithdrawHistory();
-        }
-
-        function switchCase(index) {
-            currentCaseIndex = index;
-            document.getElementById('priceDisplay').textContent = cases[index].price;
-            const preview = cases[index].items[0];
-            renderSlot(preview);
-            document.getElementById('itemPrice').classList.remove('show');
-            document.getElementById('sellBtn').classList.remove('show');
-            lastItem = null;
-            document.querySelectorAll('.case-menu button').forEach((btn, i) => {
-                btn.classList.toggle('active', i === index);
-            });
-        }
-
-        function openPreview(index) {
-            const c = cases[index];
-            document.getElementById('previewTitle').textContent = '📦 ' + c.name + ' кейс';
-            document.getElementById('previewSub').textContent = '💰 Цена открытия: ' + c.price + '$';
-            document.getElementById('previewList').innerHTML = c.items.map(item => `
-                        <div class="preview-item" style="border-left-color:${item.color || '#4a5a7a'}">
-                            <img src="${item.img}" alt="${item.name}">
-                            <span class="p-name">${item.name}</span>
-                            <span class="p-rarity" style="color:${item.color}">${item.rarity}</span>
-                            <span class="p-value">${item.value}$</span>
-                        </div>
-                    `).join('');
-            document.getElementById('previewModal').classList.add('show');
-        }
-
-        document.getElementById('previewClose').addEventListener('click', () => document.getElementById('previewModal').classList.remove('show'));
-
-        // ===== КОЛЕСО АПГРЕЙДА =====
-        function buildWheel() {
-            const wheel = document.getElementById('wheel');
-            wheel.innerHTML = '<div class="wheel-pointer"></div><div class="wheel-center"></div>';
-            const items = [
-                { name: 'Успех ✅', color: '#00ff88', type: 'upgrade' },
-                { name: 'Сгорел 💥', color: '#ff2200', type: 'burn' }
-            ];
-            const angleStep = 360 / items.length;
-            items.forEach((item, index) => {
-                const angle = index * angleStep;
-                const seg = document.createElement('div');
-                seg.className = 'wheel-segment';
-                seg.style.transform = 'rotate(' + angle + 'deg)';
-                seg.style.background = item.color;
-                seg.innerHTML = `<span class="seg-text" style="transform:rotate(90deg)">${item.name}</span>`;
-                wheel.appendChild(seg);
-            });
-            return items;
-        }
-
-        async function openWheel() {
-            if (!selectedUpgradeItem) { alert('❌ Выберите предмет!'); return; }
-            document.getElementById('wheelContainer').classList.add('show');
-            document.getElementById('openWheelBtn').disabled = true;
-            document.getElementById('wheelSpinBtn').disabled = false;
-            document.getElementById('wheelResult').textContent = '🌀 Крутим...';
-            document.getElementById('resultBox').classList.remove('show', 'success', 'fail');
-
-            const wheelItems = buildWheel();
-            const chance = selectedLevel.chance / 100;
-            const rand = Math.random();
-            const resultIndex = rand < chance ? 0 : 1;
-            const selected = wheelItems[resultIndex];
-            const spins = 6 + Math.floor(Math.random() * 3);
-            const targetAngle = spins * 360 + (resultIndex * 180);
-            let currentAngle = 0,
-                step = 0;
-            const totalSteps = 60;
-            const stepAngle = targetAngle / totalSteps;
-
-            const interval = setInterval(() => {
-                step++;
-                currentAngle += stepAngle;
-                document.getElementById('wheel').style.transform = 'rotate(' + currentAngle + 'deg)';
-                if (step >= totalSteps) {
-                    clearInterval(interval);
-                    document.getElementById('wheel').style.transform = 'rotate(' + targetAngle + 'deg)';
-                    if (selected.type === 'upgrade') {
-                        const newValue = Math.round(selectedUpgradeItem.value * selectedLevel.mult);
-                        document.getElementById('resultBox').className = 'result-box show success';
-                        document.getElementById('resultTitle').textContent = '🎉 Апгрейд успешен!';
-                        document.getElementById('resultDesc').textContent = `${selectedUpgradeItem.name} → ${newValue}$`;
-                        document.getElementById('wheelResult').textContent = '✅ Успех!';
-                        document.getElementById('wheelResult').style.color = '#00ff88';
-                        inventory[selectedUpgradeIndex].value = newValue;
-                        try {
-                            await updatePlayer(currentNick, balance, inventory);
-                        } catch (e) {
-                            saveLocalData();
-                        }
-                        updateInventoryUI();
-                        updateBalanceUI();
-                    } else {
-                        document.getElementById('resultBox').className = 'result-box show fail';
-                        document.getElementById('resultTitle').textContent = '💥 Сгорел!';
-                        document.getElementById('resultDesc').textContent = `${selectedUpgradeItem.name} уничтожен!`;
-                        document.getElementById('wheelResult').textContent = '💥 Сгорел!';
-                        document.getElementById('wheelResult').style.color = '#ff2200';
-                        inventory.splice(selectedUpgradeIndex, 1);
-                        selectedUpgradeIndex = -1;
-                        selectedUpgradeItem = null;
-                        try {
-                            await updatePlayer(currentNick, balance, inventory);
-                        } catch (e) {
-                            saveLocalData();
-                        }
-                        updateInventoryUI();
-                        updateBalanceUI();
-                    }
-                    document.getElementById('openWheelBtn').disabled = false;
-                    document.getElementById('wheelSpinBtn').disabled = true;
-                }
-            }, 30);
-        }
-
-        document.getElementById('openWheelBtn').addEventListener('click', openWheel);
-        document.getElementById('wheelSpinBtn').addEventListener('click', openWheel);
-
-        // ===== ЗАПУСК =====
-        document.querySelectorAll('.withdraw-methods button').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.withdraw-methods button').forEach(b => b.classList.remove('selected'));
-                this.classList.add('selected');
-                selectedMethod = this.dataset.method;
-                document.getElementById('detailInput').classList.add('show');
-                document.getElementById('withdrawDetail').placeholder = selectedMethod === 'card' ? 'Введите номер карты' : 'Введите ID в игре';
-            });
-        });
-
-        document.getElementById('menuToggle').addEventListener('click', function() {
-            this.classList.toggle('active');
-            document.getElementById('mobileMenu').classList.toggle('show');
-        });
-
-        document.getElementById('upgradeLevels').addEventListener('click', function(e) {
-            const level = e.target.closest('.upgrade-level');
-            if (!level) return;
-            document.querySelectorAll('.upgrade-level').forEach(el => el.classList.remove('selected'));
-            level.classList.add('selected');
-            selectedLevel.mult = parseFloat(level.dataset.mult);
-            const chanceText = level.querySelector('.level-chance').textContent;
-            selectedLevel.chance = parseInt(chanceText.match(/\d+/)[0]);
-        });
-
-        async function init() {
-            document.getElementById('donateBtn').href = 'https://www.donationalerts.com/r/phff';
-            document.getElementById('nickInput').value = currentNick;
-            await loadPlayerData();
-            switchCase(0);
-            document.getElementById('historyList').innerHTML = '';
-            document.getElementById('openCaseBtn').addEventListener('click', openCase);
-            document.getElementById('sellBtn').addEventListener('click', sellLastItem);
-            document.querySelectorAll('.case-menu button').forEach((btn, i) => {
-                btn.addEventListener('click', () => { if (!isOpening) switchCase(i); });
-            });
-        }
-
-        init();
-    </script>
+// ===== ЗАПУСК =====
+document.querySelectorAll('.withdraw-methods button').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.withdraw-methods button').forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+        selectedMethod = this.dataset.method;
+        document.getElementById('detailInput').classList.add('show');
+        document.getElementById('withdrawDetail').placeholder = selectedMethod === 'card' ? 'Введите номер карты' : 'Введите ID в игре';
+    });
+});
+document.getElementById('menuToggle').addEventListener('click', function() {
+    this.classList.toggle('active');
+    document.getElementById('mobileMenu').classList.toggle('show');
+});
+document.getElementById('upgradeLevels').addEventListener('click', function(e) {
+    const level = e.target.closest('.upgrade-level');
+    if (!level) return;
+    document.querySelectorAll('.upgrade-level').forEach(el => el.classList.remove('selected'));
+    level.classList.add('selected');
+    selectedLevel.mult = parseFloat(level.dataset.mult);
+    const chanceText = level.querySelector('.level-chance').textContent;
+    selectedLevel.chance = parseInt(chanceText.match(/\d+/)[0]);
+});
+document.getElementById('donateBtn').href = 'https://www.donationalerts.com/r/phff';
+document.getElementById('nickInput').value = currentNick;
+async function init() {
+    await loadPlayerData();
+    switchCase(0);
+    document.getElementById('historyList').innerHTML = '';
+    document.getElementById('openCaseBtn').addEventListener('click', openCase);
+    document.getElementById('sellBtn').addEventListener('click', sellLastItem);
+    document.querySelectorAll('.case-menu button').forEach((btn, i) => {
+        btn.addEventListener('click', () => { if (!isOpening) switchCase(i); });
+    });
+}
+init();
+</script>
 </body>
-    </html>
+</html>
