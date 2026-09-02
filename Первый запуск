@@ -199,7 +199,8 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .withdraw-history .wh-item .wh-status.rejected{color:#ff4444}
 </style>
 </head>
-<body> <div class="container">
+<body>
+<div class="container">
     <h1 id="mainTitle">🐂 OXDROP</h1>
     <div class="menu-toggle" id="menuToggle">
         <span></span><span></span><span></span>
@@ -340,125 +341,156 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>// ===== ПОДКЛЮЧЕНИЕ К SUPABASE =====
-const SUPABASE_URL = 'https://umebqlddrqoomsjkesiv.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_IjUYueqoZsBRawM4SAbAHQ_zDtRHQCa';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-// ===== ФУНКЦИИ РАБОТЫ С БАЗОЙ =====
-async function getPlayer(nick) {
-    const { data, error } = await supabase
-        .from('players')
-        .select('*')
-        .eq('nick', nick)
-        .maybeSingle();
-    if (error) { console.error(error); return null; }
-    return data;
-}
-async function createPlayer(nick) {
-    const { data, error } = await supabase
-        .from('players')
-        .insert([{ nick, balance: 0, inventory: [] }])
-        .select()
-        .maybeSingle();
-    if (error) { console.error(error); return null; }
-    return data;
-}
-async function updatePlayer(nick, balance, inventory) {
-    const { error } = await supabase
-        .from('players')
-        .update({ balance, inventory })
-        .eq('nick', nick);
-    if (error) console.error(error);
-}
-async function getWithdrawRequests() {
-    const { data, error } = await supabase
-        .from('withdraw_requests')
-        .select('*')
-        .order('id', { ascending: false });
-    if (error) return [];
-    return data;
-}
-async function addWithdrawRequest(nick, amount, method, detail) {
-    const { error } = await supabase
-        .from('withdraw_requests')
-        .insert([{ nick, amount, method, detail, status: 'pending', date: new Date().toLocaleString() }]);
-    if (error) console.error(error);
-}
-async function updateWithdrawStatus(id, status) {
-    const { error } = await supabase
-        .from('withdraw_requests')
-        .update({ status })
-        .eq('id', id);
-    if (error) console.error(error);
+<script>
+// Вся логика игры на localStorage (без сервера)
+// ===== НИКНЕЙМ-СИСТЕМА =====
+function getAllNicks() { return Object.keys(players); }
+function isNickExists(nick) { return getAllNicks().includes(nick); }
+function createPlayer(nick) {
+    if (!players[nick]) {
+        players[nick] = { balance: 0, inventory: [] };
+        savePlayers();
+        return true;
+    }
+    return false;
 }
 
-// ===== ДАННЫЕ КЕЙСОВ =====
+// ===== БУРГЕР-МЕНЮ =====
+const menuToggle = document.getElementById('menuToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+menuToggle.addEventListener('click', function() {
+    this.classList.toggle('active');
+    mobileMenu.classList.toggle('show');
+});
+
+function switchTab(tabId) {
+    menuToggle.classList.remove('active');
+    mobileMenu.classList.remove('show');
+    document.querySelectorAll('.tabs button').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.tab === tabId) btn.classList.add('active');
+    });
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    const target = document.getElementById('tab-' + tabId);
+    if (target) target.classList.add('active');
+    if (tabId === 'inventory' || tabId === 'upgrade') updateInventoryUI();
+    if (tabId === 'withdraw') renderWithdrawHistory();
+}
+
+const ADMIN_PASSWORD = 'admin123';
+const DONATE_URL = 'https://www.donationalerts.com/r/phff';
+
+// ===== ДАННЫЕ =====
 const cases = [
   {
     name: 'Мумия',
     price: 100,
     items: [
-      {name:'Радужная Ярость', img:'https://i.postimg.cc/1XvPV8DM/Screenshot-20260830-143556.jpg', rarity:'Легендарный', color:'#d4a03a', value:500, chance:4},
-      {name:'AK-47 | Полная Коррозия', img:'https://i.postimg.cc/SKQKRp0h/Screenshot-20260830-184043.jpg', rarity:'Редкий', color:'#8B4513', value:350, chance:8},
-      {name:'Револьвер', img:'https://i.postimg.cc/433LQZmt/Screenshot-20260830-233108.jpg', rarity:'Редкий', color:'#C0C0C0', value:100, chance:23},
-      {name:'Маленький ящик', img:'https://i.postimg.cc/2S117DcT/Screenshot-20260830-191916.jpg', rarity:'Обычный', color:'#8B7355', value:40, chance:45},
-      {name:'Деревянная дверь', img:'https://i.postimg.cc/yNq4fDzz/Screenshot-20260830-232405.jpg', rarity:'Обычный', color:'#8B5A2B', value:80, chance:20}
+      {name:'Радужная Ярость', img:'https://i.postimg.cc/1XvPV8DM/Screenshot-20260830-143556.jpg', rarity:'Легендарный', color:'#d4a03a', value: 500, chance: 4},
+      {name:'AK-47 | Полная Коррозия', img:'https://i.postimg.cc/SKQKRp0h/Screenshot-20260830-184043.jpg', rarity:'Редкий', color:'#8B4513', value: 350, chance: 8},
+      {name:'Револьвер', img:'https://i.postimg.cc/433LQZmt/Screenshot-20260830-233108.jpg', rarity:'Редкий', color:'#C0C0C0', value: 100, chance: 23},
+      {name:'Маленький ящик', img:'https://i.postimg.cc/2S117DcT/Screenshot-20260830-191916.jpg', rarity:'Обычный', color:'#8B7355', value: 40, chance: 45},
+      {name:'Деревянная дверь', img:'https://i.postimg.cc/yNq4fDzz/Screenshot-20260830-232405.jpg', rarity:'Обычный', color:'#8B5A2B', value: 80, chance: 20}
     ]
   },
   {
     name: 'Человек-паук',
     price: 50,
     items: [
-      {name:'Револьвер Позолоченный бык', img:'https://i.postimg.cc/wvPkVpLC/Screenshot-20260830-201522.jpg', rarity:'Легендарный', color:'#FFD700', value:76, chance:23},
-      {name:'Стикер Острые когти', img:'https://i.postimg.cc/VNhMyFvg/Screenshot-20260830-201457.jpg', rarity:'Эпический', color:'#C0C0C0', value:30, chance:20},
-      {name:'Стикер Позолоченные волки', img:'https://i.postimg.cc/YC1q2Ch0/Screenshot-20260830-201534.jpg', rarity:'Эпический', color:'#FFD700', value:25, chance:27},
-      {name:'Дигл Вердикт', img:'https://i.postimg.cc/MpHRTLhN/Screenshot-20260830-205349.jpg', rarity:'Эпический', color:'#C0C0C0', value:150, chance:4},
-      {name:'СНГ Змеиное логово', img:'https://i.postimg.cc/hP9ZsXvF/Screenshot-20260830-205146.jpg', rarity:'Редкий', color:'#00cc66', value:100, chance:14},
-      {name:'Токсичный Дрейк', img:'https://i.postimg.cc/TPQxhkgP/Screenshot-20260830-205118.jpg', rarity:'Легендарный', color:'#00ff00', value:35, chance:12}
+      {name:'Револьвер Позолоченный бык', img:'https://i.postimg.cc/wvPkVpLC/Screenshot-20260830-201522.jpg', rarity:'Легендарный', color:'#FFD700', value: 76, chance: 23},
+      {name:'Стикер Острые когти', img:'https://i.postimg.cc/VNhMyFvg/Screenshot-20260830-201457.jpg', rarity:'Эпический', color:'#C0C0C0', value: 30, chance: 20},
+      {name:'Стикер Позолоченные волки', img:'https://i.postimg.cc/YC1q2Ch0/Screenshot-20260830-201534.jpg', rarity:'Эпический', color:'#FFD700', value: 25, chance: 27},
+      {name:'Дигл Вердикт', img:'https://i.postimg.cc/MpHRTLhN/Screenshot-20260830-205349.jpg', rarity:'Эпический', color:'#C0C0C0', value: 150, chance: 4},
+      {name:'СНГ Змеиное логово', img:'https://i.postimg.cc/hP9ZsXvF/Screenshot-20260830-205146.jpg', rarity:'Редкий', color:'#00cc66', value: 100, chance: 14},
+      {name:'Токсичный Дрейк', img:'https://i.postimg.cc/TPQxhkgP/Screenshot-20260830-205118.jpg', rarity:'Легендарный', color:'#00ff00', value: 35, chance: 12}
     ]
   }
 ];
 
-// ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ =====
-let currentNick = localStorage.getItem('oxdrop_nick') || 'Игрок1';
-let inventory = [];
+// ===== СОСТОЯНИЕ =====
 let balance = 0;
 let isOpening = false;
 let currentCaseIndex = 0;
 let history = [];
+let inventory = [];
 let lastItem = null;
 let selectedUpgradeIndex = -1;
 let selectedUpgradeItem = null;
-let selectedLevel = { mult: 1.2, chance: 75 };
+let selectedLevel = { mult: 1.2, name: 'x1.2', chance: 75 };
+let currentNick = localStorage.getItem('oxdrop_nick') || 'Игрок1';
 let selectedMethod = 'card';
-let stats = { visits: 0, caseOpens: 0, totalSales: 0, bestItem: { name: '—', value: 0 } };
 
-// ===== ЗАГРУЗКА ДАННЫХ ИГРОКА =====
-async function loadPlayerData() {
+// ===== ХРАНИЛИЩЕ =====
+let players = {};
+function loadPlayers() {
     try {
-        let player = await getPlayer(currentNick);
-        if (!player) {
-            player = await createPlayer(currentNick);
-        }
-        if (player) {
-            balance = player.balance;
-            inventory = player.inventory || [];
-        }
-        updateBalanceUI();
-        updateInventoryUI();
-        document.getElementById('nickInput').value = currentNick;
-    } catch (e) {
-        console.error('Ошибка загрузки данных:', e);
-    }
+        const data = localStorage.getItem('oxdrop_players');
+        if (data) { players = JSON.parse(data); }
+        else { players = { 'Игрок1': { balance: 0, inventory: [] } }; savePlayers(); }
+    } catch(e) { players = {}; }
+}
+function savePlayers() {
+    try { localStorage.setItem('oxdrop_players', JSON.stringify(players)); } catch(e) {}
+}
+function getPlayerBalance(nick) {
+    if (!players[nick]) { players[nick] = { balance: 0, inventory: [] }; savePlayers(); }
+    return players[nick].balance;
+}
+function setPlayerBalance(nick, amount) {
+    if (!players[nick]) { players[nick] = { balance: 0, inventory: [] }; }
+    players[nick].balance = amount;
+    savePlayers();
+}
+
+// ===== СТАТИСТИКА =====
+let stats = { visits: 0, caseOpens: 0, totalSales: 0, bestItem: { name: '—', value: 0 } };
+function loadStats() {
+    try {
+        const data = localStorage.getItem('oxdrop_stats');
+        if (data) { stats = JSON.parse(data); }
+    } catch(e) {}
+}
+function saveStats() {
+    try { localStorage.setItem('oxdrop_stats', JSON.stringify(stats)); } catch(e) {}
+}
+function updateStatsUI() {
+    document.getElementById('visitCount').textContent = stats.visits;
+    document.getElementById('caseOpenCount').textContent = stats.caseOpens;
+    document.getElementById('totalSales').textContent = stats.totalSales;
+    document.getElementById('bestItem').textContent = stats.bestItem.name + ' (' + stats.bestItem.value + '$)';
+}
+
+// ===== ЗАЯВКИ НА ВЫВОД =====
+let withdrawRequests = [];
+function loadWithdrawRequests() {
+    try {
+        const data = localStorage.getItem('oxdrop_withdraw_requests');
+        if (data) { withdrawRequests = JSON.parse(data); }
+        else { withdrawRequests = []; }
+    } catch(e) { withdrawRequests = []; }
+}
+function saveWithdrawRequests() {
+    try { localStorage.setItem('oxdrop_withdraw_requests', JSON.stringify(withdrawRequests)); } catch(e) {}
+}
+function getPlayerWithdrawHistory(nick) { return withdrawRequests.filter(r => r.nick === nick); }
+function addWithdrawRequest(nick, amount, method, detail) {
+    withdrawRequests.push({
+        id: Date.now(), nick: nick, amount: amount, method: method, detail: detail,
+        status: 'pending', date: new Date().toLocaleString()
+    });
+    saveWithdrawRequests();
+}
+function updateWithdrawStatus(id, status) {
+    const request = withdrawRequests.find(r => r.id === id);
+    if (request) { request.status = status; saveWithdrawRequests(); renderWithdrawRequests(); renderWithdrawHistory(); }
 }
 
 // ===== ОБНОВЛЕНИЕ UI =====
 function updateBalanceUI() {
-    document.getElementById('balanceDisplay').textContent = balance;
-    document.getElementById('withdrawBalance').textContent = balance;
-    if (balance <= 0) {
+    const bal = getPlayerBalance(currentNick);
+    document.getElementById('balanceDisplay').textContent = bal;
+    document.getElementById('withdrawBalance').textContent = bal;
+    if (bal <= 0) {
         document.getElementById('donateBtn').classList.add('show');
         document.getElementById('donateNotice').classList.add('show');
     } else {
@@ -466,69 +498,168 @@ function updateBalanceUI() {
         document.getElementById('donateNotice').classList.remove('show');
     }
 }
+function savePlayerInventory() {
+    if (!players[currentNick]) { players[currentNick] = { balance: 0, inventory: [] }; }
+    players[currentNick].inventory = inventory;
+    savePlayers();
+}
+function loadPlayerInventory() {
+    if (players[currentNick] && players[currentNick].inventory) {
+        inventory = players[currentNick].inventory;
+    } else { inventory = []; }
+}
 
-function updateInventoryUI() {
-    if (inventory.length === 0) {
-        document.getElementById('inventoryList').innerHTML = '<div class="empty-inv">📭 Инвентарь пуст. Откройте кейс!</div>';
-        document.getElementById('upgradeInvList').innerHTML = '<div class="empty-inv">📭 Инвентарь пуст. Откройте кейс!</div>';
-        document.getElementById('openWheelBtn').disabled = true;
+// ===== ВЫВОД =====
+function renderWithdrawHistory() {
+    const history = getPlayerWithdrawHistory(currentNick);
+    if (history.length === 0) {
+        document.getElementById('withdrawHistoryList').innerHTML = '<div style="color:#96a9d1;text-align:center;padding:15px;">Заявок пока нет</div>';
         return;
     }
-    document.getElementById('inventoryList').innerHTML = inventory.map((item, index) => `
-        <div class="inv-item" style="border-left-color:${item.color || '#4a5a7a'}">
-            <img src="${item.img}" alt="${item.name}">
-            <span class="inv-name">${item.name}</span>
-            <span class="inv-value">${item.value}$</span>
-            <button class="inv-sell" data-index="${index}">💰 Продать</button>
-        </div>
-    `).join('');
-    document.querySelectorAll('#inventoryList .inv-sell').forEach(btn => {
-        btn.addEventListener('click', async function(){
-            const idx = parseInt(this.dataset.index);
-            const item = inventory[idx];
-            balance += item.value;
-            inventory.splice(idx, 1);
-            await updatePlayer(currentNick, balance, inventory);
-            updateBalanceUI();
-            updateInventoryUI();
-            alert('✅ ' + item.name + ' продан за ' + item.value + '$');
-        });
-    });
-    renderUpgradeInventory();
+    document.getElementById('withdrawHistoryList').innerHTML = history.map(r => {
+        let statusText = '', statusClass = '';
+        if (r.status === 'pending') { statusText = '⏳ Ожидает'; statusClass = 'pending'; }
+        else if (r.status === 'done') { statusText = '✅ Выполнено'; statusClass = 'done'; }
+        else if (r.status === 'rejected') { statusText = '❌ Отклонено'; statusClass = 'rejected'; }
+        const methodLabel = r.method === 'card' ? '💳 На карту' : '🎮 В игру';
+        return `<div class="wh-item"><span>${r.date}</span><span>${r.amount}$</span><span style="font-size:0.7rem;color:#96a9d1;">${methodLabel}</span><span class="wh-status ${statusClass}">${statusText}</span></div>`;
+    }).join('');
 }
+function renderWithdrawRequests() {
+    const container = document.getElementById('withdrawRequests');
+    const pending = withdrawRequests.filter(r => r.status === 'pending');
+    if (pending.length === 0) { container.innerHTML = '<div class="empty">Нет заявок</div>'; return; }
+    container.innerHTML = pending.map(r => {
+        const methodLabel = r.method === 'card' ? '💳 На карту' : '🎮 В игру';
+        const methodClass = r.method === 'card' ? 'card' : 'game';
+        return `<div class="wr-item"><div class="wr-info"><span class="wr-nick">${r.nick}</span><span style="color:#ffd966;font-weight:700;">${r.amount}$</span><span class="wr-method ${methodClass}">${methodLabel}</span><span style="color:#96a9d1;font-size:0.7rem;margin-left:8px;">${r.date}</span></div><div class="wr-actions"><button onclick="handleWithdrawConfirm(${r.id})">✅</button><button class="reject" onclick="handleWithdrawReject(${r.id})">✕</button></div></div>`;
+    }).join('');
+}
+window.handleWithdrawConfirm = function(id) {
+    if (confirm('Перевели деньги игроку?')) {
+        const request = withdrawRequests.find(r => r.id === id);
+        if (request) {
+            let playerBalance = getPlayerBalance(request.nick);
+            if (playerBalance >= request.amount) {
+                playerBalance -= request.amount;
+                setPlayerBalance(request.nick, playerBalance);
+                updateWithdrawStatus(id, 'done');
+                if (request.nick === currentNick) updateBalanceUI();
+                alert('✅ Заявка подтверждена!');
+            } else { alert('❌ Недостаточно баланса!'); }
+        }
+    }
+};
+window.handleWithdrawReject = function(id) {
+    if (confirm('Отклонить заявку?')) { updateWithdrawStatus(id, 'rejected'); alert('❌ Заявка отклонена.'); }
+};
 
-function renderUpgradeInventory() {
-    if (inventory.length === 0) {
-        document.getElementById('upgradeInvList').innerHTML = '<div class="empty-inv">📭 Инвентарь пуст. Откройте кейс!</div>';
-        document.getElementById('openWheelBtn').disabled = true;
+document.getElementById('withdrawBtn').addEventListener('click', function() {
+    const amount = parseInt(document.getElementById('withdrawAmount').value) || 0;
+    const balance = getPlayerBalance(currentNick);
+    const detail = document.getElementById('withdrawDetail').value.trim();
+    if (amount < 10) { alert('❌ Минимальная сумма: 10$'); return; }
+    if (amount > balance) { alert('❌ Недостаточно баланса!'); return; }
+    if (!detail) { alert('❌ Укажите реквизиты!'); return; }
+    if (confirm('Вывести ' + amount + '$?')) {
+        addWithdrawRequest(currentNick, amount, selectedMethod, detail);
+        renderWithdrawHistory();
+        renderWithdrawRequests();
+        alert('✅ Заявка отправлена!');
+        document.getElementById('withdrawAmount').value = '';
+        document.getElementById('withdrawDetail').value = '';
+        document.getElementById('detailInput').classList.remove('show');
+    }
+});
+
+// ===== НИК =====
+document.getElementById('saveNickBtn').addEventListener('click', function() {
+    const nick = document.getElementById('nickInput').value.trim();
+    const errorEl = document.getElementById('nickError');
+    const successEl = document.getElementById('nickSuccess');
+    errorEl.style.display = 'none';
+    successEl.style.display = 'none';
+    if (!nick) { alert('❌ Введите ник!'); return; }
+    if (isNickExists(nick) && nick !== currentNick) {
+        errorEl.style.display = 'block';
+        setTimeout(() => { errorEl.style.display = 'none'; }, 3000);
         return;
     }
-    document.getElementById('upgradeInvList').innerHTML = inventory.map((item, index) => `
-        <div class="inv-item" data-index="${index}" style="border-left-color:${item.color || '#4a5a7a'}">
-            <img src="${item.img}" alt="${item.name}">
-            <span class="inv-name">${item.name}</span>
-            <span class="inv-value">${item.value}$</span>
-        </div>
-    `).join('');
-    document.querySelectorAll('#upgradeInvList .inv-item').forEach(el => {
-        el.addEventListener('click', function(){
-            const idx = parseInt(this.dataset.index);
-            selectUpgradeItem(idx);
-        });
-    });
-    if (inventory.length > 0 && selectedUpgradeIndex === -1) selectUpgradeItem(0);
-    document.getElementById('openWheelBtn').disabled = false;
+    savePlayerInventory();
+    currentNick = nick;
+    localStorage.setItem('oxdrop_nick', nick);
+    if (!players[nick]) createPlayer(nick);
+    loadPlayerInventory();
+    updateBalanceUI();
+    updateInventoryUI();
+    renderWithdrawHistory();
+    successEl.style.display = 'block';
+    setTimeout(() => { successEl.style.display = 'none'; }, 3000);
+    alert('✅ Переключено на: ' + nick);
+});
+
+// ===== АДМИН-ПАНЕЛЬ =====
+document.getElementById('mainTitle').addEventListener('dblclick', function() {
+    document.getElementById('adminPanel').classList.add('open');
+    document.getElementById('adminPass').value = '';
+    document.getElementById('adminError').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'none';
+    document.getElementById('adminLoginBtn').style.display = 'block';
+    document.getElementById('adminPass').style.display = 'block';
+    document.getElementById('adminSuccess').style.display = 'none';
+    document.getElementById('adminNick').value = 'Игрок1';
+    renderWithdrawRequests();
+});
+document.getElementById('adminClose').addEventListener('click', function() {
+    document.getElementById('adminPanel').classList.remove('open');
+});
+document.getElementById('adminLoginBtn').addEventListener('click', function() {
+    const pass = document.getElementById('adminPass').value.trim();
+    if (pass === ADMIN_PASSWORD) {
+        document.getElementById('adminError').style.display = 'none';
+        this.style.display = 'none';
+        document.getElementById('adminPass').style.display = 'none';
+        document.getElementById('adminContent').style.display = 'block';
+        document.getElementById('adminAmount').value = 100;
+        document.getElementById('adminSuccess').style.display = 'none';
+        renderWithdrawRequests();
+    } else {
+        document.getElementById('adminError').style.display = 'block';
+        setTimeout(() => { document.getElementById('adminError').style.display = 'none'; }, 3000);
+    }
+});
+document.getElementById('adminAddBtn').addEventListener('click', function() {
+    const nick = document.getElementById('adminNick').value.trim() || 'Игрок1';
+    const amount = parseInt(document.getElementById('adminAmount').value) || 0;
+    if (amount > 0) {
+        let playerBalance = getPlayerBalance(nick);
+        playerBalance += amount;
+        setPlayerBalance(nick, playerBalance);
+        document.getElementById('adminSuccess').style.display = 'block';
+        document.getElementById('adminAmount').value = 100;
+        setTimeout(() => { document.getElementById('adminSuccess').style.display = 'none'; }, 3000);
+        if (nick === currentNick) updateBalanceUI();
+        alert('✅ Игроку ' + nick + ' выдано ' + amount + '$');
+    }
+});
+
+// ===== СТАТИСТИКА =====
+function recordVisit() {
+    loadStats(); stats.visits += 1; saveStats(); updateStatsUI();
+}
+function recordCaseOpen(itemValue) {
+    loadStats(); stats.caseOpens += 1;
+    if (itemValue > stats.bestItem.value) {
+        stats.bestItem = { name: lastItem ? lastItem.name : 'Предмет', value: itemValue };
+    }
+    saveStats(); updateStatsUI();
+}
+function recordSale(amount) {
+    loadStats(); stats.totalSales += amount; saveStats(); updateStatsUI();
 }
 
-function selectUpgradeItem(index) {
-    selectedUpgradeIndex = index;
-    selectedUpgradeItem = inventory[index];
-    document.querySelectorAll('#upgradeInvList .inv-item').forEach((el, i) => {
-        el.classList.toggle('selected', i === index);
-    });
-}
-
-// ===== ИГРОВАЯ ЛОГИКА =====
+// ===== ОСНОВНЫЕ ФУНКЦИИ =====
+function updatePriceUI(){ document.getElementById('priceDisplay').textContent = cases[currentCaseIndex].price; }
 function getRandomItemFromCase(caseIndex) {
     const pool = cases[caseIndex].items;
     const itemsWithChance = pool.filter(item => item.chance !== undefined && item.chance > 0);
@@ -596,200 +727,204 @@ function spinSlot(cb) {
         }
     }, 70);
 }
-
-async function openCase() {
+function openCase() {
     if (isOpening) return;
     const price = cases[currentCaseIndex].price;
-    if (balance < price) { alert('❌ Недостаточно баланса! Пополните через донат.'); return; }
-    balance -= price;
-    await updatePlayer(currentNick, balance, inventory);
+    let playerBalance = getPlayerBalance(currentNick);
+    if (playerBalance < price) { alert('❌ Недостаточно баланса! Пополните через донат.'); return; }
+    playerBalance -= price;
+    setPlayerBalance(currentNick, playerBalance);
     updateBalanceUI();
     isOpening = true;
     document.getElementById('openCaseBtn').disabled = true;
     document.getElementById('itemPrice').classList.remove('show');
     document.getElementById('sellBtn').classList.remove('show');
-    spinSlot(async (chosen) => {
+    spinSlot((chosen) => {
         inventory.push({...chosen});
-        await updatePlayer(currentNick, balance, inventory);
+        savePlayerInventory();
         updateInventoryUI();
-        history.unshift(chosen.name + ' (' + chosen.rarity + ') - ' + chosen.value + '$');
-        if (history.length > 12) history.pop();
+        history.unshift(chosen.name+' ('+chosen.rarity+') - '+chosen.value+'$');
+        if(history.length>12) history.pop();
         document.getElementById('historyList').innerHTML = history.map(t => `<span>${t}</span>`).join('');
         isOpening = false;
         document.getElementById('openCaseBtn').disabled = false;
+        recordCaseOpen(chosen.value);
     });
 }
-
-async function sellLastItem() {
+function sellLastItem() {
     if (!lastItem) return;
     const index = inventory.findIndex(item => item.name === lastItem.name);
     if (index >= 0) {
-        const soldValue = lastItem.value;
-        balance += soldValue;
+        const value = lastItem.value;
+        let playerBalance = getPlayerBalance(currentNick);
+        playerBalance += value;
+        setPlayerBalance(currentNick, playerBalance);
         inventory.splice(index, 1);
-        await updatePlayer(currentNick, balance, inventory);
+        savePlayerInventory();
         updateBalanceUI();
         updateInventoryUI();
         lastItem = null;
         document.getElementById('sellBtn').classList.remove('show');
         document.getElementById('itemPrice').classList.remove('show');
         renderSlot(null);
-        alert('✅ Предмет продан за ' + soldValue + '$');
+        alert('✅ Предмет продан за ' + value + '$');
+        recordSale(value);
     }
 }
-
-// ===== АДМИН-ПАНЕЛЬ =====
-document.getElementById('mainTitle').addEventListener('dblclick', function() {
-    document.getElementById('adminPanel').classList.add('open');
-});
-document.getElementById('adminClose').addEventListener('click', function() {
-    document.getElementById('adminPanel').classList.remove('open');
-});
-document.getElementById('adminLoginBtn').addEventListener('click', function() {
-    const pass = document.getElementById('adminPass').value.trim();
-    if (pass === 'admin123') {
-        document.getElementById('adminError').style.display = 'none';
-        document.getElementById('adminLogin').style.display = 'none';
-        document.getElementById('adminContent').style.display = 'block';
-        loadWithdrawRequests();
-    } else {
-        document.getElementById('adminError').style.display = 'block';
-        setTimeout(() => document.getElementById('adminError').style.display = 'none', 3000);
+function updateInventoryUI() {
+    if (inventory.length === 0) {
+        document.getElementById('inventoryList').innerHTML = '<div class="empty-inv">📭 Инвентарь пуст. Откройте кейс!</div>';
+        document.getElementById('upgradeInvList').innerHTML = '<div class="empty-inv">📭 Инвентарь пуст. Откройте кейс!</div>';
+        document.getElementById('openWheelBtn').disabled = true;
+        return;
     }
-});
-document.getElementById('adminAddBtn').addEventListener('click', async function() {
-    const nick = document.getElementById('adminNick').value.trim() || 'Игрок1';
-    const amount = parseInt(document.getElementById('adminAmount').value) || 0;
-    if (amount > 0) {
-        let player = await getPlayer(nick);
-        if (!player) player = await createPlayer(nick);
-        if (player) {
-            const newBalance = (player.balance || 0) + amount;
-            await updatePlayer(nick, newBalance, player.inventory || []);
-            document.getElementById('adminSuccess').style.display = 'block';
-            setTimeout(() => document.getElementById('adminSuccess').style.display = 'none', 3000);
-            if (nick === currentNick) {
-                balance = newBalance;
+    document.getElementById('inventoryList').innerHTML = inventory.map((item, index) => `
+        <div class="inv-item" style="border-left-color:${item.color || '#4a5a7a'}">
+            <img src="${item.img}" alt="${item.name}">
+            <span class="inv-name">${item.name}</span>
+            <span class="inv-value">${item.value}$</span>
+            <button class="inv-sell" data-index="${index}">💰 Продать</button>
+        </div>
+    `).join('');
+    document.querySelectorAll('#inventoryList .inv-sell').forEach(btn => {
+        btn.addEventListener('click', function(){
+            const idx = parseInt(this.dataset.index);
+            const item = inventory[idx];
+            let playerBalance = getPlayerBalance(currentNick);
+            playerBalance += item.value;
+            setPlayerBalance(currentNick, playerBalance);
+            inventory.splice(idx, 1);
+            savePlayerInventory();
+            updateBalanceUI();
+            updateInventoryUI();
+            alert('✅ ' + item.name + ' продан за ' + item.value + '$');
+            recordSale(item.value);
+        });
+    });
+    renderUpgradeInventory();
+}
+function renderUpgradeInventory() {
+    if (inventory.length === 0) {
+        document.getElementById('upgradeInvList').innerHTML = '<div class="empty-inv">📭 Инвентарь пуст. Откройте кейс!</div>';
+        document.getElementById('openWheelBtn').disabled = true;
+        return;
+    }
+    document.getElementById('upgradeInvList').innerHTML = inventory.map((item, index) => `
+        <div class="inv-item" data-index="${index}" style="border-left-color:${item.color || '#4a5a7a'}">
+            <img src="${item.img}" alt="${item.name}">
+            <span class="inv-name">${item.name}</span>
+            <span class="inv-value">${item.value}$</span>
+        </div>
+    `).join('');
+    document.querySelectorAll('#upgradeInvList .inv-item').forEach(el => {
+        el.addEventListener('click', function(){
+            const idx = parseInt(this.dataset.index);
+            selectUpgradeItem(idx);
+        });
+    });
+    if (inventory.length > 0 && selectedUpgradeIndex === -1) selectUpgradeItem(0);
+    document.getElementById('openWheelBtn').disabled = false;
+}
+function selectUpgradeItem(index) {
+    selectedUpgradeIndex = index;
+    selectedUpgradeItem = inventory[index];
+    document.querySelectorAll('#upgradeInvList .inv-item').forEach((el, i) => {
+        el.classList.toggle('selected', i === index);
+    });
+}
+
+// ===== КОЛЕСО АПГРЕЙДА =====
+function buildWheel() {
+    const wheel = document.getElementById('wheel');
+    wheel.innerHTML = '<div class="wheel-pointer"></div><div class="wheel-center"></div>';
+    const items = [
+        {name: 'Успех ✅', color: '#00ff88', type: 'upgrade'},
+        {name: 'Сгорел 💥', color: '#ff2200', type: 'burn'}
+    ];
+    const total = items.length;
+    const angleStep = 360 / total;
+    items.forEach((item, index) => {
+        const angle = index * angleStep;
+        const seg = document.createElement('div');
+        seg.className = 'wheel-segment';
+        seg.style.transform = 'rotate('+angle+'deg)';
+        seg.style.background = item.color;
+        seg.style.border = '1px solid rgba(255,255,255,0.1)';
+        seg.innerHTML = '<span class="seg-text" style="transform:rotate(90deg)">'+item.name+'</span>';
+        wheel.appendChild(seg);
+    });
+    return items;
+}
+let wheelItems = [];
+function openWheel() {
+    if (!selectedUpgradeItem) { alert('❌ Выберите предмет!'); return; }
+    document.getElementById('wheelContainer').classList.add('show');
+    document.getElementById('openWheelBtn').disabled = true;
+    document.getElementById('wheelSpinBtn').disabled = false;
+    document.getElementById('wheelResult').textContent = '🌀 Крутим...';
+    document.getElementById('resultBox').classList.remove('show', 'success', 'fail');
+    wheelItems = buildWheel();
+    const chance = selectedLevel.chance / 100;
+    const rand = Math.random();
+    let resultIndex = rand < chance ? 0 : 1;
+    const selected = wheelItems[resultIndex];
+    const spins = 6 + Math.floor(Math.random() * 3);
+    const targetAngle = spins * 360 + (resultIndex * (360 / wheelItems.length));
+    let currentAngle = 0, step = 0;
+    const totalSteps = 60;
+    const stepAngle = targetAngle / totalSteps;
+    const interval = setInterval(() => {
+        step++;
+        currentAngle += stepAngle;
+        document.getElementById('wheel').style.transform = 'rotate(' + currentAngle + 'deg)';
+        if (step >= totalSteps) {
+            clearInterval(interval);
+            document.getElementById('wheel').style.transform = 'rotate(' + targetAngle + 'deg)';
+            if (selected.type === 'upgrade') {
+                const newValue = Math.round(selectedUpgradeItem.value * selectedLevel.mult);
+                document.getElementById('resultBox').className = 'result-box show success';
+                document.getElementById('resultTitle').textContent = '🎉 Апгрейд успешен!';
+                const change = newValue - selectedUpgradeItem.value;
+                const sign = change > 0 ? '+' : '';
+                document.getElementById('resultDesc').textContent = `${selectedUpgradeItem.name} → ${newValue}$ (${sign}${change}$)`;
+                document.getElementById('wheelResult').textContent = '✅ Успех!';
+                document.getElementById('wheelResult').style.color = '#00ff88';
+                inventory[selectedUpgradeIndex].value = newValue;
+                savePlayerInventory();
+                updateInventoryUI();
+                updateBalanceUI();
+            } else {
+                document.getElementById('resultBox').className = 'result-box show fail';
+                document.getElementById('resultTitle').textContent = '💥 Сгорел!';
+                document.getElementById('resultDesc').textContent = `${selectedUpgradeItem.name} уничтожен!`;
+                document.getElementById('wheelResult').textContent = '💥 Сгорел!';
+                document.getElementById('wheelResult').style.color = '#ff2200';
+                inventory.splice(selectedUpgradeIndex, 1);
+                savePlayerInventory();
+                selectedUpgradeIndex = -1;
+                selectedUpgradeItem = null;
+                updateInventoryUI();
                 updateBalanceUI();
             }
-            alert('✅ Игроку ' + nick + ' выдано ' + amount + '$');
+            document.getElementById('openWheelBtn').disabled = false;
+            document.getElementById('wheelSpinBtn').disabled = true;
         }
-    }
-});
-
-// ===== ЗАЯВКИ НА ВЫВОД =====
-async function loadWithdrawRequests() {
-    const requests = await getWithdrawRequests();
-    const container = document.getElementById('withdrawRequests');
-    const pending = requests.filter(r => r.status === 'pending');
-    if (pending.length === 0) { container.innerHTML = '<div class="empty">Нет заявок</div>'; return; }
-    container.innerHTML = pending.map(r => `
-        <div class="wr-item">
-            <div class="wr-info">
-                <span class="wr-nick">${r.nick}</span>
-                <span style="color:#ffd966;font-weight:700;">${r.amount}$</span>
-                <span class="wr-method card">💳 ${r.method}</span>
-                <span class="wr-detail">📌 ${r.detail}</span>
-                <span style="color:#96a9d1;font-size:0.7rem;margin-left:8px;">${r.date}</span>
-            </div>
-            <div class="wr-actions">
-                <button onclick="confirmWithdraw(${r.id})">✅</button>
-                <button class="reject" onclick="rejectWithdraw(${r.id})">✕</button>
-            </div>
-        </div>
-    `).join('');
+    }, 30);
 }
-window.confirmWithdraw = async function(id) {
-    if (confirm('Перевели деньги игроку?')) {
-        await updateWithdrawStatus(id, 'done');
-        loadWithdrawRequests();
-        renderWithdrawHistory();
-    }
-};
-window.rejectWithdraw = async function(id) {
-    if (confirm('Отклонить заявку?')) {
-        await updateWithdrawStatus(id, 'rejected');
-        loadWithdrawRequests();
-        renderWithdrawHistory();
-    }
-};
-async function renderWithdrawHistory() {
-    const requests = await getWithdrawRequests();
-    const userRequests = requests.filter(r => r.nick === currentNick);
-    const list = document.getElementById('withdrawHistoryList');
-    if (userRequests.length === 0) {
-        list.innerHTML = '<div style="color:#96a9d1;text-align:center;padding:15px;">Заявок пока нет</div>';
-        return;
-    }
-    list.innerHTML = userRequests.map(r => `
-        <div class="wh-item">
-            <span>${r.date}</span>
-            <span>${r.amount}$</span>
-            <span style="font-size:0.7rem;color:#96a9d1;">${r.method}</span>
-            <span class="wh-status ${r.status}">${r.status === 'pending' ? '⏳ Ожидает' : r.status === 'done' ? '✅ Выполнено' : '❌ Отклонено'}</span>
-        </div>
-    `).join('');
-}
+document.getElementById('openWheelBtn').addEventListener('click', openWheel);
+document.getElementById('wheelSpinBtn').addEventListener('click', openWheel);
 
-// ===== ВЫВОД СРЕДСТВ =====
-document.getElementById('withdrawBtn').addEventListener('click', async function() {
-    const amount = parseInt(document.getElementById('withdrawAmount').value) || 0;
-    const detail = document.getElementById('withdrawDetail').value.trim();
-    if (amount < 10) { alert('❌ Минимальная сумма: 10$'); return; }
-    if (amount > balance) { alert('❌ Недостаточно баланса!'); return; }
-    if (!detail) { alert('❌ Укажите реквизиты!'); return; }
-    if (confirm('Вывести ' + amount + '$?')) {
-        await addWithdrawRequest(currentNick, amount, selectedMethod, detail);
-        renderWithdrawHistory();
-        loadWithdrawRequests();
-        alert('✅ Заявка отправлена!');
-        document.getElementById('withdrawAmount').value = '';
-        document.getElementById('withdrawDetail').value = '';
-        document.getElementById('detailInput').classList.remove('show');
-    }
-});
-
-// ===== НИК =====
-document.getElementById('saveNickBtn').addEventListener('click', async function() {
-    const nick = document.getElementById('nickInput').value.trim();
-    if (!nick) { alert('❌ Введите ник!'); return; }
-    const errorEl = document.getElementById('nickError');
-    const successEl = document.getElementById('nickSuccess');
-    errorEl.style.display = 'none';
-    successEl.style.display = 'none';
-    const existing = await getPlayer(nick);
-    if (existing && nick !== currentNick) {
-        errorEl.style.display = 'block';
-        setTimeout(() => errorEl.style.display = 'none', 3000);
-        return;
-    }
-    currentNick = nick;
-    localStorage.setItem('oxdrop_nick', nick);
-    await loadPlayerData();
-    successEl.style.display = 'block';
-    setTimeout(() => successEl.style.display = 'none', 3000);
-    alert('✅ Переключено на: ' + nick);
-});
-
-// ===== ПРОЧИЕ ФУНКЦИИ =====
-function switchTab(tabId) {
-    document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    document.querySelector(`.tabs button[data-tab="${tabId}"]`).classList.add('active');
-    document.getElementById('tab-' + tabId).classList.add('active');
-    if (tabId === 'inventory' || tabId === 'upgrade') updateInventoryUI();
-    if (tabId === 'withdraw') renderWithdrawHistory();
-}
+// ===== ИНИЦИАЛИЗАЦИЯ =====
 function switchCase(index) {
     currentCaseIndex = index;
-    document.getElementById('priceDisplay').textContent = cases[index].price;
+    updatePriceUI();
     const preview = cases[index].items[0];
     renderSlot(preview);
     document.getElementById('itemPrice').classList.remove('show');
     document.getElementById('sellBtn').classList.remove('show');
     lastItem = null;
-    document.querySelectorAll('.case-menu button').forEach((btn, i) => {
-        btn.classList.toggle('active', i === index);
+    document.querySelectorAll('.case-menu button').forEach((btn,i)=>{
+        btn.classList.toggle('active', i===index);
     });
 }
 function openPreview(index) {
@@ -806,119 +941,56 @@ function openPreview(index) {
     `).join('');
     document.getElementById('previewModal').classList.add('show');
 }
-document.getElementById('previewClose').addEventListener('click', () => document.getElementById('previewModal').classList.remove('show'));
-
-// ===== КОЛЕСО АПГРЕЙДА =====
-function buildWheel() {
-    const wheel = document.getElementById('wheel');
-    wheel.innerHTML = '<div class="wheel-pointer"></div><div class="wheel-center"></div>';
-    const items = [
-        { name: 'Успех ✅', color: '#00ff88', type: 'upgrade' },
-        { name: 'Сгорел 💥', color: '#ff2200', type: 'burn' }
-    ];
-    const angleStep = 360 / items.length;
-    items.forEach((item, index) => {
-        const angle = index * angleStep;
-        const seg = document.createElement('div');
-        seg.className = 'wheel-segment';
-        seg.style.transform = 'rotate(' + angle + 'deg)';
-        seg.style.background = item.color;
-        seg.innerHTML = `<span class="seg-text" style="transform:rotate(90deg)">${item.name}</span>`;
-        wheel.appendChild(seg);
+document.getElementById('previewClose').addEventListener('click', ()=> document.getElementById('previewModal').classList.remove('show'));
+document.querySelectorAll('.tabs button').forEach(btn => {
+    btn.addEventListener('click', function(){
+        document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+        if(this.dataset.tab === 'inventory' || this.dataset.tab === 'upgrade') updateInventoryUI();
+        if(this.dataset.tab === 'withdraw') { updateBalanceUI(); renderWithdrawHistory(); }
     });
-    return items;
-}
-async function openWheel() {
-    if (!selectedUpgradeItem) { alert('❌ Выберите предмет!'); return; }
-    document.getElementById('wheelContainer').classList.add('show');
-    document.getElementById('openWheelBtn').disabled = true;
-    document.getElementById('wheelSpinBtn').disabled = false;
-    document.getElementById('wheelResult').textContent = '🌀 Крутим...';
-    document.getElementById('resultBox').classList.remove('show', 'success', 'fail');
+});
+document.getElementById('upgradeLevels').addEventListener('click', function(e) {
+    const level = e.target.closest('.upgrade-level');
+    if (!level) return;
+    document.querySelectorAll('.upgrade-level').forEach(el => el.classList.remove('selected'));
+    level.classList.add('selected');
+    selectedLevel.mult = parseFloat(level.dataset.mult);
+    selectedLevel.name = level.dataset.name;
+    const chanceText = level.querySelector('.level-chance').textContent;
+    selectedLevel.chance = parseInt(chanceText.match(/\d+/)[0]);
+});
+document.querySelectorAll('.withdraw-methods button').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.withdraw-methods button').forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+        selectedMethod = this.dataset.method;
+        document.getElementById('detailInput').classList.add('show');
+        document.getElementById('withdrawDetail').placeholder = selectedMethod === 'card' ? 'Введите номер карты' : 'Введите ID в игре';
+    });
+});
 
-    const wheelItems = buildWheel();
-    const chance = selectedLevel.chance / 100;
-    const rand = Math.random();
-    const resultIndex = rand < chance ? 0 : 1;
-    const selected = wheelItems[resultIndex];
-    const spins = 6 + Math.floor(Math.random() * 3);
-    const targetAngle = spins * 360 + (resultIndex * 180);
-    let currentAngle = 0, step = 0;
-    const totalSteps = 60;
-    const stepAngle = targetAngle / totalSteps;
-
-    const interval = setInterval(() => {
-        step++;
-        currentAngle += stepAngle;
-        document.getElementById('wheel').style.transform = 'rotate(' + currentAngle + 'deg)';
-        if (step >= totalSteps) {
-            clearInterval(interval);
-            document.getElementById('wheel').style.transform = 'rotate(' + targetAngle + 'deg)';
-            if (selected.type === 'upgrade') {
-                const newValue = Math.round(selectedUpgradeItem.value * selectedLevel.mult);
-                document.getElementById('resultBox').className = 'result-box show success';
-                document.getElementById('resultTitle').textContent = '🎉 Апгрейд успешен!';
-                document.getElementById('resultDesc').textContent = `${selectedUpgradeItem.name} → ${newValue}$`;
-                document.getElementById('wheelResult').textContent = '✅ Успех!';
-                document.getElementById('wheelResult').style.color = '#00ff88';
-                inventory[selectedUpgradeIndex].value = newValue;
-                await updatePlayer(currentNick, balance, inventory);
-                updateInventoryUI();
-                updateBalanceUI();
-            } else {
-                document.getElementById('resultBox').className = 'result-box show fail';
-                document.getElementById('resultTitle').textContent = '💥 Сгорел!';
-                document.getElementById('resultDesc').textContent = `${selectedUpgradeItem.name} уничтожен!`;
-                document.getElementById('wheelResult').textContent = '💥 Сгорел!';
-                document.getElementById('wheelResult').style.color = '#ff2200';
-                inventory.splice(selectedUpgradeIndex, 1);
-                selectedUpgradeIndex = -1;
-                selectedUpgradeItem = null;
-                await updatePlayer(currentNick, balance, inventory);
-                updateInventoryUI();
-                updateBalanceUI();
-            }
-            document.getElementById('openWheelBtn').disabled = false;
-            document.getElementById('wheelSpinBtn').disabled = true;
-        }
-    }, 30);
-}
-document.getElementById('openWheelBtn').addEventListener('click', openWheel);
-document.getElementById('wheelSpinBtn').addEventListener('click', openWheel);
-
-// ===== ЗАПУСК =====
-async function init() {
-    document.getElementById('donateBtn').href = 'https://www.donationalerts.com/r/phff';
+function init() {
+    loadPlayers();
+    loadStats();
+    loadWithdrawRequests();
     document.getElementById('nickInput').value = currentNick;
-    await loadPlayerData();
+    document.getElementById('donateBtn').href = DONATE_URL;
+    loadPlayerInventory();
     switchCase(0);
-    document.getElementById('historyList').innerHTML = '';
+    updateBalanceUI();
+    updateInventoryUI();
+    updateStatsUI();
+    renderWithdrawHistory();
+    recordVisit();
     document.getElementById('openCaseBtn').addEventListener('click', openCase);
     document.getElementById('sellBtn').addEventListener('click', sellLastItem);
-    document.querySelectorAll('.case-menu button').forEach((btn, i) => {
-        btn.addEventListener('click', () => { if (!isOpening) switchCase(i); });
-    });
-    document.querySelectorAll('.withdraw-methods button').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.withdraw-methods button').forEach(b => b.classList.remove('selected'));
-            this.classList.add('selected');
-            selectedMethod = this.dataset.method;
-            document.getElementById('detailInput').classList.add('show');
-            document.getElementById('withdrawDetail').placeholder = selectedMethod === 'card' ? 'Введите номер карты' : 'Введите ID в игре';
+    document.querySelectorAll('.case-menu button').forEach((btn, i)=>{
+        btn.addEventListener('click', (e)=>{
+            if(!isOpening) switchCase(i);
         });
-    });
-    document.getElementById('menuToggle').addEventListener('click', function() {
-        this.classList.toggle('active');
-        document.getElementById('mobileMenu').classList.toggle('show');
-    });
-    document.getElementById('upgradeLevels').addEventListener('click', function(e) {
-        const level = e.target.closest('.upgrade-level');
-        if (!level) return;
-        document.querySelectorAll('.upgrade-level').forEach(el => el.classList.remove('selected'));
-        level.classList.add('selected');
-        selectedLevel.mult = parseFloat(level.dataset.mult);
-        const chanceText = level.querySelector('.level-chance').textContent;
-        selectedLevel.chance = parseInt(chanceText.match(/\d+/)[0]);
     });
 }
 init();
