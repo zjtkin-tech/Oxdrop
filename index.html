@@ -96,7 +96,6 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .upgrade-level .level-mult{font-size:1.2rem;font-weight:700;color:#ffd966}
 .upgrade-level .level-desc{font-size:0.65rem;color:#96a9d1;margin-top:4px}
 
-/* ===== КОЛЕСО ===== */
 .wheel-container{display:none;margin-top:20px;padding:20px;background:rgba(0,0,0,0.6);border-radius:30px;border:2px solid #ffd96655}
 .wheel-container.show{display:block}
 .wheel-title{color:#ffd966;text-align:center;font-size:0.9rem;font-weight:700;margin-bottom:10px}
@@ -699,45 +698,42 @@ function renderUpgradeInventory() {
     document.getElementById('openWheelBtn').disabled = selectedIndices.length === 0;
 }
 
-// ===== КОЛЕСО: РАЗМЕР СЕКТОРА ЗАВИСИТ ОТ ШАНСА =====
 function buildWheel(winChance) {
     const wheelInner = document.getElementById('wheelInner');
     wheelInner.innerHTML = '';
     
-    // winChance от 0 до 1
+    // Красный сектор от 0° до winDeg (по часовой), серый — оставшееся
     const winDeg = winChance * 360;
     
-    // Красный сектор (победа) — верхняя часть колеса
-    // conic-gradient: красный от 0 до winDeg, серый от winDeg до 360
     wheelInner.style.background = 'conic-gradient(#dc2626 0deg ' + winDeg + 'deg, #94a3b8 ' + winDeg + 'deg 360deg)';
     
-    // Текст на красной части (если хватает места)
-    if (winDeg > 30) {
+    // Текст ПОБЕДА (если хватает места)
+    if (winDeg > 40) {
         const winLabel = document.createElement('div');
         winLabel.style.position = 'absolute';
-        winLabel.style.top = '10%';
-        winLabel.style.left = '50%';
-        winLabel.style.transform = 'translateX(-50%)';
+        winLabel.style.top = '25%';
+        winLabel.style.left = '25%';
         winLabel.style.color = 'white';
         winLabel.style.fontWeight = '900';
         winLabel.style.fontSize = '0.85rem';
         winLabel.style.textShadow = '0 0 5px rgba(0,0,0,0.7)';
+        winLabel.style.transform = 'rotate(-45deg)';
         winLabel.style.pointerEvents = 'none';
         winLabel.textContent = 'ПОБЕДА';
         wheelInner.appendChild(winLabel);
     }
     
-    // Текст на серой части (если хватает места)
-    if (360 - winDeg > 30) {
+    // Текст ПРОИГРЫШ (если хватает места)
+    if (360 - winDeg > 40) {
         const loseLabel = document.createElement('div');
         loseLabel.style.position = 'absolute';
-        loseLabel.style.bottom = '10%';
-        loseLabel.style.left = '50%';
-        loseLabel.style.transform = 'translateX(-50%)';
+        loseLabel.style.bottom = '20%';
+        loseLabel.style.right = '15%';
         loseLabel.style.color = '#1e293b';
         loseLabel.style.fontWeight = '900';
         loseLabel.style.fontSize = '0.8rem';
         loseLabel.style.textShadow = '0 0 5px rgba(255,255,255,0.3)';
+        loseLabel.style.transform = 'rotate(135deg)';
         loseLabel.style.pointerEvents = 'none';
         loseLabel.textContent = 'ПРОИГРЫШ';
         wheelInner.appendChild(loseLabel);
@@ -755,7 +751,6 @@ async function openWheel() {
     document.getElementById('wheelResult').textContent = '🌀 Крутим...';
     document.getElementById('resultBox').classList.remove('show', 'success', 'fail');
 
-    // Скрытый расчёт шанса
     let chance = selectedLevel.chance / 100;
     if (winStreak >= 5) {
         const multipliers = [0.55, 0.33, 0.11, 0.01, 0];
@@ -764,36 +759,37 @@ async function openWheel() {
         chance = chance * mult;
     }
     
-    // Строим колесо с реальным размером сектора
+    // Рисуем колесо с реальным шансом
     buildWheel(chance);
     
     // Определяем результат
     const isWin = Math.random() < chance;
-    const resultIndex = isWin ? 0 : 1;
-    const selected = { type: isWin ? 'upgrade' : 'burn' };
     
-    // Углы
+    // Углы секторов
     const winDeg = chance * 360;
     const loseDeg = 360 - winDeg;
     
-    // Стрелка сверху (0°). Красный сектор от 0 до winDeg, серый от winDeg до 360
-    // Нужно, чтобы после поворота стрелка показала на нужный сектор
-    // Финальный угол колеса относительно его начального положения:
-    // Если победа — угол должен быть в [0, winDeg]
-    // Если проигрыш — в [winDeg, 360]
+    // Стрелка стоит сверху (0°).
+    // Красный сектор занимает углы [0°, winDeg°] относительно неподвижного колеса.
+    // При повороте колеса на X°, точка с углом A смещается в (A + X) mod 360.
+    // Чтобы точка A оказалась на позиции стрелки (0°), нужно X = -A (mod 360) = 360 - A.
     
-    let targetAngleInSector;
+    let targetAngle; // точка внутри нужного сектора относительно неподвижного колеса
+    
     if (isWin) {
-        // Случайная точка внутри красного
-        targetAngleInSector = Math.random() * Math.max(winDeg - 10, 5) + 5;
+        // Центр красного сектора = winDeg / 2
+        targetAngle = winDeg / 2;
     } else {
-        // Случайная точка внутри серого
-        targetAngleInSector = winDeg + Math.random() * Math.max(loseDeg - 10, 5) + 5;
+        // Центр серого сектора = winDeg + loseDeg / 2
+        targetAngle = winDeg + loseDeg / 2;
     }
     
-    // Добавляем полные обороты
+    // Угол поворота колеса
+    let rotationToTarget = (360 - targetAngle) % 360;
+    
+    // Полные обороты
     const spins = 5 + Math.floor(Math.random() * 3);
-    const totalRotation = spins * 360 + targetAngleInSector;
+    const totalRotation = spins * 360 + rotationToTarget;
     
     const wheelEl = document.getElementById('wheelInner');
     
@@ -802,7 +798,7 @@ async function openWheel() {
     wheelEl.style.transform = 'rotate(0deg)';
     void wheelEl.offsetWidth;
     
-    // Плавная анимация
+    // ПЛАВНАЯ АНИМАЦИЯ
     wheelEl.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
     
     setTimeout(() => {
