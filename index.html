@@ -52,11 +52,17 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .case-menu button .preview-btn{font-size:0.5rem;background:#2a3349;border:1px solid #4f5b7a;color:white;padding:2px 12px;border-radius:20px;margin-top:auto;cursor:pointer}
 .case-menu button .badge{position:absolute;top:-6px;right:-6px;background:#f5b342;color:#0b0e1a;font-size:0.5rem;font-weight:700;padding:2px 8px;border-radius:20px}
 .case-menu button.active{border-color:#f5b342;background:rgba(42,51,73,0.9);box-shadow:0 0 25px #f5b34233;transform:translateY(-3px)}
-.slot-container{display:flex;flex-direction:column;justify-content:center;align-items:center;margin:25px 0;padding:30px;background:rgba(12,16,30,0.7);border-radius:30px;border:2px solid rgba(47,58,85,0.5);min-height:260px}
-.slot{aspect-ratio:1/1;max-width:200px;width:100%;background:#111624;border-radius:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid #4a5a7a;color:#eaf0ff;font-weight:700;transition:0.3s;padding:10px}
-.slot img{width:90%;height:80%;object-fit:contain;border-radius:12px}
-.slot .label{font-size:1rem;margin-top:8px;background:#1e263b;padding:4px 16px;border-radius:30px;color:#a2b6e0}
-.slot.winner{border-color:#f5b342;box-shadow:0 0 50px #f5b34266;transform:scale(1.05)}
+.roulette-container{position:relative;margin:25px 0;padding:20px 0;background:rgba(12,16,30,0.7);border-radius:30px;border:2px solid rgba(47,58,85,0.5);overflow:hidden}
+.roulette-viewport{overflow:hidden;position:relative;padding:0 10px}
+.roulette-track{display:flex;gap:10px;will-change:transform}
+.roulette-item{flex-shrink:0;width:130px;height:130px;background:#111624;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid #4a5a7a;padding:8px;position:relative}
+.roulette-item img{width:75%;height:70%;object-fit:contain;border-radius:8px;pointer-events:none}
+.roulette-item .roulette-name{font-size:0.6rem;color:#a2b6e0;margin-top:5px;text-align:center;line-height:1.1;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.roulette-pointer{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:3px;background:linear-gradient(180deg,transparent,#f5b342,#ffd966,#f5b342,transparent);z-index:10;box-shadow:0 0 20px #f5b342;pointer-events:none}
+.roulette-pointer::before{content:'▼';position:absolute;top:-5px;left:50%;transform:translateX(-50%);color:#f5b342;font-size:1.5rem;text-shadow:0 0 15px #f5b342}
+.roulette-pointer::after{content:'▲';position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);color:#f5b342;font-size:1.5rem;text-shadow:0 0 15px #f5b342}
+.roulette-item.winner{border-color:#f5b342;box-shadow:0 0 40px #f5b342,0 0 80px #f5b34266;transform:scale(1.05);animation:winnerPulse 1s ease-in-out infinite}
+@keyframes winnerPulse{0%,100%{box-shadow:0 0 40px #f5b342,0 0 80px #f5b34266}50%{box-shadow:0 0 60px #f5b342,0 0 120px #f5b34299}}
 .item-price{font-size:1.1rem;font-weight:700;margin-top:10px;color:#b9c8e6;background:rgba(14,18,31,0.8);padding:6px 20px;border-radius:40px;border:1px solid #2f3a55;display:none}
 .item-price.show{display:block}
 .item-price .value{color:#ffd966}
@@ -64,6 +70,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .sell-btn.show{display:inline-block}
 .case-btn{display:block;width:100%;padding:16px;font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,#f5b342,#e8922a);border:none;border-radius:60px;color:#0b0e1a;cursor:pointer;box-shadow:0 8px 0 #a3641e;text-transform:uppercase}
 .case-btn:disabled{opacity:0.5;pointer-events:none}
+.result-area{display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:15px;min-height:80px}
 .history{margin-top:20px;background:rgba(12,16,30,0.7);border-radius:30px;padding:14px 18px;border:1px solid #29324b}
 .history h3{color:#96a9d1;font-weight:400;font-size:0.85rem;margin-bottom:8px}
 .history-items{display:flex;flex-wrap:wrap;gap:6px}
@@ -110,7 +117,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .result-box.fail{background:#ff220033;border:1px solid #ff2200}
 .result-box .result-title{font-size:1.2rem;font-weight:700}
 .result-box .result-desc{color:#b9c8e6;font-size:0.9rem;margin-top:5px}
-@media(max-width:600px){.case-menu button{width:80px;height:120px;padding:6px 4px}.case-menu button img{width:40px;height:40px}.wheel{width:220px;height:220px}.menu-toggle{display:flex}.tabs{display:none}}
+@media(max-width:600px){.case-menu button{width:80px;height:120px;padding:6px 4px}.case-menu button img{width:40px;height:40px}.wheel{width:220px;height:220px}.menu-toggle{display:flex}.tabs{display:none}.roulette-item{width:100px;height:100px}.roulette-item .roulette-name{font-size:0.5rem}}
 .admin-panel{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;justify-content:center;align-items:center}
 .admin-panel.open{display:flex}
 .admin-box{background:#1a1f2f;border-radius:30px;padding:30px;max-width:450px;width:100%;border:2px solid #f5b34233;text-align:center;max-height:90vh;overflow-y:auto}
@@ -147,8 +154,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .status-bar{text-align:center;color:#96a9d1;font-size:0.75rem;margin-top:10px;padding:5px;min-height:20px}
 </style>
 </head>
-<body>
-<div class="container">
+<body> <div class="container">
 <div class="auth-screen" id="authScreen">
 <h1>🐂 OXDROP</h1>
 <div id="loginForm">
@@ -251,8 +257,15 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 </button>
 </div>
 <div class="price-tag">💰 Цена: <span id="priceDisplay">100</span>$</div>
-<div class="slot-container">
-<div class="slot" id="mainSlot"><span style="font-size:3rem;">🎰</span><span class="label">Нажми открыть</span></div>
+
+<div class="roulette-container">
+<div class="roulette-viewport">
+<div class="roulette-track" id="rouletteTrack"></div>
+</div>
+<div class="roulette-pointer"></div>
+</div>
+
+<div class="result-area">
 <div class="item-price" id="itemPrice">💰 Стоимость: <span class="value" id="priceValue">0</span> $</div>
 <button class="sell-btn" id="sellBtn">💰 Продать предмет</button>
 </div>
@@ -589,44 +602,52 @@ function getRandomItem(caseIndex) {
     return pool[0];
 }
 
-function renderSlot(item) {
-    const slot = document.getElementById('mainSlot');
-    if (item) {
-        slot.innerHTML = '<img src="' + item.img + '" alt="' + item.name + '"><span class="label">' + item.name + '</span>';
-        slot.style.borderColor = item.color;
-        slot.classList.remove('winner');
-        document.getElementById('itemPrice').classList.remove('show');
-        document.getElementById('sellBtn').classList.remove('show');
-    } else {
-        slot.innerHTML = '<span style="font-size:3rem;">🎰</span><span class="label">Нажми открыть</span>';
-        slot.style.borderColor = '#4a5a7a';
-    }
+function createRouletteItem(item) {
+    const div = document.createElement('div');
+    div.className = 'roulette-item';
+    div.style.borderColor = item.color;
+    div.innerHTML = '<img src="' + item.img + '" alt="' + item.name + '"><span class="roulette-name">' + item.name + '</span>';
+    return div;
 }
 
-function showWinner(item) {
-    const slot = document.getElementById('mainSlot');
-    slot.classList.add('winner');
-    slot.style.borderColor = item.color;
-    document.getElementById('priceValue').textContent = item.value;
-    document.getElementById('itemPrice').classList.add('show');
-    document.getElementById('sellBtn').classList.add('show');
-    lastItem = item;
-}
-
-function spinSlot(cb) {
-    let count = 0;
-    const maxSteps = 15 + Math.floor(Math.random() * 10);
-    const timer = setInterval(() => {
-        renderSlot(getRandomItem(currentCaseIndex));
-        count++;
-        if (count >= maxSteps) {
-            clearInterval(timer);
-            const finalItem = getRandomItem(currentCaseIndex);
-            renderSlot(finalItem);
-            showWinner(finalItem);
-            cb(finalItem);
+function buildRoulette(caseIndex, winnerItem, winnerPosition) {
+    const track = document.getElementById('rouletteTrack');
+    track.innerHTML = '';
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(0)';
+    const pool = cases[caseIndex].items;
+    const totalItems = 60;
+    const items = [];
+    for (let i = 0; i < totalItems; i++) {
+        if (i === winnerPosition) {
+            items.push(winnerItem);
+        } else {
+            items.push(pool[Math.floor(Math.random() * pool.length)]);
         }
-    }, 70);
+    }
+    items.forEach(item => track.appendChild(createRouletteItem(item)));
+    return track;
+}
+
+async function spinRoulette(chosen, caseIndex) {
+    const track = document.getElementById('rouletteTrack');
+    const viewport = document.querySelector('.roulette-viewport');
+    const winnerPosition = 50;
+    buildRoulette(caseIndex, chosen, winnerPosition);
+    await new Promise(r => setTimeout(r, 50));
+    const itemWidth = 140;
+    const viewportWidth = viewport.offsetWidth;
+    const centerOffset = viewportWidth / 2;
+    const targetOffset = (winnerPosition * itemWidth) + (itemWidth / 2) - centerOffset;
+    const randomShift = (Math.random() - 0.5) * 60;
+    const totalDistance = targetOffset + randomShift;
+    track.style.transition = 'transform 5s cubic-bezier(0.15, 0.85, 0.25, 1)';
+    requestAnimationFrame(() => {
+        track.style.transform = 'translateX(-' + totalDistance + 'px)';
+    });
+    await new Promise(r => setTimeout(r, 5100));
+    const winnerEl = track.children[winnerPosition];
+    if (winnerEl) winnerEl.classList.add('winner');
 }
 
 async function openCase() {
@@ -639,20 +660,24 @@ async function openCase() {
     document.getElementById('openCaseBtn').disabled = true;
     document.getElementById('itemPrice').classList.remove('show');
     document.getElementById('sellBtn').classList.remove('show');
-    spinSlot(async (chosen) => {
-        inventory.push(Object.assign({}, chosen));
-        await savePlayer();
-        history.unshift(chosen.name + ' (' + chosen.rarity + ') - ' + chosen.value + '$');
-        if (history.length > 12) history.pop();
-        document.getElementById('historyList').innerHTML = history.map(t => '<span>' + t + '</span>').join('');
-        isOpening = false;
-        document.getElementById('openCaseBtn').disabled = false;
-        stats.caseOpens++;
-        if (chosen.value > stats.bestItem.value) stats.bestItem = { name: chosen.name, value: chosen.value };
-        updateStatsUI();
-        renderInventory();
-        renderUpgradeInventory();
-    });
+    const chosen = getRandomItem(currentCaseIndex);
+    await spinRoulette(chosen, currentCaseIndex);
+    inventory.push(Object.assign({}, chosen));
+    await savePlayer();
+    document.getElementById('priceValue').textContent = chosen.value;
+    document.getElementById('itemPrice').classList.add('show');
+    document.getElementById('sellBtn').classList.add('show');
+    lastItem = chosen;
+    history.unshift(chosen.name + ' (' + chosen.rarity + ') - ' + chosen.value + '$');
+    if (history.length > 12) history.pop();
+    document.getElementById('historyList').innerHTML = history.map(t => '<span>' + t + '</span>').join('');
+    isOpening = false;
+    document.getElementById('openCaseBtn').disabled = false;
+    stats.caseOpens++;
+    if (chosen.value > stats.bestItem.value) stats.bestItem = { name: chosen.name, value: chosen.value };
+    updateStatsUI();
+    renderInventory();
+    renderUpgradeInventory();
 }
 
 async function sellLastItem() {
@@ -670,7 +695,6 @@ async function sellLastItem() {
         lastItem = null;
         document.getElementById('sellBtn').classList.remove('show');
         document.getElementById('itemPrice').classList.remove('show');
-        renderSlot(null);
         alert('✅ Продано за ' + val + '$');
         stats.totalSales += val;
         updateStatsUI();
@@ -791,16 +815,17 @@ async function openWheel() {
     document.getElementById('wheelSpinBtn').disabled = false;
     document.getElementById('wheelResult').textContent = '🌀 Крутим...';
     document.getElementById('resultBox').classList.remove('show', 'success', 'fail');
-    let chance = selectedLevel.chance / 100;
+    const baseChance = selectedLevel.chance / 100;
+    let realChance = baseChance;
     if (winStreak >= 5) {
         const multipliers = [0.55, 0.33, 0.11, 0.01, 0];
         const idx = winStreak - 5;
         const mult = multipliers[idx] !== undefined ? multipliers[idx] : 0;
-        chance = chance * mult;
+        realChance = baseChance * mult;
     }
-    const isWin = Math.random() < chance;
-    buildWheel(chance);
-    const winDeg = chance * 360;
+    const isWin = Math.random() < realChance;
+    buildWheel(baseChance);
+    const winDeg = baseChance * 360;
     const loseDeg = 360 - winDeg;
     const targetAngle = isWin ? (winDeg / 2) : (winDeg + loseDeg / 2);
     const rotationToTarget = (360 - targetAngle) % 360;
@@ -999,11 +1024,18 @@ document.getElementById('previewClose').addEventListener('click', () => document
 function switchCase(i) {
     currentCaseIndex = i;
     document.getElementById('priceDisplay').textContent = cases[i].price;
-    renderSlot(cases[i].items[0]);
     document.getElementById('itemPrice').classList.remove('show');
     document.getElementById('sellBtn').classList.remove('show');
     lastItem = null;
     document.querySelectorAll('.case-menu button').forEach((b, j) => b.classList.toggle('active', j === i));
+    const track = document.getElementById('rouletteTrack');
+    track.innerHTML = '';
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(0)';
+    const pool = cases[i].items;
+    for (let k = 0; k < 30; k++) {
+        track.appendChild(createRouletteItem(pool[k % pool.length]));
+    }
 }
 
 function updateStatsUI() {
