@@ -104,8 +104,6 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .wheel-title{color:#ffd966;text-align:center;font-size:0.9rem;font-weight:700;margin-bottom:10px}
 .wheel{position:relative;width:100%;max-width:320px;height:320px;margin:0 auto;border-radius:50%;border:4px solid #f5b342;overflow:visible;background:#1a1f2f}
 .wheel-inner{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;overflow:hidden;transform:rotate(0deg)}
-.wheel-segment{position:absolute;width:50%;height:50%;top:0;left:50%;transform-origin:0% 100%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:900;color:white;padding-left:15px;text-shadow:0 0 5px rgba(0,0,0,0.5);letter-spacing:1px}
-.wheel-segment .seg-text{transform:rotate(90deg);white-space:nowrap}
 .wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;background:linear-gradient(135deg,#f5b342,#e8922a);border-radius:50%;border:3px solid #fff;z-index:10;box-shadow:0 0 20px #f5b34266;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
 .wheel-pointer{position:absolute;top:-15px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:20px solid transparent;border-right:20px solid transparent;border-top:40px solid #ffd966;z-index:12;filter:drop-shadow(0 0 10px #f5b342)}
 .wheel-result{text-align:center;margin-top:12px;font-size:1.1rem;font-weight:700;color:#00ff88;min-height:30px}
@@ -382,6 +380,7 @@ let inventory = [];
 let lastItem = null;
 let selectedIndices = [];
 let selectedLevel = { mult: 1.1, chance: 90 };
+let winStreak = 0;
 let currentNick = '';
 let currentPass = '';
 let selectedMethod = 'card';
@@ -389,7 +388,8 @@ let stats = { visits: 0, caseOpens: 0, totalSales: 0, bestItem: { name: '—', v
 
 function getPlayer(nick) {
     if (!cloudData.players) cloudData.players = {};
-    if (!cloudData.players[nick]) cloudData.players[nick] = { balance: 0, inventory: [], pass: '' };
+    if (!cloudData.players[nick]) cloudData.players[nick] = { balance: 0, inventory: [], pass: '', winStreak: 0 };
+    if (cloudData.players[nick].winStreak === undefined) cloudData.players[nick].winStreak = 0;
     return cloudData.players[nick];
 }
 
@@ -425,7 +425,7 @@ document.getElementById('registerBtn').addEventListener('click', async function(
         return;
     }
     
-    cloudData.players[nick] = { balance: 0, inventory: [], pass: pass };
+    cloudData.players[nick] = { balance: 0, inventory: [], pass: pass, winStreak: 0 };
     await saveAll();
     
     msg.textContent = '✅ Аккаунт создан!';
@@ -470,6 +470,7 @@ async function enterGame() {
     const player = getPlayer(currentNick);
     balance = player.balance || 0;
     inventory = player.inventory || [];
+    winStreak = player.winStreak || 0;
     
     updateBalanceUI();
     renderInventory();
@@ -506,6 +507,7 @@ async function savePlayer() {
     player.balance = balance;
     player.inventory = inventory;
     player.pass = currentPass;
+    player.winStreak = winStreak;
     await saveAll();
 }
 
@@ -699,22 +701,72 @@ function renderUpgradeInventory() {
     document.getElementById('openWheelBtn').disabled = selectedIndices.length === 0;
 }
 
-function buildWheel() {
+// ===== КОЛЕСО С ДИНАМИЧЕСКИМ РАЗМЕРОМ СЕКТОРОВ =====
+function buildWheel(winChance) {
     const wheelInner = document.getElementById('wheelInner');
     wheelInner.innerHTML = '';
-    const items = [
-        {name:'ПОБЕДА', color:'#dc2626', type:'upgrade'},
-        {name:'ПРОИГРЫШ', color:'#1e293b', type:'burn'}
-    ];
-    items.forEach((item, i) => {
-        const seg = document.createElement('div');
-        seg.className = 'wheel-segment';
-        seg.style.transform = 'rotate(' + (i * 180) + 'deg)';
-        seg.style.background = item.color;
-        seg.innerHTML = '<span class="seg-text" style="transform:rotate(90deg)">' + item.name + '</span>';
-        wheelInner.appendChild(seg);
-    });
-    return items;
+    
+    // winChance — от 0 до 1 (шанс победы)
+    const winDeg = winChance * 360;
+    const loseDeg = 360 - winDeg;
+    
+    // Красный сектор (победа)
+    const winSeg = document.createElement('div');
+    winSeg.style.position = 'absolute';
+    winSeg.style.top = '0';
+    winSeg.style.left = '50%';
+    winSeg.style.width = '50%';
+    winSeg.style.height = '50%';
+    winSeg.style.transformOrigin = '0% 100%';
+    winSeg.style.background = '#dc2626';
+    winSeg.style.display = 'flex';
+    winSeg.style.alignItems = 'center';
+    winSeg.style.justifyContent = 'center';
+    winSeg.style.fontSize = '0.85rem';
+    winSeg.style.fontWeight = '900';
+    winSeg.style.color = 'white';
+    winSeg.style.paddingLeft = '15px';
+    winSeg.style.textShadow = '0 0 5px rgba(0,0,0,0.5)';
+    winSeg.style.letterSpacing = '1px';
+    winSeg.style.transform = 'rotate(0deg)';
+    winSeg.style.clipPath = 'polygon(0 100%, 100% 0, 100% 100%)';
+    // Размер сектора через conic-gradient не подходит для div, поэтому используем просто два сектора с пропорцией
+    // Реализуем через rotate + clip
+    
+    // Проще: используем conic-gradient на всём колесе
+    wheelInner.style.background = 'conic-gradient(#dc2626 0deg ' + winDeg + 'deg, #1e293b ' + winDeg + 'deg 360deg)';
+    
+    // Текст "ПОБЕДА" на красной части
+    const winLabel = document.createElement('div');
+    winLabel.style.position = 'absolute';
+    winLabel.style.top = '15%';
+    winLabel.style.left = '25%';
+    winLabel.style.color = 'white';
+    winLabel.style.fontWeight = '900';
+    winLabel.style.fontSize = '0.85rem';
+    winLabel.style.textShadow = '0 0 5px rgba(0,0,0,0.7)';
+    winLabel.style.transform = 'rotate(-45deg)';
+    winLabel.style.pointerEvents = 'none';
+    winLabel.textContent = 'ПОБЕДА';
+    wheelInner.appendChild(winLabel);
+    
+    // Текст "ПРОИГРЫШ" на тёмной части
+    if (loseDeg > 30) {
+        const loseLabel = document.createElement('div');
+        loseLabel.style.position = 'absolute';
+        loseLabel.style.top = '75%';
+        loseLabel.style.left = '60%';
+        loseLabel.style.color = '#94a3b8';
+        loseLabel.style.fontWeight = '900';
+        loseLabel.style.fontSize = '0.8rem';
+        loseLabel.style.textShadow = '0 0 5px rgba(0,0,0,0.7)';
+        loseLabel.style.transform = 'rotate(135deg)';
+        loseLabel.style.pointerEvents = 'none';
+        loseLabel.textContent = 'ПРОИГРЫШ';
+        wheelInner.appendChild(loseLabel);
+    }
+    
+    return winChance;
 }
 
 async function openWheel() {
@@ -726,33 +778,65 @@ async function openWheel() {
     document.getElementById('wheelResult').textContent = '🌀 Крутим...';
     document.getElementById('resultBox').classList.remove('show', 'success', 'fail');
 
-    const items = buildWheel();
-    const chance = selectedLevel.chance / 100;
-    const resultIndex = Math.random() < chance ? 0 : 1;
-    const selected = items[resultIndex];
+    // Стандартный шанс по уровню
+    let chance = selectedLevel.chance / 100;
+    
+    // После 5 побед подряд — шанс уменьшается
+    if (winStreak >= 5) {
+        const multipliers = [0.55, 0.33, 0.11, 0.01, 0];
+        const idx = winStreak - 5;
+        const mult = multipliers[idx] !== undefined ? multipliers[idx] : 0;
+        chance = chance * mult;
+    }
+    
+    // Строим колесо с нужным размером сектора
+    buildWheel(chance);
+    
+    // Определяем результат
+    const resultIndex = Math.random() < chance ? 0 : 1; // 0 = победа, 1 = проигрыш
+    const selected = resultIndex === 0 ? {type:'upgrade'} : {type:'burn'};
+    
+    // Вычисляем угол поворота
+    const winDeg = chance * 360;
+    
+    // Стрелка сверху. Победа — если стрелка указывает на красный сектор
+    // Красный сектор: 0° — winDeg°
+    // Чтобы стрелка (сверху, 0°) указала на красный, крутим так:
+    // Если победа — финальное положение = 0° + случайное смещение внутри красного
+    // Если проигрыш — финальное положение = winDeg + случайное смещение внутри тёмного
+    
+    let targetAngle;
+    if (resultIndex === 0) {
+        // Победа: угол попадает в красный сектор (0 - winDeg)
+        targetAngle = Math.random() * (winDeg - 10) + 5;
+    } else {
+        // Проигрыш: угол попадает в тёмный сектор (winDeg - 360)
+        targetAngle = winDeg + Math.random() * (360 - winDeg - 10) + 5;
+    }
+    
+    // Добавляем несколько полных оборотов
+    const spins = 5 + Math.floor(Math.random() * 3);
+    const totalRotation = spins * 360 + targetAngle;
     
     const wheelEl = document.getElementById('wheelInner');
     
-    // СБРОС: убираем transition, ставим 0°
+    // СБРОС
     wheelEl.style.transition = 'none';
     wheelEl.style.transform = 'rotate(0deg)';
-    
-    // Форсируем перерисовку
     void wheelEl.offsetWidth;
     
-    // Включаем transition
+    // Включаем плавную анимацию
     wheelEl.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
     
     // Вращаем
-    const spins = 5 + Math.floor(Math.random() * 3);
-    const targetRotation = spins * 360 + (resultIndex * 180);
-    
     setTimeout(() => {
-        wheelEl.style.transform = 'rotate(' + targetRotation + 'deg)';
+        wheelEl.style.transform = 'rotate(' + totalRotation + 'deg)';
     }, 100);
     
+    // Ждём окончания анимации
     setTimeout(async () => {
-        if (selected.type === 'upgrade') {
+        if (resultIndex === 0) {
+            winStreak++;
             const newVal = Math.round(totalValue * selectedLevel.mult);
             document.getElementById('resultBox').className = 'result-box show success';
             document.getElementById('resultTitle').textContent = '🎉 ПОБЕДА!';
@@ -766,6 +850,7 @@ async function openWheel() {
             renderInventory();
             renderUpgradeInventory();
         } else {
+            winStreak = 0;
             document.getElementById('resultBox').className = 'result-box show fail';
             document.getElementById('resultTitle').textContent = '💥 ПРОИГРЫШ!';
             document.getElementById('resultDesc').textContent = 'Все предметы уничтожены!';
@@ -970,4 +1055,4 @@ async function init() {
 init();
 </script>
 </body>
-    </html>
+</html>
