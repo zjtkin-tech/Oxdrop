@@ -8,7 +8,25 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
 body{min-height:100vh;background:linear-gradient(145deg,#0b0e1a,#1a1f2f);display:flex;justify-content:center;align-items:center;padding:15px}
 .container{max-width:950px;width:100%;border-radius:48px;padding:20px;border:1px solid rgba(255,215,0,0.15);background:rgba(255,255,255,0.05)}
+
+/* ===== ЭКРАН АВТОРИЗАЦИИ ===== */
+.auth-screen{display:flex;flex-direction:column;gap:12px;padding:20px 10px}
+.auth-screen h2{color:#f5b342;text-align:center;font-size:1.4rem;margin-bottom:10px}
+.auth-screen input{width:100%;padding:14px;border-radius:20px;border:1px solid #2f3a55;background:#0e121f;color:white;font-size:1rem;text-align:center}
+.auth-screen input:focus{outline:2px solid #f5b342}
+.auth-screen button{padding:14px;border-radius:30px;font-weight:700;font-size:1rem;cursor:pointer;border:none;transition:0.2s}
+.auth-screen .btn-main{background:linear-gradient(135deg,#f5b342,#e8922a);color:#0b0e1a}
+.auth-screen .btn-alt{background:rgba(30,38,59,0.85);color:#b9c8e6;border:1px solid #4f5b7a}
+.auth-screen .msg{text-align:center;font-size:0.9rem;min-height:24px;margin-top:5px;font-weight:600}
+.auth-switch{text-align:center;color:#96a9d1;font-size:0.9rem;margin-top:5px;cursor:pointer;text-decoration:underline}
+
+/* ===== ИГРА ===== */
+.game-screen{display:none}
 h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f5b342);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px;cursor:pointer}
+.top-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.user-info{color:#96a9d1;font-size:0.9rem}
+.user-info span{color:#f5b342;font-weight:700}
+.logout-btn{background:#b34747;border:none;color:white;padding:6px 16px;border-radius:20px;font-weight:700;font-size:0.85rem;cursor:pointer}
 .menu-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:10px;background:rgba(30,38,59,0.85);border-radius:15px;border:1px solid #2f3a55;margin-bottom:10px;align-items:center}
 .menu-toggle span{display:block;width:28px;height:3px;background:#b9c8e6;border-radius:5px;transition:0.3s}
 .menu-toggle.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
@@ -31,11 +49,6 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .balance-box{text-align:right;color:#b9c8e6;font-size:1.1rem;margin-bottom:15px;display:flex;justify-content:flex-end;align-items:center;gap:12px;flex-wrap:wrap}
 .balance-box span{background:#0e121f;padding:6px 20px;border-radius:60px;border:1px solid #ffd96655;color:#ffd966;font-weight:700;font-size:1.4rem}
 .donate-btn{background:linear-gradient(135deg,#ff6b35,#f7931e);border:none;color:white;padding:6px 18px;border-radius:40px;font-weight:700;font-size:0.9rem;text-decoration:none}
-.nick-input{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
-.nick-input label{color:#96a9d1;font-size:0.9rem}
-.nick-input input{flex:1;padding:8px 15px;border-radius:20px;border:1px solid #2f3a55;background:#0e121f;color:white;min-width:100px;font-size:1rem}
-.nick-input button{background:#f5b342;border:none;color:#0b0e1a;padding:8px 20px;border-radius:20px;font-weight:700;cursor:pointer}
-.nick-msg{font-size:0.85rem;text-align:center;min-height:20px;margin-bottom:5px}
 .case-menu{display:flex;gap:12px;margin:20px 0;flex-wrap:wrap;justify-content:center}
 .case-menu button{background:rgba(30,38,59,0.85);border:2px solid #2f3a55;color:#b9c8e6;width:95px;height:135px;padding:8px 6px;border-radius:30px;font-weight:700;font-size:0.75rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;position:relative;transition:0.3s}
 .case-menu button img{width:55px;height:55px;object-fit:contain;border-radius:12px;background:rgba(12,16,30,0.7);padding:5px}
@@ -141,7 +154,36 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 </head>
 <body>
 <div class="container">
+
+<!-- ===== ЭКРАН ВХОДА/РЕГИСТРАЦИИ ===== -->
+<div class="auth-screen" id="authScreen">
+<h1 id="authTitle">🐂 OXDROP</h1>
+<div id="loginForm">
+<h2>🔑 Вход</h2>
+<input type="text" id="loginNick" placeholder="Ваш ник" autocomplete="off">
+<input type="text" id="loginPass" placeholder="Пароль" autocomplete="off">
+<button class="btn-main" id="loginBtn">🔑 Войти</button>
+<div class="msg" id="loginMsg"></div>
+<div class="auth-switch" id="goRegister">➕ Создать новый аккаунт</div>
+</div>
+<div id="registerForm" style="display:none;">
+<h2>➕ Регистрация</h2>
+<input type="text" id="regNick" placeholder="Придумайте ник" autocomplete="off">
+<input type="text" id="regPass" placeholder="Придумайте пароль" autocomplete="off">
+<input type="text" id="regPass2" placeholder="Повторите пароль" autocomplete="off">
+<button class="btn-main" id="registerBtn">✅ Зарегистрироваться</button>
+<div class="msg" id="regMsg"></div>
+<div class="auth-switch" id="goLogin">🔑 Уже есть аккаунт? Войти</div>
+</div>
+</div>
+
+<!-- ===== ЭКРАН ИГРЫ ===== -->
+<div class="game-screen" id="gameScreen">
 <h1 id="mainTitle">🐂 OXDROP</h1>
+<div class="top-bar">
+<div class="user-info">👤 Вы вошли как: <span id="userNickDisplay">—</span></div>
+<button class="logout-btn" id="logoutBtn">🚪 Выйти</button>
+</div>
 <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
 <div class="mobile-menu" id="mobileMenu">
 <button class="cases-btn" onclick="switchTab('cases')">📦 Кейсы</button>
@@ -149,12 +191,6 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <button onclick="switchTab('inventory')">📦 Инвентарь</button>
 <button onclick="switchTab('upgrade')">⬆ Апгрейд</button>
 </div>
-<div class="nick-input">
-<label>👤 Ваш ник:</label>
-<input type="text" id="nickInput" placeholder="Введите ник" autocomplete="off">
-<button id="saveNickBtn">✅ Войти</button>
-</div>
-<div class="nick-msg" id="nickMsg"></div>
 <div class="donate-notice">
 <p>💳 Укажите свой ник в комментарии к платежу!</p>
 </div>
@@ -241,6 +277,8 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 </div>
 <div class="status-bar" id="statusBar"></div>
 </div>
+
+<!-- ===== АДМИНКА ===== -->
 <div class="admin-panel" id="adminPanel">
 <div class="admin-box">
 <button class="close-btn" id="adminClose">✕</button>
@@ -252,12 +290,12 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 </div>
 <div class="admin-content" id="adminContent">
 <h3 style="color:#96a9d1;font-size:0.9rem;">💰 Выдать баланс</h3>
-<input type="text" id="adminNick" placeholder="Ник" autocomplete="off">
+<input type="text" id="adminNick" placeholder="Ник игрока" autocomplete="off">
 <input type="number" id="adminAmount" value="100">
 <button class="give-btn" id="adminAddBtn">💰 Выдать</button>
 <div class="success" id="adminSuccess">✅ Выдано!</div>
 <hr style="border-color:#2f3a55;margin:15px 0;">
-<h3 style="color:#96a9d1;font-size:0.9rem;">📤 Заявки</h3>
+<h3 style="color:#96a9d1;font-size:0.9rem;">📤 Заявки на вывод</h3>
 <div class="withdraw-requests" id="withdrawRequests"><div class="empty">Нет заявок</div></div>
 </div>
 </div>
@@ -273,6 +311,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <script>
 const API_URL = 'https://api.npoint.io/6ebf279d65bba82f722e';
 
+// ===== РАБОТА С СЕРВЕРОМ =====
 async function loadCloudData() {
     try {
         const res = await fetch(API_URL);
@@ -283,7 +322,7 @@ async function loadCloudData() {
         return data || { players: {}, withdraw_requests: [] };
     } catch(e) {
         console.error(e);
-        setStatus('⚠️ Нет связи, работаем локально');
+        setStatus('⚠️ Нет связи');
         return null;
     }
 }
@@ -296,12 +335,12 @@ async function saveCloudData(data) {
             body: JSON.stringify(data)
         });
         if (!res.ok) throw new Error('HTTP ' + res.status);
-        setStatus('✅ Сохранено в облако');
+        setStatus('✅ Сохранено');
         setTimeout(() => setStatus(''), 2000);
         return true;
     } catch(e) {
         console.error(e);
-        setStatus('⚠️ Не удалось сохранить');
+        setStatus('⚠️ Ошибка сохранения');
         return false;
     }
 }
@@ -311,6 +350,7 @@ function setStatus(text) {
     if (el) el.textContent = text;
 }
 
+// ===== ДАННЫЕ =====
 const cases = [
   { name: 'Мумия', price: 100, items: [
     {name:'Радужная Ярость', img:'https://i.postimg.cc/1XvPV8DM/Screenshot-20260830-143556.jpg', rarity:'Легендарный', color:'#d4a03a', value:500, chance:4},
@@ -339,12 +379,13 @@ let lastItem = null;
 let selectedIndices = [];
 let selectedLevel = { mult: 1.2, chance: 75 };
 let currentNick = '';
+let currentPass = '';
 let selectedMethod = 'card';
 let stats = { visits: 0, caseOpens: 0, totalSales: 0, bestItem: { name: '—', value: 0 } };
 
 function getPlayer(nick) {
     if (!cloudData.players) cloudData.players = {};
-    if (!cloudData.players[nick]) cloudData.players[nick] = { balance: 0, inventory: [] };
+    if (!cloudData.players[nick]) cloudData.players[nick] = { balance: 0, inventory: [], pass: '' };
     return cloudData.players[nick];
 }
 
@@ -353,29 +394,116 @@ async function saveAll() {
     try { localStorage.setItem('oxdrop_backup', JSON.stringify(cloudData)); } catch(e) {}
 }
 
-async function loadPlayerData() {
-    const cloud = await loadCloudData();
-    if (cloud) {
-        cloudData = cloud;
-        if (!cloudData.players) cloudData.players = {};
-        if (!cloudData.withdraw_requests) cloudData.withdraw_requests = [];
-    } else {
-        try {
-            const backup = localStorage.getItem('oxdrop_backup');
-            if (backup) cloudData = JSON.parse(backup);
-        } catch(e) {}
+// ===== АВТОРИЗАЦИЯ =====
+document.getElementById('goRegister').addEventListener('click', function() {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('registerForm').style.display = 'block';
+});
+document.getElementById('goLogin').addEventListener('click', function() {
+    document.getElementById('registerForm').style.display = 'none';
+    document.getElementById('loginForm').style.display = 'block';
+});
+
+// РЕГИСТРАЦИЯ
+document.getElementById('registerBtn').addEventListener('click', async function() {
+    const nick = document.getElementById('regNick').value.trim();
+    const pass = document.getElementById('regPass').value.trim();
+    const pass2 = document.getElementById('regPass2').value.trim();
+    const msg = document.getElementById('regMsg');
+    
+    if (!nick || nick.length < 3) { msg.textContent = '❌ Ник минимум 3 символа'; msg.style.color = '#ff4444'; return; }
+    if (!pass || pass.length < 3) { msg.textContent = '❌ Пароль минимум 3 символа'; msg.style.color = '#ff4444'; return; }
+    if (pass !== pass2) { msg.textContent = '❌ Пароли не совпадают'; msg.style.color = '#ff4444'; return; }
+    
+    await loadCloudData().then(d => { if (d) cloudData = d; });
+    
+    if (cloudData.players && cloudData.players[nick]) {
+        msg.textContent = '❌ Этот ник уже занят!';
+        msg.style.color = '#ff4444';
+        return;
     }
-    if (currentNick) {
-        const player = getPlayer(currentNick);
-        balance = player.balance || 0;
-        inventory = player.inventory || [];
-    } else {
-        balance = 0;
-        inventory = [];
-    }
+    
+    cloudData.players[nick] = { balance: 0, inventory: [], pass: pass };
+    await saveAll();
+    
+    msg.textContent = '✅ Аккаунт создан! Входим...';
+    msg.style.color = '#00ff88';
+    
+    setTimeout(() => {
+        currentNick = nick;
+        currentPass = pass;
+        localStorage.setItem('oxdrop_nick', nick);
+        enterGame();
+    }, 1000);
+});
+
+// ВХОД
+document.getElementById('loginBtn').addEventListener('click', async function() {
+    const nick = document.getElementById('loginNick').value.trim();
+    const pass = document.getElementById('loginPass').value.trim();
+    const msg = document.getElementById('loginMsg');
+    
+    if (!nick) { msg.textContent = '❌ Введите ник'; msg.style.color = '#ff4444'; return; }
+    if (!pass) { msg.textContent = '❌ Введите пароль'; msg.style.color = '#ff4444'; return; }
+    
+    await loadCloudData().then(d => { if (d) cloudData = d; });
+    
+    const player = cloudData.players && cloudData.players[nick];
+    if (!player) { msg.textContent = '❌ Игрок не найден'; msg.style.color = '#ff4444'; return; }
+    if (player.pass !== pass) { msg.textContent = '❌ Неверный пароль'; msg.style.color = '#ff4444'; return; }
+    
+    msg.textContent = '✅ Вход выполнен!';
+    msg.style.color = '#00ff88';
+    
+    currentNick = nick;
+    currentPass = pass;
+    localStorage.setItem('oxdrop_nick', nick);
+    setTimeout(() => { enterGame(); }, 500);
+});
+
+// ВХОД В ИГРУ
+async function enterGame() {
+    document.getElementById('authScreen').style.display = 'none';
+    document.getElementById('gameScreen').style.display = 'block';
+    document.getElementById('userNickDisplay').textContent = currentNick;
+    
+    const player = getPlayer(currentNick);
+    balance = player.balance || 0;
+    inventory = player.inventory || [];
+    
     updateBalanceUI();
     renderInventory();
     renderUpgradeInventory();
+    renderWithdrawHistory();
+    updateStatsUI();
+    stats.visits++;
+    updateStatsUI();
+}
+
+// ВЫХОД
+document.getElementById('logoutBtn').addEventListener('click', function() {
+    if (confirm('Выйти из аккаунта?')) {
+        currentNick = '';
+        currentPass = '';
+        localStorage.removeItem('oxdrop_nick');
+        document.getElementById('gameScreen').style.display = 'none';
+        document.getElementById('authScreen').style.display = 'block';
+        document.getElementById('loginForm').style.display = 'block';
+        document.getElementById('registerForm').style.display = 'none';
+        document.getElementById('loginNick').value = '';
+        document.getElementById('loginPass').value = '';
+        document.getElementById('regNick').value = '';
+        document.getElementById('regPass').value = '';
+        document.getElementById('regPass2').value = '';
+        document.getElementById('loginMsg').textContent = '';
+        document.getElementById('regMsg').textContent = '';
+    }
+});
+
+// ===== ИГРА =====
+function updateBalanceUI() {
+    document.getElementById('balanceDisplay').textContent = balance;
+    document.getElementById('withdrawBalance').textContent = balance;
 }
 
 async function savePlayer() {
@@ -383,12 +511,8 @@ async function savePlayer() {
     const player = getPlayer(currentNick);
     player.balance = balance;
     player.inventory = inventory;
+    player.pass = currentPass;
     await saveAll();
-}
-
-function updateBalanceUI() {
-    document.getElementById('balanceDisplay').textContent = balance;
-    document.getElementById('withdrawBalance').textContent = balance;
 }
 
 document.getElementById('menuToggle').addEventListener('click', function() {
@@ -397,17 +521,14 @@ document.getElementById('menuToggle').addEventListener('click', function() {
 });
 
 function switchTab(tabId) {
-    if (!currentNick) { alert('❌ Сначала введите ник!'); return; }
     document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
     const btn = document.querySelector('.tabs button[data-tab="' + tabId + '"]');
     if (btn) btn.classList.add('active');
     const tab = document.getElementById('tab-' + tabId);
     if (tab) tab.classList.add('active');
-    const menuToggle = document.getElementById('menuToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
-    if (menuToggle) menuToggle.classList.remove('active');
-    if (mobileMenu) mobileMenu.classList.remove('show');
+    document.getElementById('menuToggle').classList.remove('active');
+    document.getElementById('mobileMenu').classList.remove('show');
     if (tabId === 'inventory') renderInventory();
     if (tabId === 'upgrade') renderUpgradeInventory();
     if (tabId === 'withdraw') renderWithdrawHistory();
@@ -466,7 +587,6 @@ function spinSlot(cb) {
 }
 
 async function openCase() {
-    if (!currentNick) { alert('❌ Сначала введите ник!'); return; }
     if (isOpening) return;
     const price = cases[currentCaseIndex].price;
     if (balance < price) { alert('❌ Недостаточно баланса!'); return; }
@@ -658,27 +778,7 @@ async function openWheel() {
 document.getElementById('openWheelBtn').addEventListener('click', openWheel);
 document.getElementById('wheelSpinBtn').addEventListener('click', openWheel);
 
-document.getElementById('saveNickBtn').addEventListener('click', async function() {
-    const nick = document.getElementById('nickInput').value.trim();
-    const msgEl = document.getElementById('nickMsg');
-    if (!nick) { msgEl.textContent = '❌ Введите ник!'; msgEl.style.color = '#ff4444'; return; }
-    if (nick.length < 3) { msgEl.textContent = '❌ Ник слишком короткий (минимум 3 символа)'; msgEl.style.color = '#ff4444'; return; }
-    // Проверка: ник уже занят?
-    const existing = cloudData.players && cloudData.players[nick];
-    if (existing) {
-        msgEl.textContent = '⚠️ Этот ник уже занят! Вводим в него.';
-        msgEl.style.color = '#ffd966';
-    } else {
-        msgEl.textContent = '✅ Ник создан!';
-        msgEl.style.color = '#00ff88';
-    }
-    currentNick = nick;
-    localStorage.setItem('oxdrop_nick', nick);
-    selectedIndices = [];
-    await loadPlayerData();
-    setTimeout(() => { msgEl.textContent = ''; }, 3000);
-});
-
+// ===== АДМИНКА =====
 document.getElementById('mainTitle').addEventListener('dblclick', function() {
     document.getElementById('adminPanel').classList.add('open');
     document.getElementById('adminLogin').style.display = 'block';
@@ -700,11 +800,14 @@ document.getElementById('adminLoginBtn').addEventListener('click', function() {
     }
 });
 document.getElementById('adminAddBtn').addEventListener('click', async function() {
-    const nick = document.getElementById('adminNick').value.trim() || 'Игрок1';
+    const nick = document.getElementById('adminNick').value.trim();
     const amt = parseInt(document.getElementById('adminAmount').value) || 0;
+    if (!nick) { alert('❌ Введите ник!'); return; }
     if (amt > 0) {
+        await loadCloudData().then(d => { if (d) cloudData = d; });
         const player = getPlayer(nick);
         player.balance = (player.balance || 0) + amt;
+        if (!player.pass) player.pass = '';
         await saveAll();
         document.getElementById('adminSuccess').style.display = 'block';
         setTimeout(() => document.getElementById('adminSuccess').style.display = 'none', 3000);
@@ -713,6 +816,7 @@ document.getElementById('adminAddBtn').addEventListener('click', async function(
     }
 });
 
+// ===== ВЫВОД =====
 function renderWithdrawHistory() {
     const hist = (cloudData.withdraw_requests || []).filter(r => r.nick === currentNick);
     const list = document.getElementById('withdrawHistoryList');
@@ -748,6 +852,7 @@ function renderWithdrawRequests() {
 }
 
 window.confirmWithdraw = async function(id) {
+    await loadCloudData().then(d => { if (d) cloudData = d; });
     const r = (cloudData.withdraw_requests || []).find(x => x.id === id);
     if (r) {
         const player = getPlayer(r.nick);
@@ -764,17 +869,18 @@ window.confirmWithdraw = async function(id) {
 };
 
 window.rejectWithdraw = async function(id) {
+    await loadCloudData().then(d => { if (d) cloudData = d; });
     const r = (cloudData.withdraw_requests || []).find(x => x.id === id);
     if (r) { r.status = 'rejected'; await saveAll(); renderWithdrawRequests(); renderWithdrawHistory(); alert('❌ Отклонено'); }
 };
 
 document.getElementById('withdrawBtn').addEventListener('click', async function() {
-    if (!currentNick) { alert('❌ Сначала введите ник!'); return; }
     const amt = parseInt(document.getElementById('withdrawAmount').value) || 0;
     const detail = document.getElementById('withdrawDetail').value.trim();
     if (amt < 10) { alert('❌ Минимум 10$'); return; }
     if (amt > balance) { alert('❌ Недостаточно!'); return; }
     if (!detail) { alert('❌ Укажите реквизиты!'); return; }
+    await loadCloudData().then(d => { if (d) cloudData = d; });
     if (!cloudData.withdraw_requests) cloudData.withdraw_requests = [];
     cloudData.withdraw_requests.push({ id: Date.now(), nick: currentNick, amount: amt, method: selectedMethod, detail: detail, status: 'pending', date: new Date().toLocaleString() });
     await saveAll();
@@ -837,29 +943,27 @@ function updateStatsUI() {
     document.getElementById('bestItem').textContent = stats.bestItem.name + ' (' + stats.bestItem.value + '$)';
 }
 
+// ===== СТАРТ =====
 async function init() {
-    // Авто-вход, если ник сохранён
+    await loadCloudData().then(d => { if (d) cloudData = d; });
+    
     const savedNick = localStorage.getItem('oxdrop_nick');
-    if (savedNick) {
+    if (savedNick && cloudData.players && cloudData.players[savedNick]) {
         currentNick = savedNick;
-        document.getElementById('nickInput').value = savedNick;
+        enterGame();
+    } else {
+        document.getElementById('authScreen').style.display = 'flex';
+        document.getElementById('gameScreen').style.display = 'none';
     }
-    await loadPlayerData();
-    switchCase(0);
-    updateBalanceUI();
-    renderInventory();
-    renderUpgradeInventory();
-    updateStatsUI();
-    renderWithdrawHistory();
-    stats.visits++;
-    updateStatsUI();
+    
     document.getElementById('openCaseBtn').addEventListener('click', openCase);
     document.getElementById('sellBtn').addEventListener('click', sellLastItem);
     document.querySelectorAll('.case-menu button').forEach((btn, i) => {
         btn.addEventListener('click', () => { if (!isOpening) switchCase(i); });
     });
+    switchCase(0);
 }
 init();
 </script>
 </body>
-</html>
+    </html>
