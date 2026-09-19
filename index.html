@@ -9,12 +9,12 @@
 body{min-height:100vh;background:linear-gradient(145deg,#0b0e1a,#1a1f2f);display:flex;justify-content:center;align-items:center;padding:15px}
 .container{max-width:950px;width:100%;border-radius:48px;padding:20px;border:1px solid rgba(255,215,0,0.15);background:rgba(255,255,255,0.05)}
 
-/* ===== ЭКРАН АВТОРИЗАЦИИ ===== */
+/* ===== АВТОРИЗАЦИЯ ===== */
 .auth-screen{display:flex;flex-direction:column;gap:12px;padding:20px 10px}
 .auth-screen h2{color:#f5b342;text-align:center;font-size:1.4rem;margin-bottom:10px}
 .auth-screen input{width:100%;padding:14px;border-radius:20px;border:1px solid #2f3a55;background:#0e121f;color:white;font-size:1rem;text-align:center}
 .auth-screen input:focus{outline:2px solid #f5b342}
-.auth-screen button{padding:14px;border-radius:30px;font-weight:700;font-size:1rem;cursor:pointer;border:none;transition:0.2s}
+.auth-screen button{padding:14px;border-radius:30px;font-weight:700;font-size:1rem;cursor:pointer;border:none}
 .auth-screen .btn-main{background:linear-gradient(135deg,#f5b342,#e8922a);color:#0b0e1a}
 .auth-screen .msg{text-align:center;font-size:0.9rem;min-height:24px;margin-top:5px;font-weight:600}
 .auth-switch{text-align:center;color:#96a9d1;font-size:0.9rem;margin-top:5px;cursor:pointer;text-decoration:underline}
@@ -97,14 +97,17 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .upgrade-level.selected{border-color:#f5b342;background:rgba(42,51,73,0.9);box-shadow:0 0 20px #f5b34233}
 .upgrade-level .level-mult{font-size:1.2rem;font-weight:700;color:#ffd966}
 .upgrade-level .level-desc{font-size:0.65rem;color:#96a9d1;margin-top:4px}
+
+/* ===== КОЛЕСО ===== */
 .wheel-container{display:none;margin-top:20px;padding:20px;background:rgba(0,0,0,0.6);border-radius:30px;border:2px solid #ffd96655}
 .wheel-container.show{display:block}
 .wheel-title{color:#ffd966;text-align:center;font-size:0.9rem;font-weight:700;margin-bottom:10px}
-.wheel{position:relative;width:100%;max-width:320px;height:320px;margin:0 auto;border-radius:50%;border:4px solid #f5b342;overflow:hidden;background:#1a1f2f}
-.wheel-segment{position:absolute;width:50%;height:50%;top:0;left:50%;transform-origin:0% 100%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:white;padding-left:15px}
+.wheel{position:relative;width:100%;max-width:320px;height:320px;margin:0 auto;border-radius:50%;border:4px solid #f5b342;overflow:visible;background:#1a1f2f}
+.wheel-inner{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;overflow:hidden;transition:transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);transform:rotate(0deg)}
+.wheel-segment{position:absolute;width:50%;height:50%;top:0;left:50%;transform-origin:0% 100%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:900;color:white;padding-left:15px;text-shadow:0 0 5px rgba(0,0,0,0.5);letter-spacing:1px}
 .wheel-segment .seg-text{transform:rotate(90deg);white-space:nowrap}
-.wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;background:linear-gradient(135deg,#f5b342,#e8922a);border-radius:50%;border:3px solid #fff;z-index:10}
-.wheel-pointer{position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:15px solid transparent;border-right:15px solid transparent;border-top:30px solid #ff0000;z-index:11}
+.wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;background:linear-gradient(135deg,#f5b342,#e8922a);border-radius:50%;border:3px solid #fff;z-index:10;box-shadow:0 0 20px #f5b34266;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.wheel-pointer{position:absolute;top:-15px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:20px solid transparent;border-right:20px solid transparent;border-top:40px solid #ffd966;z-index:12;filter:drop-shadow(0 0 10px #f5b342)}
 .wheel-result{text-align:center;margin-top:12px;font-size:1.1rem;font-weight:700;color:#00ff88;min-height:30px}
 .wheel-btn{background:linear-gradient(135deg,#ff6b35,#f7931e);border:none;color:white;padding:10px;border-radius:40px;font-weight:700;font-size:1rem;cursor:pointer;width:100%;margin-top:10px;box-shadow:0 4px 0 #c0551a}
 .wheel-btn:disabled{opacity:0.5;pointer-events:none}
@@ -115,6 +118,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .result-box .result-title{font-size:1.2rem;font-weight:700}
 .result-box .result-desc{color:#b9c8e6;font-size:0.9rem;margin-top:5px}
 @media(max-width:600px){.case-menu button{width:80px;height:120px;padding:6px 4px}.case-menu button img{width:40px;height:40px}.wheel{width:220px;height:220px}.menu-toggle{display:flex}.tabs{display:none}}
+
 .admin-panel{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;justify-content:center;align-items:center}
 .admin-panel.open{display:flex}
 .admin-box{background:#1a1f2f;border-radius:30px;padding:30px;max-width:450px;width:100%;border:2px solid #f5b34233;text-align:center;max-height:90vh;overflow-y:auto}
@@ -249,7 +253,11 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <button class="wheel-btn" id="openWheelBtn">🎡 Открыть колесо</button>
 <div class="wheel-container" id="wheelContainer">
 <div class="wheel-title">🎡 КОЛЕСО</div>
-<div class="wheel" id="wheel"><div class="wheel-pointer"></div><div class="wheel-center"></div></div>
+<div class="wheel" id="wheel">
+<div class="wheel-pointer"></div>
+<div class="wheel-inner" id="wheelInner"></div>
+<div class="wheel-center">🎯</div>
+</div>
 <div class="wheel-result" id="wheelResult">Нажмите "Крутить"</div>
 <button class="wheel-btn" id="wheelSpinBtn">🎰 Крутить!</button>
 <div class="result-box" id="resultBox"><div class="result-title" id="resultTitle"></div><div class="result-desc" id="resultDesc"></div></div>
@@ -696,17 +704,22 @@ function renderUpgradeInventory() {
     document.getElementById('openWheelBtn').disabled = selectedIndices.length === 0;
 }
 
+// ===== НОВОЕ КОЛЕСО =====
 function buildWheel() {
-    const wheel = document.getElementById('wheel');
-    wheel.innerHTML = '<div class="wheel-pointer"></div><div class="wheel-center"></div>';
-    const items = [{name:'Успех ✅', color:'#00ff88', type:'upgrade'},{name:'Сгорел 💥', color:'#ff2200', type:'burn'}];
+    const wheelInner = document.getElementById('wheelInner');
+    wheelInner.innerHTML = '';
+    // КРАСНЫЙ сектор = ПОБЕДА, ТЁМНЫЙ сектор = ПРОИГРЫШ
+    const items = [
+        {name:'ПОБЕДА', color:'#dc2626', type:'upgrade'},
+        {name:'ПРОИГРЫШ', color:'#1e293b', type:'burn'}
+    ];
     items.forEach((item, i) => {
         const seg = document.createElement('div');
         seg.className = 'wheel-segment';
         seg.style.transform = 'rotate(' + (i * 180) + 'deg)';
         seg.style.background = item.color;
         seg.innerHTML = '<span class="seg-text" style="transform:rotate(90deg)">' + item.name + '</span>';
-        wheel.appendChild(seg);
+        wheelInner.appendChild(seg);
     });
     return items;
 }
@@ -724,47 +737,46 @@ async function openWheel() {
     const chance = selectedLevel.chance / 100;
     const resultIndex = Math.random() < chance ? 0 : 1;
     const selected = items[resultIndex];
-    const spins = 6 + Math.floor(Math.random() * 3);
-    const target = spins * 360 + (resultIndex * 180);
-    let current = 0, step = 0;
-    const totalSteps = 60;
-    const stepAngle = target / totalSteps;
-    const interval = setInterval(async () => {
-        step++;
-        current += stepAngle;
-        document.getElementById('wheel').style.transform = 'rotate(' + current + 'deg)';
-        if (step >= totalSteps) {
-            clearInterval(interval);
-            document.getElementById('wheel').style.transform = 'rotate(' + target + 'deg)';
-            if (selected.type === 'upgrade') {
-                const newVal = Math.round(totalValue * selectedLevel.mult);
-                document.getElementById('resultBox').className = 'result-box show success';
-                document.getElementById('resultTitle').textContent = '🎉 Успех!';
-                document.getElementById('resultDesc').textContent = selectedIndices.length + ' предметов → ' + newVal + '$';
-                document.getElementById('wheelResult').textContent = '✅ Успех!';
-                const sorted = [].concat(selectedIndices).sort((a,b) => b-a);
-                for (const i of sorted) inventory.splice(i, 1);
-                inventory.push({ name: 'Апгрейд-предмет', img: 'https://cdn-icons-png.flaticon.com/512/427/427733.png', rarity: 'Легендарный', color: '#f5b342', value: newVal });
-                selectedIndices = [];
-                await savePlayer();
-                renderInventory();
-                renderUpgradeInventory();
-            } else {
-                document.getElementById('resultBox').className = 'result-box show fail';
-                document.getElementById('resultTitle').textContent = '💥 Сгорел!';
-                document.getElementById('resultDesc').textContent = 'Все предметы уничтожены!';
-                document.getElementById('wheelResult').textContent = '💥 Сгорел!';
-                const sorted = [].concat(selectedIndices).sort((a,b) => b-a);
-                for (const i of sorted) inventory.splice(i, 1);
-                selectedIndices = [];
-                await savePlayer();
-                renderInventory();
-                renderUpgradeInventory();
-            }
-            document.getElementById('openWheelBtn').disabled = false;
-            document.getElementById('wheelSpinBtn').disabled = true;
+    
+    // Плавное вращение: 5 полных оборотов + нужный угол
+    const targetRotation = 5 * 360 + (resultIndex * 180);
+    const wheelEl = document.getElementById('wheelInner');
+    wheelEl.style.transform = 'rotate(0deg)';
+    
+    setTimeout(() => {
+        wheelEl.style.transform = 'rotate(' + targetRotation + 'deg)';
+    }, 50);
+    
+    // Ждём окончания анимации (4 секунды)
+    setTimeout(async () => {
+        if (selected.type === 'upgrade') {
+            const newVal = Math.round(totalValue * selectedLevel.mult);
+            document.getElementById('resultBox').className = 'result-box show success';
+            document.getElementById('resultTitle').textContent = '🎉 ПОБЕДА!';
+            document.getElementById('resultDesc').textContent = selectedIndices.length + ' предметов → ' + newVal + '$';
+            document.getElementById('wheelResult').textContent = '✅ Успех!';
+            const sorted = [].concat(selectedIndices).sort((a,b) => b-a);
+            for (const i of sorted) inventory.splice(i, 1);
+            inventory.push({ name: 'Апгрейд-предмет', img: 'https://cdn-icons-png.flaticon.com/512/427/427733.png', rarity: 'Легендарный', color: '#f5b342', value: newVal });
+            selectedIndices = [];
+            await savePlayer();
+            renderInventory();
+            renderUpgradeInventory();
+        } else {
+            document.getElementById('resultBox').className = 'result-box show fail';
+            document.getElementById('resultTitle').textContent = '💥 ПРОИГРЫШ!';
+            document.getElementById('resultDesc').textContent = 'Все предметы уничтожены!';
+            document.getElementById('wheelResult').textContent = '💥 Сгорел!';
+            const sorted = [].concat(selectedIndices).sort((a,b) => b-a);
+            for (const i of sorted) inventory.splice(i, 1);
+            selectedIndices = [];
+            await savePlayer();
+            renderInventory();
+            renderUpgradeInventory();
         }
-    }, 30);
+        document.getElementById('openWheelBtn').disabled = false;
+        document.getElementById('wheelSpinBtn').disabled = true;
+    }, 4100);
 }
 document.getElementById('openWheelBtn').addEventListener('click', openWheel);
 document.getElementById('wheelSpinBtn').addEventListener('click', openWheel);
@@ -893,7 +905,7 @@ document.querySelectorAll('.withdraw-methods button').forEach(btn => {
     });
 });
 
-// ===== АПГРЕЙД: уровни БЕЗ процентов =====
+// ===== УРОВНИ АПГРЕЙДА (без процентов) =====
 document.getElementById('upgradeLevels').addEventListener('click', function(e) {
     const level = e.target.closest('.upgrade-level');
     if (!level) return;
@@ -959,4 +971,4 @@ async function init() {
 init();
 </script>
 </body>
-    </html>
+</html>
