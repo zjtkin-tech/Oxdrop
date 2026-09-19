@@ -46,12 +46,13 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .balance-box{text-align:right;color:#b9c8e6;font-size:1.1rem;margin-bottom:15px;display:flex;justify-content:flex-end;align-items:center;gap:12px;flex-wrap:wrap}
 .balance-box span{background:#0e121f;padding:6px 20px;border-radius:60px;border:1px solid #ffd96655;color:#ffd966;font-weight:700;font-size:1.4rem}
 .donate-btn{background:linear-gradient(135deg,#ff6b35,#f7931e);border:none;color:white;padding:6px 18px;border-radius:40px;font-weight:700;font-size:0.9rem;text-decoration:none}
-.case-menu{display:flex;gap:12px;margin:20px 0;flex-wrap:wrap;justify-content:center}
+.case-menu{display:flex;gap:10px;margin:20px 0;flex-wrap:wrap;justify-content:center}
 .case-menu button{background:rgba(30,38,59,0.85);border:2px solid #2f3a55;color:#b9c8e6;width:95px;height:135px;padding:8px 6px;border-radius:30px;font-weight:700;font-size:0.75rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;position:relative;transition:0.3s}
 .case-menu button img{width:55px;height:55px;object-fit:contain;border-radius:12px;background:rgba(12,16,30,0.7);padding:5px}
-.case-menu button .case-name{font-size:0.65rem;color:#96a9d1;text-align:center;line-height:1.1}
+.case-menu button .case-name{font-size:0.6rem;color:#96a9d1;text-align:center;line-height:1.1}
 .case-menu button .case-price{font-size:0.55rem;color:#ffd966;background:#0e121f;padding:1px 10px;border-radius:20px}
 .case-menu button .preview-btn{font-size:0.5rem;background:#2a3349;border:1px solid #4f5b7a;color:white;padding:2px 12px;border-radius:20px;margin-top:auto;cursor:pointer}
+.case-menu button .badge{position:absolute;top:-6px;right:-6px;background:#f5b342;color:#0b0e1a;font-size:0.5rem;font-weight:700;padding:2px 8px;border-radius:20px}
 .case-menu button.active{border-color:#f5b342;background:rgba(42,51,73,0.9);box-shadow:0 0 25px #f5b34233;transform:translateY(-3px)}
 .slot-container{display:flex;flex-direction:column;justify-content:center;align-items:center;margin:25px 0;padding:30px;background:rgba(12,16,30,0.7);border-radius:30px;border:2px solid rgba(47,58,85,0.5);min-height:260px}
 .slot{aspect-ratio:1/1;max-width:200px;width:100%;background:#111624;border-radius:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid #4a5a7a;color:#eaf0ff;font-weight:700;transition:0.3s;padding:10px}
@@ -209,13 +210,50 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <img src="https://i.postimg.cc/28mQjPKk/37PNMy44Mdf-Qq71KUvp-Pr-XLRHC6Vttjwu8Yc-Mk-HMn-O4-SXl-E22e-Ii-Sc-Uw-TYs-KFAa0Vvp-UIc4BZOOug-VLu-G6d4.jpg" alt="Мумия">
 <span class="case-name">🧟 Мумия</span>
 <span class="case-price">100$</span>
+<span class="badge">🔥</span>
 <span class="preview-btn" onclick="event.stopPropagation(); openPreview(0)">🔍</span>
 </button>
 <button data-case="1">
 <img src="https://i.postimg.cc/DySShhrC/lv-0-20260830201333.png" alt="Человек-паук">
 <span class="case-name">🕷️ Человек-паук</span>
 <span class="case-price">50$</span>
+<span class="badge">🕸️</span>
 <span class="preview-btn" onclick="event.stopPropagation(); openPreview(1)">🔍</span>
+</button>
+<button data-case="2">
+<img src="https://i.postimg.cc/28mQjPKk/37PNMy44Mdf-Qq71KUvp-Pr-XLRHC6Vttjwu8Yc-Mk-HMn-O4-SXl-E22e-Ii-Sc-Uw-TYs-KFAa0Vvp-UIc4BZOOug-VLu-G6d4.jpg" alt="Дракон">
+<span class="case-name">🐉 Дракон</span>
+<span class="case-price">150$</span>
+<span class="badge">🔥</span>
+<span class="preview-btn" onclick="event.stopPropagation(); openPreview(2)">🔍</span>
+</button>
+<button data-case="3">
+<img src="https://i.postimg.cc/28mQjPKk/37PNMy44Mdf-Qq71KUvp-Pr-XLRHC6Vttjwu8Yc-Mk-HMn-O4-SXl-E22e-Ii-Sc-Uw-TYs-KFAa0Vvp-UIc4BZOOug-VLu-G6d4.jpg" alt="Призрак">
+<span class="case-name">👻 Призрак</span>
+<span class="case-price">200$</span>
+<span class="badge">✨</span>
+<span class="preview-btn" onclick="event.stopPropagation(); openPreview(3)">🔍</span>
+</button>
+<button data-case="4">
+<img src="https://i.postimg.cc/28mQjPKk/37PNMy44Mdf-Qq71KUvp-Pr-XLRHC6Vttjwu8Yc-Mk-HMn-O4-SXl-E22e-Ii-Sc-Uw-TYs-KFAa0Vvp-UIc4BZOOug-VLu-G6d4.jpg" alt="Череп">
+<span class="case-name">💀 Череп</span>
+<span class="case-price">250$</span>
+<span class="badge">☠️</span>
+<span class="preview-btn" onclick="event.stopPropagation(); openPreview(4)">🔍</span>
+</button>
+<button data-case="5">
+<img src="https://i.postimg.cc/28mQjPKk/37PNMy44Mdf-Qq71KUvp-Pr-XLRHC6Vttjwu8Yc-Mk-HMn-O4-SXl-E22e-Ii-Sc-Uw-TYs-KFAa0Vvp-UIc4BZOOug-VLu-G6d4.jpg" alt="Огонь">
+<span class="case-name">🔥 Огонь</span>
+<span class="case-price">300$</span>
+<span class="badge">🔥</span>
+<span class="preview-btn" onclick="event.stopPropagation(); openPreview(5)">🔍</span>
+</button>
+<button data-case="6">
+<img src="https://i.postimg.cc/28mQjPKk/37PNMy44Mdf-Qq71KUvp-Pr-XLRHC6Vttjwu8Yc-Mk-HMn-O4-SXl-E22e-Ii-Sc-Uw-TYs-KFAa0Vvp-UIc4BZOOug-VLu-G6d4.jpg" alt="Королевский">
+<span class="case-name">👑 Королевский</span>
+<span class="case-price">500$</span>
+<span class="badge">👑</span>
+<span class="preview-btn" onclick="event.stopPropagation(); openPreview(6)">🔍</span>
 </button>
 </div>
 <div class="price-tag">💰 Цена: <span id="priceDisplay">100</span>$</div>
@@ -365,6 +403,41 @@ const cases = [
     {name:'Дигл Вердикт', img:'https://i.postimg.cc/MpHRTLhN/Screenshot-20260830-205349.jpg', rarity:'Эпический', color:'#C0C0C0', value:150, chance:4},
     {name:'СНГ Змеиное логово', img:'https://i.postimg.cc/hP9ZsXvF/Screenshot-20260830-205146.jpg', rarity:'Редкий', color:'#00cc66', value:100, chance:14},
     {name:'Токсичный Дрейк', img:'https://i.postimg.cc/TPQxhkgP/Screenshot-20260830-205118.jpg', rarity:'Легендарный', color:'#00ff00', value:35, chance:12}
+  ]},
+  { name: 'Дракон', price: 150, items: [
+    {name:'Золотой Дракон', img:'https://i.postimg.cc/1XvPV8DM/Screenshot-20260830-143556.jpg', rarity:'Легендарный', color:'#FFD700', value:800, chance:3},
+    {name:'Огненный АК', img:'https://i.postimg.cc/SKQKRp0h/Screenshot-20260830-184043.jpg', rarity:'Эпический', color:'#ff4500', value:400, chance:10},
+    {name:'Чешуя Дракона', img:'https://i.postimg.cc/433LQZmt/Screenshot-20260830-233108.jpg', rarity:'Редкий', color:'#00cc66', value:200, chance:25},
+    {name:'Коготь', img:'https://i.postimg.cc/2S117DcT/Screenshot-20260830-191916.jpg', rarity:'Обычный', color:'#8B7355', value:60, chance:40},
+    {name:'Яйцо Дракона', img:'https://i.postimg.cc/yNq4fDzz/Screenshot-20260830-232405.jpg', rarity:'Обычный', color:'#8B5A2B', value:100, chance:22}
+  ]},
+  { name: 'Призрак', price: 200, items: [
+    {name:'Невидимый Клинок', img:'https://i.postimg.cc/1XvPV8DM/Screenshot-20260830-143556.jpg', rarity:'Легендарный', color:'#FFFFFF', value:1200, chance:2},
+    {name:'Призрачный Дрейк', img:'https://i.postimg.cc/SKQKRp0h/Screenshot-20260830-184043.jpg', rarity:'Эпический', color:'#a78bfa', value:500, chance:12},
+    {name:'Белая Маска', img:'https://i.postimg.cc/433LQZmt/Screenshot-20260830-233108.jpg', rarity:'Редкий', color:'#C0C0C0', value:250, chance:25},
+    {name:'Свеча', img:'https://i.postimg.cc/2S117DcT/Screenshot-20260830-191916.jpg', rarity:'Обычный', color:'#8B7355', value:80, chance:35},
+    {name:'Прах', img:'https://i.postimg.cc/yNq4fDzz/Screenshot-20260830-232405.jpg', rarity:'Обычный', color:'#8B5A2B', value:120, chance:26}
+  ]},
+  { name: 'Череп', price: 250, items: [
+    {name:'Корона Черепа', img:'https://i.postimg.cc/1XvPV8DM/Screenshot-20260830-143556.jpg', rarity:'Легендарный', color:'#dc2626', value:1500, chance:2},
+    {name:'Костяной АК', img:'https://i.postimg.cc/SKQKRp0h/Screenshot-20260830-184043.jpg', rarity:'Эпический', color:'#FFFFFF', value:600, chance:10},
+    {name:'Клык', img:'https://i.postimg.cc/433LQZmt/Screenshot-20260830-233108.jpg', rarity:'Редкий', color:'#C0C0C0', value:300, chance:28},
+    {name:'Кость', img:'https://i.postimg.cc/2S117DcT/Screenshot-20260830-191916.jpg', rarity:'Обычный', color:'#8B7355', value:100, chance:35},
+    {name:'Могила', img:'https://i.postimg.cc/yNq4fDzz/Screenshot-20260830-232405.jpg', rarity:'Обычный', color:'#6b7280', value:150, chance:25}
+  ]},
+  { name: 'Огонь', price: 300, items: [
+    {name:'Пламенный Меч', img:'https://i.postimg.cc/1XvPV8DM/Screenshot-20260830-143556.jpg', rarity:'Легендарный', color:'#ff4500', value:2000, chance:2},
+    {name:'Огнемёт', img:'https://i.postimg.cc/SKQKRp0h/Screenshot-20260830-184043.jpg', rarity:'Эпический', color:'#ff6b35', value:800, chance:10},
+    {name:'Лавовый Дрейк', img:'https://i.postimg.cc/433LQZmt/Screenshot-20260830-233108.jpg', rarity:'Редкий', color:'#dc2626', value:400, chance:25},
+    {name:'Уголёк', img:'https://i.postimg.cc/2S117DcT/Screenshot-20260830-191916.jpg', rarity:'Обычный', color:'#8B4513', value:120, chance:38},
+    {name:'Пепел', img:'https://i.postimg.cc/yNq4fDzz/Screenshot-20260830-232405.jpg', rarity:'Обычный', color:'#6b7280', value:180, chance:25}
+  ]},
+  { name: 'Королевский', price: 500, items: [
+    {name:'Королевский Кинжал', img:'https://i.postimg.cc/1XvPV8DM/Screenshot-20260830-143556.jpg', rarity:'Легендарный', color:'#FFD700', value:5000, chance:1},
+    {name:'Золотой АК', img:'https://i.postimg.cc/SKQKRp0h/Screenshot-20260830-184043.jpg', rarity:'Легендарный', color:'#FFD700', value:2500, chance:4},
+    {name:'Корона', img:'https://i.postimg.cc/433LQZmt/Screenshot-20260830-233108.jpg', rarity:'Эпический', color:'#FFD700', value:1000, chance:15},
+    {name:'Скипетр', img:'https://i.postimg.cc/2S117DcT/Screenshot-20260830-191916.jpg', rarity:'Редкий', color:'#C0C0C0', value:500, chance:30},
+    {name:'Медаль', img:'https://i.postimg.cc/yNq4fDzz/Screenshot-20260830-232405.jpg', rarity:'Обычный', color:'#8B7355', value:250, chance:50}
   ]}
 ];
 
@@ -698,17 +771,12 @@ function renderUpgradeInventory() {
     document.getElementById('openWheelBtn').disabled = selectedIndices.length === 0;
 }
 
-// ===== КОЛЕСО: КРАСНЫЙ СЕКТОР = ШАНС ПОБЕДЫ, СТРЕЛКА ПОКАЗЫВАЕТ РЕЗУЛЬТАТ =====
 function buildWheel(winChance) {
     const wheelInner = document.getElementById('wheelInner');
     wheelInner.innerHTML = '';
-    
-    // Красный сектор от 0° до winDeg (по часовой стрелке)
     const winDeg = winChance * 360;
-    
     wheelInner.style.background = 'conic-gradient(#dc2626 0deg ' + winDeg + 'deg, #94a3b8 ' + winDeg + 'deg 360deg)';
     
-    // Подпись "ПОБЕДА" (если хватает места)
     if (winDeg > 40) {
         const winLabel = document.createElement('div');
         winLabel.style.position = 'absolute';
@@ -724,7 +792,6 @@ function buildWheel(winChance) {
         wheelInner.appendChild(winLabel);
     }
     
-    // Подпись "ПРОИГРЫШ" (если хватает места)
     if (360 - winDeg > 40) {
         const loseLabel = document.createElement('div');
         loseLabel.style.position = 'absolute';
@@ -750,7 +817,6 @@ async function openWheel() {
     document.getElementById('wheelResult').textContent = '🌀 Крутим...';
     document.getElementById('resultBox').classList.remove('show', 'success', 'fail');
 
-    // 1. Определяем шанс с учётом счётчика побед
     let chance = selectedLevel.chance / 100;
     if (winStreak >= 5) {
         const multipliers = [0.55, 0.33, 0.11, 0.01, 0];
@@ -759,29 +825,16 @@ async function openWheel() {
         chance = chance * mult;
     }
     
-    // 2. Определяем результат
     const isWin = Math.random() < chance;
-    
-    // 3. Рисуем колесо с реальным размером красного сектора
     buildWheel(chance);
     
-    // 4. Считаем угол поворота так, чтобы стрелка (сверху) указала на центр нужного сектора
     const winDeg = chance * 360;
     const loseDeg = 360 - winDeg;
-    
-    // Центр сектора в локальных координатах колеса:
-    // - Красный: winDeg / 2
-    // - Серый: winDeg + loseDeg / 2
     const targetAngle = isWin ? (winDeg / 2) : (winDeg + loseDeg / 2);
-    
-    // Чтобы точка targetAngle оказалась под стрелкой (0°), колесо нужно повернуть на (360 - targetAngle)
     const rotationToTarget = (360 - targetAngle) % 360;
-    
-    // Полные обороты
     const spins = 5 + Math.floor(Math.random() * 3);
     const totalRotation = spins * 360 + rotationToTarget;
     
-    // 5. Крутим
     const wheelEl = document.getElementById('wheelInner');
     wheelEl.style.transition = 'none';
     wheelEl.style.transform = 'rotate(0deg)';
@@ -792,7 +845,6 @@ async function openWheel() {
         wheelEl.style.transform = 'rotate(' + totalRotation + 'deg)';
     }, 50);
     
-    // 6. Через 4 сек показываем результат
     setTimeout(async () => {
         if (isWin) {
             winStreak++;
@@ -1014,4 +1066,4 @@ async function init() {
 init();
 </script>
 </body>
-</html>
+    </html>
