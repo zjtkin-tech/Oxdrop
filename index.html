@@ -8,7 +8,6 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
 body{min-height:100vh;background:linear-gradient(145deg,#0b0e1a,#1a1f2f);display:flex;justify-content:center;align-items:center;padding:15px}
 .container{max-width:950px;width:100%;border-radius:48px;padding:20px;border:1px solid rgba(255,215,0,0.15);background:rgba(255,255,255,0.05)}
-
 .auth-screen{display:flex;flex-direction:column;gap:12px;padding:20px 10px}
 .auth-screen h2{color:#f5b342;text-align:center;font-size:1.4rem;margin-bottom:10px}
 .auth-screen input{width:100%;padding:14px;border-radius:20px;border:1px solid #2f3a55;background:#0e121f;color:white;font-size:1rem;text-align:center}
@@ -17,7 +16,6 @@ body{min-height:100vh;background:linear-gradient(145deg,#0b0e1a,#1a1f2f);display
 .auth-screen .btn-main{background:linear-gradient(135deg,#f5b342,#e8922a);color:#0b0e1a}
 .auth-screen .msg{text-align:center;font-size:0.9rem;min-height:24px;margin-top:5px;font-weight:600}
 .auth-switch{text-align:center;color:#96a9d1;font-size:0.9rem;margin-top:5px;cursor:pointer;text-decoration:underline}
-
 .game-screen{display:none}
 h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f5b342);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px;cursor:pointer}
 .top-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
@@ -96,7 +94,6 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .upgrade-level.selected{border-color:#f5b342;background:rgba(42,51,73,0.9);box-shadow:0 0 20px #f5b34233}
 .upgrade-level .level-mult{font-size:1.2rem;font-weight:700;color:#ffd966}
 .upgrade-level .level-desc{font-size:0.65rem;color:#96a9d1;margin-top:4px}
-
 .wheel-container{display:none;margin-top:20px;padding:20px;background:rgba(0,0,0,0.6);border-radius:30px;border:2px solid #ffd96655}
 .wheel-container.show{display:block}
 .wheel-title{color:#ffd966;text-align:center;font-size:0.9rem;font-weight:700;margin-bottom:10px}
@@ -114,7 +111,6 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .result-box .result-title{font-size:1.2rem;font-weight:700}
 .result-box .result-desc{color:#b9c8e6;font-size:0.9rem;margin-top:5px}
 @media(max-width:600px){.case-menu button{width:80px;height:120px;padding:6px 4px}.case-menu button img{width:40px;height:40px}.wheel{width:220px;height:220px}.menu-toggle{display:flex}.tabs{display:none}}
-
 .admin-panel{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;justify-content:center;align-items:center}
 .admin-panel.open{display:flex}
 .admin-box{background:#1a1f2f;border-radius:30px;padding:30px;max-width:450px;width:100%;border:2px solid #f5b34233;text-align:center;max-height:90vh;overflow-y:auto}
@@ -153,7 +149,6 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 </head>
 <body>
 <div class="container">
-
 <div class="auth-screen" id="authScreen">
 <h1>🐂 OXDROP</h1>
 <div id="loginForm">
@@ -174,7 +169,6 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <div class="auth-switch" id="goLogin">🔑 Уже есть аккаунт? Войти</div>
 </div>
 </div>
-
 <div class="game-screen" id="gameScreen">
 <h1 id="mainTitle">🐂 OXDROP</h1>
 <div class="top-bar">
@@ -221,35 +215,35 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <span class="preview-btn" onclick="event.stopPropagation(); openPreview(1)">🔍</span>
 </button>
 <button data-case="2">
-<img src="https://i.postimg.cc/28mQjPKk/37PNMy44Mdf-Qq71KUvp-Pr-XLRHC6Vttjwu8Yc-Mk-HMn-O4-SXl-E22e-Ii-Sc-Uw-TYs-KFAa0Vvp-UIc4BZOOug-VLu-G6d4.jpg" alt="Дракон">
+<img src="https://i.postimg.cc/5Hv6nTjt/lv-0-20260919215106.jpg" alt="Дракон">
 <span class="case-name">🐉 Дракон</span>
 <span class="case-price">150$</span>
 <span class="badge">🔥</span>
 <span class="preview-btn" onclick="event.stopPropagation(); openPreview(2)">🔍</span>
 </button>
 <button data-case="3">
-<img src="https://i.postimg.cc/28mQjPKk/37PNMy44Mdf-Qq71KUvp-Pr-XLRHC6Vttjwu8Yc-Mk-HMn-O4-SXl-E22e-Ii-Sc-Uw-TYs-KFAa0Vvp-UIc4BZOOug-VLu-G6d4.jpg" alt="Призрак">
+<img src="https://i.postimg.cc/SjKzpZvV/1789826442325.jpg" alt="Призрак">
 <span class="case-name">👻 Призрак</span>
 <span class="case-price">200$</span>
 <span class="badge">✨</span>
 <span class="preview-btn" onclick="event.stopPropagation(); openPreview(3)">🔍</span>
 </button>
 <button data-case="4">
-<img src="https://i.postimg.cc/28mQjPKk/37PNMy44Mdf-Qq71KUvp-Pr-XLRHC6Vttjwu8Yc-Mk-HMn-O4-SXl-E22e-Ii-Sc-Uw-TYs-KFAa0Vvp-UIc4BZOOug-VLu-G6d4.jpg" alt="Череп">
+<img src="https://i.postimg.cc/MXGj8sF0/1789826559591.jpg" alt="Череп">
 <span class="case-name">💀 Череп</span>
 <span class="case-price">250$</span>
 <span class="badge">☠️</span>
 <span class="preview-btn" onclick="event.stopPropagation(); openPreview(4)">🔍</span>
 </button>
 <button data-case="5">
-<img src="https://i.postimg.cc/28mQjPKk/37PNMy44Mdf-Qq71KUvp-Pr-XLRHC6Vttjwu8Yc-Mk-HMn-O4-SXl-E22e-Ii-Sc-Uw-TYs-KFAa0Vvp-UIc4BZOOug-VLu-G6d4.jpg" alt="Огонь">
+<img src="https://i.postimg.cc/7bQJPgFs/lv-0-20260919215429.jpg" alt="Огонь">
 <span class="case-name">🔥 Огонь</span>
 <span class="case-price">300$</span>
 <span class="badge">🔥</span>
 <span class="preview-btn" onclick="event.stopPropagation(); openPreview(5)">🔍</span>
 </button>
 <button data-case="6">
-<img src="https://i.postimg.cc/28mQjPKk/37PNMy44Mdf-Qq71KUvp-Pr-XLRHC6Vttjwu8Yc-Mk-HMn-O4-SXl-E22e-Ii-Sc-Uw-TYs-KFAa0Vvp-UIc4BZOOug-VLu-G6d4.jpg" alt="Королевский">
+<img src="https://i.postimg.cc/XXDBNwRK/lv-0-20260919215642.jpg" alt="Королевский">
 <span class="case-name">👑 Королевский</span>
 <span class="case-price">500$</span>
 <span class="badge">👑</span>
@@ -317,7 +311,6 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 </div>
 <div class="status-bar" id="statusBar"></div>
 </div>
-
 <div class="admin-panel" id="adminPanel">
 <div class="admin-box">
 <button class="close-btn" id="adminClose">✕</button>
@@ -345,9 +338,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <h2 id="previewTitle">📦 Кейс</h2>
 <div id="previewList"></div>
 </div>
-</div>
-
-<script>
+    </div> <script>
 const API_URL = 'https://api.npoint.io/6ebf279d65bba82f722e';
 
 async function loadCloudData() {
@@ -405,39 +396,38 @@ const cases = [
     {name:'Токсичный Дрейк', img:'https://i.postimg.cc/TPQxhkgP/Screenshot-20260830-205118.jpg', rarity:'Легендарный', color:'#00ff00', value:35, chance:12}
   ]},
   { name: 'Дракон', price: 150, items: [
-    {name:'Золотой Дракон', img:'https://i.postimg.cc/1XvPV8DM/Screenshot-20260830-143556.jpg', rarity:'Легендарный', color:'#FFD700', value:800, chance:3},
-    {name:'Огненный АК', img:'https://i.postimg.cc/SKQKRp0h/Screenshot-20260830-184043.jpg', rarity:'Эпический', color:'#ff4500', value:400, chance:10},
-    {name:'Чешуя Дракона', img:'https://i.postimg.cc/433LQZmt/Screenshot-20260830-233108.jpg', rarity:'Редкий', color:'#00cc66', value:200, chance:25},
-    {name:'Коготь', img:'https://i.postimg.cc/2S117DcT/Screenshot-20260830-191916.jpg', rarity:'Обычный', color:'#8B7355', value:60, chance:40},
-    {name:'Яйцо Дракона', img:'https://i.postimg.cc/yNq4fDzz/Screenshot-20260830-232405.jpg', rarity:'Обычный', color:'#8B5A2B', value:100, chance:22}
+    {name:'Золотой Дракон', img:'https://i.postimg.cc/5Hv6nTjt/lv-0-20260919215106.jpg', rarity:'Легендарный', color:'#FFD700', value:800, chance:3},
+    {name:'Огненный АК', img:'https://i.postimg.cc/vDm6dPN2/1789826336445.jpg', rarity:'Эпический', color:'#ff4500', value:400, chance:10},
+    {name:'Чешуя Дракона', img:'https://i.postimg.cc/0rNJqtBV/1789826358065.jpg', rarity:'Редкий', color:'#00cc66', value:200, chance:25},
+    {name:'Коготь', img:'https://i.postimg.cc/QVMWr6y0/1789826390427.jpg', rarity:'Обычный', color:'#8B7355', value:60, chance:40},
+    {name:'Яйцо Дракона', img:'https://i.postimg.cc/xqdbSs45/1789826412844.jpg', rarity:'Обычный', color:'#8B5A2B', value:100, chance:22}
   ]},
   { name: 'Призрак', price: 200, items: [
-    {name:'Невидимый Клинок', img:'https://i.postimg.cc/1XvPV8DM/Screenshot-20260830-143556.jpg', rarity:'Легендарный', color:'#FFFFFF', value:1200, chance:2},
-    {name:'Призрачный Дрейк', img:'https://i.postimg.cc/SKQKRp0h/Screenshot-20260830-184043.jpg', rarity:'Эпический', color:'#a78bfa', value:500, chance:12},
-    {name:'Белая Маска', img:'https://i.postimg.cc/433LQZmt/Screenshot-20260830-233108.jpg', rarity:'Редкий', color:'#C0C0C0', value:250, chance:25},
-    {name:'Свеча', img:'https://i.postimg.cc/2S117DcT/Screenshot-20260830-191916.jpg', rarity:'Обычный', color:'#8B7355', value:80, chance:35},
-    {name:'Прах', img:'https://i.postimg.cc/yNq4fDzz/Screenshot-20260830-232405.jpg', rarity:'Обычный', color:'#8B5A2B', value:120, chance:26}
+    {name:'Невидимый Клинок', img:'https://i.postimg.cc/SjKzpZvV/1789826442325.jpg', rarity:'Легендарный', color:'#FFFFFF', value:1200, chance:2},
+    {name:'Призрачный Дрейк', img:'https://i.postimg.cc/kD5tdjpF/1789826470144.jpg', rarity:'Эпический', color:'#a78bfa', value:500, chance:12},
+    {name:'Белая Маска', img:'https://i.postimg.cc/qg7Cdm5y/1789826486212.jpg', rarity:'Редкий', color:'#C0C0C0', value:250, chance:25},
+    {name:'Свеча', img:'https://i.postimg.cc/kD5tdjpx/1789826503737.jpg', rarity:'Обычный', color:'#8B7355', value:80, chance:35},
+    {name:'Прах', img:'https://i.postimg.cc/kD5tdjpQ/1789826524875.jpg', rarity:'Обычный', color:'#8B5A2B', value:120, chance:26}
   ]},
   { name: 'Череп', price: 250, items: [
-    {name:'Корона Черепа', img:'https://i.postimg.cc/1XvPV8DM/Screenshot-20260830-143556.jpg', rarity:'Легендарный', color:'#dc2626', value:1500, chance:2},
-    {name:'Костяной АК', img:'https://i.postimg.cc/SKQKRp0h/Screenshot-20260830-184043.jpg', rarity:'Эпический', color:'#FFFFFF', value:600, chance:10},
-    {name:'Клык', img:'https://i.postimg.cc/433LQZmt/Screenshot-20260830-233108.jpg', rarity:'Редкий', color:'#C0C0C0', value:300, chance:28},
-    {name:'Кость', img:'https://i.postimg.cc/2S117DcT/Screenshot-20260830-191916.jpg', rarity:'Обычный', color:'#8B7355', value:100, chance:35},
-    {name:'Могила', img:'https://i.postimg.cc/yNq4fDzz/Screenshot-20260830-232405.jpg', rarity:'Обычный', color:'#6b7280', value:150, chance:25}
+    {name:'Корона Черепа', img:'https://i.postimg.cc/MXGj8sF0/1789826559591.jpg', rarity:'Легендарный', color:'#dc2626', value:1500, chance:2},
+    {name:'Костяной АК', img:'https://i.postimg.cc/7bLTyBW7/1789826581442.jpg', rarity:'Эпический', color:'#FFFFFF', value:600, chance:10},
+    {name:'Клык', img:'https://i.postimg.cc/SjKzpZvz/1789826602404.jpg', rarity:'Редкий', color:'#C0C0C0', value:300, chance:28},
+    {name:'Кость', img:'https://i.postimg.cc/K4Ygy9HM/1789826620570.jpg', rarity:'Обычный', color:'#8B7355', value:100, chance:35},
+    {name:'Могила', img:'https://i.postimg.cc/dD0TKWx3/1789826642429.jpg', rarity:'Обычный', color:'#6b7280', value:150, chance:25}
   ]},
   { name: 'Огонь', price: 300, items: [
-    {name:'Пламенный Меч', img:'https://i.postimg.cc/1XvPV8DM/Screenshot-20260830-143556.jpg', rarity:'Легендарный', color:'#ff4500', value:2000, chance:2},
-    {name:'Огнемёт', img:'https://i.postimg.cc/SKQKRp0h/Screenshot-20260830-184043.jpg', rarity:'Эпический', color:'#ff6b35', value:800, chance:10},
-    {name:'Лавовый Дрейк', img:'https://i.postimg.cc/433LQZmt/Screenshot-20260830-233108.jpg', rarity:'Редкий', color:'#dc2626', value:400, chance:25},
-    {name:'Уголёк', img:'https://i.postimg.cc/2S117DcT/Screenshot-20260830-191916.jpg', rarity:'Обычный', color:'#8B4513', value:120, chance:38},
-    {name:'Пепел', img:'https://i.postimg.cc/yNq4fDzz/Screenshot-20260830-232405.jpg', rarity:'Обычный', color:'#6b7280', value:180, chance:25}
+    {name:'Пламенный Меч', img:'https://i.postimg.cc/7bQJPgFs/lv-0-20260919215429.jpg', rarity:'Легендарный', color:'#ff4500', value:2000, chance:2},
+    {name:'Огнемёт', img:'https://i.postimg.cc/c65t1Qp5/lv-0-20260919215454.jpg', rarity:'Эпический', color:'#ff6b35', value:800, chance:10},
+    {name:'Лавовый Дрейк', img:'https://i.postimg.cc/dDSZQ8bN/lv-0-20260919215514.jpg', rarity:'Редкий', color:'#dc2626', value:400, chance:25},
+    {name:'Уголёк', img:'https://i.postimg.cc/PNFvfmgS/lv-0-20260919215600.jpg', rarity:'Обычный', color:'#8B4513', value:120, chance:38},
+    {name:'Пепел', img:'https://i.postimg.cc/c65t1Qpc/lv-0-20260919215623.jpg', rarity:'Обычный', color:'#6b7280', value:180, chance:25}
   ]},
   { name: 'Королевский', price: 500, items: [
-    {name:'Королевский Кинжал', img:'https://i.postimg.cc/1XvPV8DM/Screenshot-20260830-143556.jpg', rarity:'Легендарный', color:'#FFD700', value:5000, chance:1},
-    {name:'Золотой АК', img:'https://i.postimg.cc/SKQKRp0h/Screenshot-20260830-184043.jpg', rarity:'Легендарный', color:'#FFD700', value:2500, chance:4},
-    {name:'Корона', img:'https://i.postimg.cc/433LQZmt/Screenshot-20260830-233108.jpg', rarity:'Эпический', color:'#FFD700', value:1000, chance:15},
-    {name:'Скипетр', img:'https://i.postimg.cc/2S117DcT/Screenshot-20260830-191916.jpg', rarity:'Редкий', color:'#C0C0C0', value:500, chance:30},
-    {name:'Медаль', img:'https://i.postimg.cc/yNq4fDzz/Screenshot-20260830-232405.jpg', rarity:'Обычный', color:'#8B7355', value:250, chance:50}
+    {name:'Королевский Кинжал', img:'https://i.postimg.cc/XXDBNwRK/lv-0-20260919215642.jpg', rarity:'Легендарный', color:'#FFD700', value:5000, chance:1},
+    {name:'Золотой АК', img:'https://i.postimg.cc/mh61ZQvV/lv-0-20260919215704.jpg', rarity:'Легендарный', color:'#FFD700', value:2500, chance:4},
+    {name:'Корона', img:'https://i.postimg.cc/3WwDHLcL/lv-0-20260919215725.jpg', rarity:'Эпический', color:'#FFD700', value:1000, chance:15},
+    {name:'Скипетр', img:'https://i.postimg.cc/NLP2G136/lv-0-20260919215748.jpg', rarity:'Редкий', color:'#C0C0C0', value:500, chance:30}
   ]}
 ];
 
@@ -482,25 +472,19 @@ document.getElementById('registerBtn').addEventListener('click', async function(
     const pass = document.getElementById('regPass').value.trim();
     const pass2 = document.getElementById('regPass2').value.trim();
     const msg = document.getElementById('regMsg');
-    
     if (!nick || nick.length < 3) { msg.textContent = '❌ Ник минимум 3 символа'; msg.style.color = '#ff4444'; return; }
     if (!pass || pass.length < 3) { msg.textContent = '❌ Пароль минимум 3 символа'; msg.style.color = '#ff4444'; return; }
     if (pass !== pass2) { msg.textContent = '❌ Пароли не совпадают'; msg.style.color = '#ff4444'; return; }
-    
     await loadCloudData().then(d => { if (d) cloudData = d; });
-    
     if (cloudData.players && cloudData.players[nick]) {
         msg.textContent = '❌ Этот ник уже занят!';
         msg.style.color = '#ff4444';
         return;
     }
-    
     cloudData.players[nick] = { balance: 0, inventory: [], pass: pass, winStreak: 0 };
     await saveAll();
-    
     msg.textContent = '✅ Аккаунт создан!';
     msg.style.color = '#00ff88';
-    
     setTimeout(() => {
         currentNick = nick;
         currentPass = pass;
@@ -513,19 +497,14 @@ document.getElementById('loginBtn').addEventListener('click', async function() {
     const nick = document.getElementById('loginNick').value.trim();
     const pass = document.getElementById('loginPass').value.trim();
     const msg = document.getElementById('loginMsg');
-    
     if (!nick) { msg.textContent = '❌ Введите ник'; msg.style.color = '#ff4444'; return; }
     if (!pass) { msg.textContent = '❌ Введите пароль'; msg.style.color = '#ff4444'; return; }
-    
     await loadCloudData().then(d => { if (d) cloudData = d; });
-    
     const player = cloudData.players && cloudData.players[nick];
     if (!player) { msg.textContent = '❌ Игрок не найден'; msg.style.color = '#ff4444'; return; }
     if (player.pass !== pass) { msg.textContent = '❌ Неверный пароль'; msg.style.color = '#ff4444'; return; }
-    
     msg.textContent = '✅ Вход выполнен!';
     msg.style.color = '#00ff88';
-    
     currentNick = nick;
     currentPass = pass;
     localStorage.setItem('oxdrop_nick', nick);
@@ -536,12 +515,10 @@ async function enterGame() {
     document.getElementById('authScreen').style.display = 'none';
     document.getElementById('gameScreen').style.display = 'block';
     document.getElementById('userNickDisplay').textContent = currentNick;
-    
     const player = getPlayer(currentNick);
     balance = player.balance || 0;
     inventory = player.inventory || [];
     winStreak = player.winStreak || 0;
-    
     updateBalanceUI();
     renderInventory();
     renderUpgradeInventory();
@@ -776,7 +753,6 @@ function buildWheel(winChance) {
     wheelInner.innerHTML = '';
     const winDeg = winChance * 360;
     wheelInner.style.background = 'conic-gradient(#dc2626 0deg ' + winDeg + 'deg, #94a3b8 ' + winDeg + 'deg 360deg)';
-    
     if (winDeg > 40) {
         const winLabel = document.createElement('div');
         winLabel.style.position = 'absolute';
@@ -791,7 +767,6 @@ function buildWheel(winChance) {
         winLabel.textContent = 'ПОБЕДА';
         wheelInner.appendChild(winLabel);
     }
-    
     if (360 - winDeg > 40) {
         const loseLabel = document.createElement('div');
         loseLabel.style.position = 'absolute';
@@ -816,7 +791,6 @@ async function openWheel() {
     document.getElementById('wheelSpinBtn').disabled = false;
     document.getElementById('wheelResult').textContent = '🌀 Крутим...';
     document.getElementById('resultBox').classList.remove('show', 'success', 'fail');
-
     let chance = selectedLevel.chance / 100;
     if (winStreak >= 5) {
         const multipliers = [0.55, 0.33, 0.11, 0.01, 0];
@@ -824,27 +798,22 @@ async function openWheel() {
         const mult = multipliers[idx] !== undefined ? multipliers[idx] : 0;
         chance = chance * mult;
     }
-    
     const isWin = Math.random() < chance;
     buildWheel(chance);
-    
     const winDeg = chance * 360;
     const loseDeg = 360 - winDeg;
     const targetAngle = isWin ? (winDeg / 2) : (winDeg + loseDeg / 2);
     const rotationToTarget = (360 - targetAngle) % 360;
     const spins = 5 + Math.floor(Math.random() * 3);
     const totalRotation = spins * 360 + rotationToTarget;
-    
     const wheelEl = document.getElementById('wheelInner');
     wheelEl.style.transition = 'none';
     wheelEl.style.transform = 'rotate(0deg)';
     void wheelEl.offsetWidth;
     wheelEl.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
-    
     setTimeout(() => {
         wheelEl.style.transform = 'rotate(' + totalRotation + 'deg)';
     }, 50);
-    
     setTimeout(async () => {
         if (isWin) {
             winStreak++;
@@ -1046,7 +1015,6 @@ function updateStatsUI() {
 
 async function init() {
     await loadCloudData().then(d => { if (d) cloudData = d; });
-    
     const savedNick = localStorage.getItem('oxdrop_nick');
     if (savedNick && cloudData.players && cloudData.players[savedNick]) {
         currentNick = savedNick;
@@ -1055,7 +1023,6 @@ async function init() {
         document.getElementById('authScreen').style.display = 'flex';
         document.getElementById('gameScreen').style.display = 'none';
     }
-    
     document.getElementById('openCaseBtn').addEventListener('click', openCase);
     document.getElementById('sellBtn').addEventListener('click', sellLastItem);
     document.querySelectorAll('.case-menu button').forEach((btn, i) => {
