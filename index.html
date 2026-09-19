@@ -269,7 +269,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 </div>
 
 <script>
-const BIN_ID = '6aae3fdcac6210605adf1306';
+const BIN_ID = '6aae5b0fffd5d1605318dfed';
 const API_KEY = '$2a$10$F2s9AmRenUerMH71edgzLOejuWAEpH/ntz95OZ5i/0Z.3ZbjP7mbW';
 const API_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
 
@@ -279,6 +279,7 @@ async function loadCloudData() {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const data = await res.json();
         setStatus('✅ Данные загружены');
+        setTimeout(() => setStatus(''), 2000);
         return data || { players: {}, withdraw_requests: [] };
     } catch(e) {
         console.error(e);
@@ -838,4 +839,4 @@ async function init() {
 init();
 </script>
 </body>
-</html>
+    </html>
