@@ -16,7 +16,6 @@ body{min-height:100vh;background:linear-gradient(145deg,#0b0e1a,#1a1f2f);display
 .auth-screen input:focus{outline:2px solid #f5b342}
 .auth-screen button{padding:14px;border-radius:30px;font-weight:700;font-size:1rem;cursor:pointer;border:none;transition:0.2s}
 .auth-screen .btn-main{background:linear-gradient(135deg,#f5b342,#e8922a);color:#0b0e1a}
-.auth-screen .btn-alt{background:rgba(30,38,59,0.85);color:#b9c8e6;border:1px solid #4f5b7a}
 .auth-screen .msg{text-align:center;font-size:0.9rem;min-height:24px;margin-top:5px;font-weight:600}
 .auth-switch{text-align:center;color:#96a9d1;font-size:0.9rem;margin-top:5px;cursor:pointer;text-decoration:underline}
 
@@ -92,12 +91,12 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .preview-item .p-name{color:#eaf0ff;font-weight:600;flex:1}
 .preview-item .p-rarity{font-size:0.7rem;padding:2px 12px;border-radius:20px;background:#1e263b;color:#96a9d1}
 .preview-item .p-value{color:#ffd966;font-weight:700;font-size:0.85rem}
-.upgrade-levels{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}
-.upgrade-level{background:rgba(12,16,30,0.7);border:2px solid #2f3a55;border-radius:20px;padding:12px 10px;text-align:center;cursor:pointer;color:#b9c8e6}
-.upgrade-level.selected{border-color:#f5b342;background:rgba(42,51,73,0.9)}
-.upgrade-level .level-mult{font-size:1.3rem;font-weight:700;color:#ffd966}
-.upgrade-level .level-desc{font-size:0.7rem;color:#96a9d1;margin-top:4px}
-.upgrade-level .level-chance{font-size:0.6rem;color:#00ff88;margin-top:2px}
+.upgrade-levels{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin:15px 0}
+@media(max-width:600px){.upgrade-levels{grid-template-columns:1fr 1fr}}
+.upgrade-level{background:rgba(12,16,30,0.7);border:2px solid #2f3a55;border-radius:20px;padding:12px 8px;text-align:center;cursor:pointer;color:#b9c8e6;transition:0.2s}
+.upgrade-level.selected{border-color:#f5b342;background:rgba(42,51,73,0.9);box-shadow:0 0 20px #f5b34233}
+.upgrade-level .level-mult{font-size:1.2rem;font-weight:700;color:#ffd966}
+.upgrade-level .level-desc{font-size:0.65rem;color:#96a9d1;margin-top:4px}
 .wheel-container{display:none;margin-top:20px;padding:20px;background:rgba(0,0,0,0.6);border-radius:30px;border:2px solid #ffd96655}
 .wheel-container.show{display:block}
 .wheel-title{color:#ffd966;text-align:center;font-size:0.9rem;font-weight:700;margin-bottom:10px}
@@ -155,9 +154,9 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <body>
 <div class="container">
 
-<!-- ===== ЭКРАН ВХОДА/РЕГИСТРАЦИИ ===== -->
+<!-- ЭКРАН ВХОДА/РЕГИСТРАЦИИ -->
 <div class="auth-screen" id="authScreen">
-<h1 id="authTitle">🐂 OXDROP</h1>
+<h1>🐂 OXDROP</h1>
 <div id="loginForm">
 <h2>🔑 Вход</h2>
 <input type="text" id="loginNick" placeholder="Ваш ник" autocomplete="off">
@@ -177,7 +176,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 </div>
 </div>
 
-<!-- ===== ЭКРАН ИГРЫ ===== -->
+<!-- ЭКРАН ИГРЫ -->
 <div class="game-screen" id="gameScreen">
 <h1 id="mainTitle">🐂 OXDROP</h1>
 <div class="top-bar">
@@ -191,9 +190,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <button onclick="switchTab('inventory')">📦 Инвентарь</button>
 <button onclick="switchTab('upgrade')">⬆ Апгрейд</button>
 </div>
-<div class="donate-notice">
-<p>💳 Укажите свой ник в комментарии к платежу!</p>
-</div>
+<div class="donate-notice"><p>💳 Укажите свой ник в комментарии к платежу!</p></div>
 <div class="stats-row">
 <div class="stat-item">👁️ Посещений<span class="stat-value" id="visitCount">0</span></div>
 <div class="stat-item">📦 Открыто<span class="stat-value" id="caseOpenCount">0</span></div>
@@ -240,10 +237,14 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 </div>
 <div class="inv-list" id="upgradeInvList"><div class="empty-inv">📭 Инвентарь пуст</div></div>
 <div class="upgrade-levels" id="upgradeLevels">
-<div class="upgrade-level selected" data-mult="1.2"><div class="level-mult">x1.2</div><div class="level-desc">+20%</div><div class="level-chance">🟢 75%</div></div>
-<div class="upgrade-level" data-mult="1.5"><div class="level-mult">x1.5</div><div class="level-desc">+50%</div><div class="level-chance">🟡 50%</div></div>
-<div class="upgrade-level" data-mult="2.0"><div class="level-mult">x2.0</div><div class="level-desc">+100%</div><div class="level-chance">🟠 25%</div></div>
-<div class="upgrade-level" data-mult="4.0"><div class="level-mult">x4.0</div><div class="level-desc">+300%</div><div class="level-chance">🔴 2%</div></div>
+<div class="upgrade-level selected" data-mult="1.1"><div class="level-mult">x1.1</div><div class="level-desc">+10%</div></div>
+<div class="upgrade-level" data-mult="1.3"><div class="level-mult">x1.3</div><div class="level-desc">+30%</div></div>
+<div class="upgrade-level" data-mult="1.5"><div class="level-mult">x1.5</div><div class="level-desc">+50%</div></div>
+<div class="upgrade-level" data-mult="2.0"><div class="level-mult">x2.0</div><div class="level-desc">+100%</div></div>
+<div class="upgrade-level" data-mult="2.5"><div class="level-mult">x2.5</div><div class="level-desc">+150%</div></div>
+<div class="upgrade-level" data-mult="3.5"><div class="level-mult">x3.5</div><div class="level-desc">+250%</div></div>
+<div class="upgrade-level" data-mult="5.0"><div class="level-mult">x5.0</div><div class="level-desc">+400%</div></div>
+<div class="upgrade-level" data-mult="10.0"><div class="level-mult">x10.0</div><div class="level-desc">+900%</div></div>
 </div>
 <button class="wheel-btn" id="openWheelBtn">🎡 Открыть колесо</button>
 <div class="wheel-container" id="wheelContainer">
@@ -278,7 +279,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <div class="status-bar" id="statusBar"></div>
 </div>
 
-<!-- ===== АДМИНКА ===== -->
+<!-- АДМИНКА -->
 <div class="admin-panel" id="adminPanel">
 <div class="admin-box">
 <button class="close-btn" id="adminClose">✕</button>
@@ -311,7 +312,6 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <script>
 const API_URL = 'https://api.npoint.io/6ebf279d65bba82f722e';
 
-// ===== РАБОТА С СЕРВЕРОМ =====
 async function loadCloudData() {
     try {
         const res = await fetch(API_URL);
@@ -350,7 +350,6 @@ function setStatus(text) {
     if (el) el.textContent = text;
 }
 
-// ===== ДАННЫЕ =====
 const cases = [
   { name: 'Мумия', price: 100, items: [
     {name:'Радужная Ярость', img:'https://i.postimg.cc/1XvPV8DM/Screenshot-20260830-143556.jpg', rarity:'Легендарный', color:'#d4a03a', value:500, chance:4},
@@ -377,7 +376,7 @@ let history = [];
 let inventory = [];
 let lastItem = null;
 let selectedIndices = [];
-let selectedLevel = { mult: 1.2, chance: 75 };
+let selectedLevel = { mult: 1.1, chance: 90 };
 let currentNick = '';
 let currentPass = '';
 let selectedMethod = 'card';
@@ -404,7 +403,6 @@ document.getElementById('goLogin').addEventListener('click', function() {
     document.getElementById('loginForm').style.display = 'block';
 });
 
-// РЕГИСТРАЦИЯ
 document.getElementById('registerBtn').addEventListener('click', async function() {
     const nick = document.getElementById('regNick').value.trim();
     const pass = document.getElementById('regPass').value.trim();
@@ -426,7 +424,7 @@ document.getElementById('registerBtn').addEventListener('click', async function(
     cloudData.players[nick] = { balance: 0, inventory: [], pass: pass };
     await saveAll();
     
-    msg.textContent = '✅ Аккаунт создан! Входим...';
+    msg.textContent = '✅ Аккаунт создан!';
     msg.style.color = '#00ff88';
     
     setTimeout(() => {
@@ -434,10 +432,9 @@ document.getElementById('registerBtn').addEventListener('click', async function(
         currentPass = pass;
         localStorage.setItem('oxdrop_nick', nick);
         enterGame();
-    }, 1000);
+    }, 800);
 });
 
-// ВХОД
 document.getElementById('loginBtn').addEventListener('click', async function() {
     const nick = document.getElementById('loginNick').value.trim();
     const pass = document.getElementById('loginPass').value.trim();
@@ -461,7 +458,6 @@ document.getElementById('loginBtn').addEventListener('click', async function() {
     setTimeout(() => { enterGame(); }, 500);
 });
 
-// ВХОД В ИГРУ
 async function enterGame() {
     document.getElementById('authScreen').style.display = 'none';
     document.getElementById('gameScreen').style.display = 'block';
@@ -480,23 +476,18 @@ async function enterGame() {
     updateStatsUI();
 }
 
-// ВЫХОД
 document.getElementById('logoutBtn').addEventListener('click', function() {
     if (confirm('Выйти из аккаунта?')) {
         currentNick = '';
         currentPass = '';
         localStorage.removeItem('oxdrop_nick');
         document.getElementById('gameScreen').style.display = 'none';
-        document.getElementById('authScreen').style.display = 'block';
+        document.getElementById('authScreen').style.display = 'flex';
         document.getElementById('loginForm').style.display = 'block';
         document.getElementById('registerForm').style.display = 'none';
         document.getElementById('loginNick').value = '';
         document.getElementById('loginPass').value = '';
-        document.getElementById('regNick').value = '';
-        document.getElementById('regPass').value = '';
-        document.getElementById('regPass2').value = '';
         document.getElementById('loginMsg').textContent = '';
-        document.getElementById('regMsg').textContent = '';
     }
 });
 
@@ -902,13 +893,16 @@ document.querySelectorAll('.withdraw-methods button').forEach(btn => {
     });
 });
 
+// ===== АПГРЕЙД: уровни БЕЗ процентов =====
 document.getElementById('upgradeLevels').addEventListener('click', function(e) {
     const level = e.target.closest('.upgrade-level');
     if (!level) return;
     document.querySelectorAll('.upgrade-level').forEach(el => el.classList.remove('selected'));
     level.classList.add('selected');
     selectedLevel.mult = parseFloat(level.dataset.mult);
-    selectedLevel.chance = parseInt(level.querySelector('.level-chance').textContent.match(/\d+/)[0]);
+    // Шансы скрыты от игрока, но работают в фоне
+    const chances = {'1.1': 90, '1.3': 75, '1.5': 60, '2.0': 45, '2.5': 30, '3.5': 15, '5.0': 5, '10.0': 1};
+    selectedLevel.chance = chances[level.dataset.mult] || 50;
 });
 
 function openPreview(i) {
@@ -943,7 +937,6 @@ function updateStatsUI() {
     document.getElementById('bestItem').textContent = stats.bestItem.name + ' (' + stats.bestItem.value + '$)';
 }
 
-// ===== СТАРТ =====
 async function init() {
     await loadCloudData().then(d => { if (d) cloudData = d; });
     
