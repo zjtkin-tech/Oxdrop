@@ -269,13 +269,11 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 </div>
 
 <script>
-const BIN_ID = '6aae5b0fffd5d1605318dfed';
-const API_KEY = '$2a$10$F2s9AmRenUerMH71edgzLOejuWAEpH/ntz95OZ5i/0Z.3ZbjP7mbW';
-const API_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
+const API_URL = 'https://api.npoint.io/6ebf279d65bba82f722e';
 
 async function loadCloudData() {
     try {
-        const res = await fetch(API_URL + '/latest', { headers: { 'X-Master-Key': API_KEY, 'X-Bin-Meta': 'false' } });
+        const res = await fetch(API_URL);
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const data = await res.json();
         setStatus('✅ Данные загружены');
@@ -291,8 +289,8 @@ async function loadCloudData() {
 async function saveCloudData(data) {
     try {
         const res = await fetch(API_URL, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
         if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -839,4 +837,4 @@ async function init() {
 init();
 </script>
 </body>
-    </html>
+</html>
