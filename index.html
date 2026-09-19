@@ -103,7 +103,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .wheel-container.show{display:block}
 .wheel-title{color:#ffd966;text-align:center;font-size:0.9rem;font-weight:700;margin-bottom:10px}
 .wheel{position:relative;width:100%;max-width:320px;height:320px;margin:0 auto;border-radius:50%;border:4px solid #f5b342;overflow:visible;background:#1a1f2f}
-.wheel-inner{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;overflow:hidden;transition:transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);transform:rotate(0deg)}
+.wheel-inner{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;overflow:hidden;transform:rotate(0deg)}
 .wheel-segment{position:absolute;width:50%;height:50%;top:0;left:50%;transform-origin:0% 100%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:900;color:white;padding-left:15px;text-shadow:0 0 5px rgba(0,0,0,0.5);letter-spacing:1px}
 .wheel-segment .seg-text{transform:rotate(90deg);white-space:nowrap}
 .wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;background:linear-gradient(135deg,#f5b342,#e8922a);border-radius:50%;border:3px solid #fff;z-index:10;box-shadow:0 0 20px #f5b34266;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
@@ -158,7 +158,6 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <body>
 <div class="container">
 
-<!-- ЭКРАН ВХОДА/РЕГИСТРАЦИИ -->
 <div class="auth-screen" id="authScreen">
 <h1>🐂 OXDROP</h1>
 <div id="loginForm">
@@ -180,7 +179,6 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 </div>
 </div>
 
-<!-- ЭКРАН ИГРЫ -->
 <div class="game-screen" id="gameScreen">
 <h1 id="mainTitle">🐂 OXDROP</h1>
 <div class="top-bar">
@@ -287,7 +285,6 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <div class="status-bar" id="statusBar"></div>
 </div>
 
-<!-- АДМИНКА -->
 <div class="admin-panel" id="adminPanel">
 <div class="admin-box">
 <button class="close-btn" id="adminClose">✕</button>
@@ -401,7 +398,6 @@ async function saveAll() {
     try { localStorage.setItem('oxdrop_backup', JSON.stringify(cloudData)); } catch(e) {}
 }
 
-// ===== АВТОРИЗАЦИЯ =====
 document.getElementById('goRegister').addEventListener('click', function() {
     document.getElementById('loginForm').style.display = 'none';
     document.getElementById('registerForm').style.display = 'block';
@@ -499,7 +495,6 @@ document.getElementById('logoutBtn').addEventListener('click', function() {
     }
 });
 
-// ===== ИГРА =====
 function updateBalanceUI() {
     document.getElementById('balanceDisplay').textContent = balance;
     document.getElementById('withdrawBalance').textContent = balance;
@@ -704,11 +699,9 @@ function renderUpgradeInventory() {
     document.getElementById('openWheelBtn').disabled = selectedIndices.length === 0;
 }
 
-// ===== НОВОЕ КОЛЕСО =====
 function buildWheel() {
     const wheelInner = document.getElementById('wheelInner');
     wheelInner.innerHTML = '';
-    // КРАСНЫЙ сектор = ПОБЕДА, ТЁМНЫЙ сектор = ПРОИГРЫШ
     const items = [
         {name:'ПОБЕДА', color:'#dc2626', type:'upgrade'},
         {name:'ПРОИГРЫШ', color:'#1e293b', type:'burn'}
@@ -738,16 +731,26 @@ async function openWheel() {
     const resultIndex = Math.random() < chance ? 0 : 1;
     const selected = items[resultIndex];
     
-    // Плавное вращение: 5 полных оборотов + нужный угол
-    const targetRotation = 5 * 360 + (resultIndex * 180);
     const wheelEl = document.getElementById('wheelInner');
+    
+    // СБРОС: убираем transition, ставим 0°
+    wheelEl.style.transition = 'none';
     wheelEl.style.transform = 'rotate(0deg)';
+    
+    // Форсируем перерисовку
+    void wheelEl.offsetWidth;
+    
+    // Включаем transition
+    wheelEl.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
+    
+    // Вращаем
+    const spins = 5 + Math.floor(Math.random() * 3);
+    const targetRotation = spins * 360 + (resultIndex * 180);
     
     setTimeout(() => {
         wheelEl.style.transform = 'rotate(' + targetRotation + 'deg)';
-    }, 50);
+    }, 100);
     
-    // Ждём окончания анимации (4 секунды)
     setTimeout(async () => {
         if (selected.type === 'upgrade') {
             const newVal = Math.round(totalValue * selectedLevel.mult);
@@ -776,12 +779,11 @@ async function openWheel() {
         }
         document.getElementById('openWheelBtn').disabled = false;
         document.getElementById('wheelSpinBtn').disabled = true;
-    }, 4100);
+    }, 4200);
 }
 document.getElementById('openWheelBtn').addEventListener('click', openWheel);
 document.getElementById('wheelSpinBtn').addEventListener('click', openWheel);
 
-// ===== АДМИНКА =====
 document.getElementById('mainTitle').addEventListener('dblclick', function() {
     document.getElementById('adminPanel').classList.add('open');
     document.getElementById('adminLogin').style.display = 'block';
@@ -819,7 +821,6 @@ document.getElementById('adminAddBtn').addEventListener('click', async function(
     }
 });
 
-// ===== ВЫВОД =====
 function renderWithdrawHistory() {
     const hist = (cloudData.withdraw_requests || []).filter(r => r.nick === currentNick);
     const list = document.getElementById('withdrawHistoryList');
@@ -905,14 +906,12 @@ document.querySelectorAll('.withdraw-methods button').forEach(btn => {
     });
 });
 
-// ===== УРОВНИ АПГРЕЙДА (без процентов) =====
 document.getElementById('upgradeLevels').addEventListener('click', function(e) {
     const level = e.target.closest('.upgrade-level');
     if (!level) return;
     document.querySelectorAll('.upgrade-level').forEach(el => el.classList.remove('selected'));
     level.classList.add('selected');
     selectedLevel.mult = parseFloat(level.dataset.mult);
-    // Шансы скрыты от игрока, но работают в фоне
     const chances = {'1.1': 90, '1.3': 75, '1.5': 60, '2.0': 45, '2.5': 30, '3.5': 15, '5.0': 5, '10.0': 1};
     selectedLevel.chance = chances[level.dataset.mult] || 50;
 });
@@ -971,4 +970,4 @@ async function init() {
 init();
 </script>
 </body>
-</html>
+    </html>
