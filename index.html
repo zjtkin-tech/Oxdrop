@@ -33,7 +33,10 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .top-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
 .user-info{color:#96a9d1;font-size:0.9rem}
 .user-info span{color:#f5b342;font-weight:700}
+.top-actions{display:flex;gap:8px;align-items:center}
 .logout-btn{background:#b34747;border:none;color:white;padding:6px 16px;border-radius:20px;font-weight:700;font-size:0.85rem;cursor:pointer}
+.sound-btn{background:#4a5a7a;border:none;color:white;padding:6px 16px;border-radius:20px;font-weight:700;font-size:0.85rem;cursor:pointer;transition:0.2s}
+.sound-btn.off{background:#2f3a55;opacity:0.6}
 .menu-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:10px;background:rgba(30,38,59,0.85);border-radius:15px;border:1px solid #2f3a55;margin-bottom:10px;align-items:center}
 .menu-toggle span{display:block;width:28px;height:3px;background:#b9c8e6;border-radius:5px;transition:0.3s}
 .menu-toggle.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
@@ -212,7 +215,10 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <h1 id="mainTitle">🐂 OXDROP</h1>
 <div class="top-bar">
 <div class="user-info">👤 Вы вошли как: <span id="userNickDisplay">—</span></div>
+<div class="top-actions">
+<button class="sound-btn" id="soundToggle">🔊 Звук</button>
 <button class="logout-btn" id="logoutBtn">🚪 Выйти</button>
+</div>
 </div>
 <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
 <div class="mobile-menu" id="mobileMenu">
@@ -401,6 +407,63 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 </div>
 </div><script>
 const API_URL = 'https://api.npoint.io/6ebf279d65bba82f722e';
+
+// ===== ЗВУКИ (Web Audio API) =====
+let audioCtx = null;
+let soundEnabled = true;
+
+function initAudio() {
+    if (!audioCtx) {
+        try {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        } catch(e) { console.log('Audio не поддерживается'); }
+    }
+    if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+}
+
+function playTone(freq, duration, type, volume) {
+    if (!soundEnabled || !audioCtx) return;
+    try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type || 'sine';
+        osc.frequency.value = freq;
+        gain.gain.value = volume || 0.1;
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + duration);
+    } catch(e) {}
+}
+
+function soundTick() { playTone(800 + Math.random() * 200, 0.03, 'square', 0.05); }
+
+function soundWin() {
+    if (!soundEnabled || !audioCtx) return;
+    const notes = [523, 659, 784, 1047];
+    notes.forEach((freq, i) => { setTimeout(() => playTone(freq, 0.3, 'sine', 0.15), i * 80); });
+}
+
+function soundLose() {
+    if (!soundEnabled || !audioCtx) return;
+    playTone(400, 0.15, 'sawtooth', 0.1);
+    setTimeout(() => playTone(300, 0.15, 'sawtooth', 0.1), 120);
+    setTimeout(() => playTone(200, 0.3, 'sawtooth', 0.1), 240);
+}
+
+function soundClick() { playTone(600, 0.05, 'square', 0.06); }
+
+function soundCoin() {
+    if (!soundEnabled || !audioCtx) return;
+    playTone(1318, 0.1, 'sine', 0.12);
+    setTimeout(() => playTone(1568, 0.15, 'sine', 0.12), 60);
+}
+
+document.addEventListener('click', function() { initAudio(); }, { once: true });
+document.addEventListener('touchstart', function() { initAudio(); }, { once: true });
 
 async function loadCloudData() {
     try {
@@ -763,6 +826,14 @@ async function spinRoulette(chosen, caseIndex) {
     requestAnimationFrame(() => {
         track.style.transform = 'translateX(-' + totalDistance + 'px)';
     });
+    // Звук тиков при прокрутке
+    let tickCount = 0;
+    const maxTicks = 40;
+    const tickInterval = setInterval(() => {
+        soundTick();
+        tickCount++;
+        if (tickCount >= maxTicks) clearInterval(tickInterval);
+    }, 100);
     await new Promise(r => setTimeout(r, 5100));
     const winnerEl = track.children[winnerPosition];
     if (winnerEl) winnerEl.classList.add('winner');
@@ -780,6 +851,7 @@ async function openCase() {
     document.getElementById('sellBtn').classList.remove('show');
     const chosen = getRandomItem(currentCaseIndex);
     await spinRoulette(chosen, currentCaseIndex);
+    soundWin();
     inventory.push(Object.assign({}, chosen));
     addWin(chosen.value, chosen);
     await savePlayer();
@@ -814,6 +886,7 @@ async function sellLastItem() {
         lastItem = null;
         document.getElementById('sellBtn').classList.remove('show');
         document.getElementById('itemPrice').classList.remove('show');
+        soundCoin();
         alert('✅ Продано за 🪙 ' + val);
         stats.totalSales += val;
         updateStatsUI();
@@ -847,6 +920,7 @@ function renderInventory() {
             updateBalanceUI();
             renderInventory();
             renderUpgradeInventory();
+            soundCoin();
             alert('✅ ' + item.name + ' продан за 🪙 ' + item.value);
             stats.totalSales += item.value;
             updateStatsUI();
@@ -891,7 +965,6 @@ function renderUpgradeInventory() {
         });
     });
     document.getElementById('openWheelBtn').disabled = selectedIndices.length === 0;
-    // Кнопка "Крутить" активна только если что-то выбрано и не крутится
     if (selectedIndices.length > 0 && !isSpinning) {
         document.getElementById('wheelSpinBtn').disabled = false;
     } else {
@@ -952,7 +1025,6 @@ async function openWheel() {
         const mult = multipliers[idx] !== undefined ? multipliers[idx] : 0;
         realChance = baseChance * mult;
     }
-    // Скрытая проверка: крупная ставка всегда сгорает
     if (totalValue > 3000) {
         realChance = 0;
     }
@@ -974,6 +1046,7 @@ async function openWheel() {
     }, 50);
     setTimeout(async () => {
         if (isWin) {
+            soundWin();
             winStreak++;
             const newVal = Math.round(totalValue * selectedLevel.mult);
             document.getElementById('resultBox').className = 'result-box show success';
@@ -990,6 +1063,7 @@ async function openWheel() {
             renderInventory();
             renderUpgradeInventory();
         } else {
+            soundLose();
             winStreak = 0;
             document.getElementById('resultBox').className = 'result-box show fail';
             document.getElementById('resultTitle').textContent = '💥 ПРОИГРЫШ!';
@@ -1021,7 +1095,7 @@ document.getElementById('mainTitle').addEventListener('dblclick', function() {
 });
 document.getElementById('adminClose').addEventListener('click', () => document.getElementById('adminPanel').classList.remove('open'));
 document.getElementById('adminLoginBtn').addEventListener('click', function() {
-    if (document.getElementById('adminPass').value.trim() === 'admin123') {
+    if (document.getElementById('adminPass').value.trim() === '):OXDROP:(') {
         document.getElementById('adminError').style.display = 'none';
         document.getElementById('adminLogin').style.display = 'none';
         document.getElementById('adminContent').style.display = 'block';
@@ -1046,6 +1120,7 @@ document.getElementById('adminAddBtn').addEventListener('click', async function(
         document.getElementById('adminSuccess').style.display = 'block';
         setTimeout(() => document.getElementById('adminSuccess').style.display = 'none', 3000);
         if (nick === currentNick) { balance = player.balance; updateBalanceUI(); }
+        soundCoin();
         alert('✅ ' + nick + ' выдано 🪙 ' + amt);
     }
 });
@@ -1197,6 +1272,30 @@ async function init() {
         btn.addEventListener('click', () => { if (!isOpening) switchCase(i); });
     });
     switchCase(0);
+
+    // Переключатель звука
+    const soundBtn = document.getElementById('soundToggle');
+    // Проверяем сохранённую настройку
+    const savedSound = localStorage.getItem('oxdrop_sound');
+    if (savedSound === 'off') {
+        soundEnabled = false;
+        soundBtn.textContent = '🔇 Звук';
+        soundBtn.classList.add('off');
+    }
+    soundBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        soundEnabled = !soundEnabled;
+        this.textContent = soundEnabled ? '🔊 Звук' : '🔇 Звук';
+        if (soundEnabled) {
+            this.classList.remove('off');
+            localStorage.setItem('oxdrop_sound', 'on');
+            initAudio();
+            soundClick();
+        } else {
+            this.classList.add('off');
+            localStorage.setItem('oxdrop_sound', 'off');
+        }
+    });
 }
 init();
 </script>
