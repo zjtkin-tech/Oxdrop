@@ -19,7 +19,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
 body{min-height:100vh;background:linear-gradient(145deg,#0b0e1a,#1a1f2f);display:flex;justify-content:center;align-items:center;padding:15px}
-.container{max-width:950px;width:100%;border-radius:48px;padding:20px;border:1px solid rgba(255,215,0,0.15);background:rgba(255,255,255,0.05)}
+.container{max-width:1200px;width:100%;border-radius:48px;padding:20px;border:1px solid rgba(255,215,0,0.15);background:rgba(255,255,255,0.05)}
 .auth-screen{display:flex;flex-direction:column;gap:12px;padding:20px 10px}
 .auth-screen h2{color:#f5b342;text-align:center;font-size:1.4rem;margin-bottom:10px}
 .auth-screen input{width:100%;padding:14px;border-radius:20px;border:1px solid #2f3a55;background:#0e121f;color:white;font-size:1rem;text-align:center}
@@ -51,6 +51,33 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .tabs{display:flex;gap:8px;margin:15px 0 5px;flex-wrap:wrap}
 .tabs button{flex:1;padding:12px;border:none;border-radius:30px;font-weight:700;font-size:0.9rem;cursor:pointer;transition:0.3s;background:#2a3349;color:#96a9d1;border:2px solid #3d4a66}
 .tabs button.active{background:linear-gradient(135deg,#f5b342,#e8922a);color:#0b0e1a;border-color:#f5b342;box-shadow:0 0 30px #f5b342;transform:scale(1.05)}
+
+/* ===== ГЛАВНАЯ СЕТКА: КОНТЕНТ + ТОП СПРАВА ===== */
+.main-layout{display:grid;grid-template-columns:1fr 240px;gap:20px;align-items:start}
+
+/* ===== ТОП-3 ===== */
+.top3-box{background:linear-gradient(145deg,rgba(30,38,59,0.95),rgba(12,16,30,0.95));border-radius:30px;padding:18px 15px;border:2px solid #f5b34255;position:sticky;top:20px;box-shadow:0 0 30px rgba(245,179,66,0.15)}
+.top3-title{color:#f5b342;text-align:center;font-size:1rem;font-weight:900;margin-bottom:15px;text-transform:uppercase;letter-spacing:2px;text-shadow:0 0 15px #f5b34266}
+.top3-list{display:flex;flex-direction:column;gap:10px}
+.top3-item{background:rgba(12,16,30,0.7);border-radius:18px;padding:10px 12px;display:flex;align-items:center;gap:10px;border-left:3px solid #4a5a7a;transition:0.2s}
+.top3-item.gold{border-left-color:#FFD700;background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(12,16,30,0.7));box-shadow:0 0 20px rgba(255,215,0,0.2)}
+.top3-item.silver{border-left-color:#C0C0C0;background:linear-gradient(135deg,rgba(192,192,192,0.12),rgba(12,16,30,0.7))}
+.top3-item.bronze{border-left-color:#CD7F32;background:linear-gradient(135deg,rgba(205,127,50,0.12),rgba(12,16,30,0.7))}
+.top3-place{font-size:1.3rem;flex-shrink:0;width:28px;text-align:center}
+.top3-info{flex:1;min-width:0}
+.top3-name{color:#eaf0ff;font-weight:700;font-size:0.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top3-value{color:#ffd966;font-weight:900;font-size:0.9rem;margin-top:2px}
+.top3-empty{color:#96a9d1;text-align:center;padding:15px;font-size:0.75rem;font-style:italic}
+
+/* ===== Мобильная адаптация ===== */
+@media(max-width:900px){
+  .main-layout{grid-template-columns:1fr}
+  .top3-box{position:static;order:-1;margin-bottom:15px}
+  .top3-list{flex-direction:row;overflow-x:auto;gap:8px}
+  .top3-item{min-width:130px;flex-shrink:0}
+  .top3-title{font-size:0.85rem;margin-bottom:10px}
+}
+
 .tab-content{display:none}
 .tab-content.active{display:block}
 .balance-box{text-align:right;color:#b9c8e6;font-size:1.1rem;margin-bottom:15px;display:flex;justify-content:flex-end;align-items:center;gap:12px;flex-wrap:wrap}
@@ -214,6 +241,8 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <button data-tab="withdraw">💳 Вывод</button>
 </div>
 <div class="tab-content active" id="tab-cases">
+<div class="main-layout">
+<div class="main-content">
 <div class="balance-box">💰 <span id="balanceDisplay">0</span>
 <a href="https://www.donationalerts.com/r/phff" class="donate-btn" target="_blank">💳 Пополнить</a>
 </div>
@@ -282,6 +311,16 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <button class="case-btn" id="openCaseBtn">🎲 Открыть кейс</button>
 <div class="history"><h3>📋 История</h3><div class="history-items" id="historyList"></div></div>
 </div>
+
+<div class="top3-box">
+<div class="top3-title">🏆 ТОП-3</div>
+<div class="top3-list" id="top3List">
+<div class="top3-empty">Пока никого нет</div>
+</div>
+</div>
+</div>
+</div>
+
 <div class="tab-content" id="tab-upgrade">
 <h2 style="color:#f5b342;text-align:center;font-size:1.3rem;margin-bottom:10px;">⬆ Апгрейд</h2>
 <div style="text-align:center;color:#ffd966;font-weight:700;margin-bottom:10px;font-size:0.9rem;">
@@ -469,14 +508,51 @@ let stats = { visits: 0, caseOpens: 0, totalSales: 0, bestItem: { name: '—', v
 
 function getPlayer(nick) {
     if (!cloudData.players) cloudData.players = {};
-    if (!cloudData.players[nick]) cloudData.players[nick] = { balance: 0, inventory: [], pass: '', winStreak: 0 };
+    if (!cloudData.players[nick]) cloudData.players[nick] = { balance: 0, inventory: [], pass: '', winStreak: 0, totalWin: 0 };
     if (cloudData.players[nick].winStreak === undefined) cloudData.players[nick].winStreak = 0;
+    if (cloudData.players[nick].totalWin === undefined) cloudData.players[nick].totalWin = 0;
     return cloudData.players[nick];
 }
 
 async function saveAll() {
     await saveCloudData(cloudData);
     try { localStorage.setItem('oxdrop_backup', JSON.stringify(cloudData)); } catch(e) {}
+}
+
+function addWin(amount) {
+    if (!currentNick) return;
+    const player = getPlayer(currentNick);
+    player.totalWin = (player.totalWin || 0) + amount;
+    renderTop3();
+}
+
+function renderTop3() {
+    const list = document.getElementById('top3List');
+    if (!list) return;
+    if (!cloudData.players) {
+        list.innerHTML = '<div class="top3-empty">Пока никого нет</div>';
+        return;
+    }
+    const entries = Object.entries(cloudData.players)
+        .map(([nick, data]) => ({ nick, totalWin: data.totalWin || 0 }))
+        .filter(p => p.totalWin > 0)
+        .sort((a, b) => b.totalWin - a.totalWin)
+        .slice(0, 3);
+    if (entries.length === 0) {
+        list.innerHTML = '<div class="top3-empty">Пока никого нет</div>';
+        return;
+    }
+    const medals = ['🥇', '🥈', '🥉'];
+    const classes = ['gold', 'silver', 'bronze'];
+    list.innerHTML = entries.map((p, i) =>
+        '<div class="top3-item ' + classes[i] + '">' +
+        '<div class="top3-place">' + medals[i] + '</div>' +
+        '<div class="top3-info">' +
+        '<div class="top3-name">' + p.nick + '</div>' +
+        '<div class="top3-value">' + p.totalWin.toLocaleString('ru-RU') + '$</div>' +
+        '</div>' +
+        '</div>'
+    ).join('');
 }
 
 document.getElementById('goRegister').addEventListener('click', function() {
@@ -502,7 +578,7 @@ document.getElementById('registerBtn').addEventListener('click', async function(
         msg.style.color = '#ff4444';
         return;
     }
-    cloudData.players[nick] = { balance: 0, inventory: [], pass: pass, winStreak: 0 };
+    cloudData.players[nick] = { balance: 0, inventory: [], pass: pass, winStreak: 0, totalWin: 0 };
     await saveAll();
     msg.textContent = '✅ Аккаунт создан!';
     msg.style.color = '#00ff88';
@@ -547,6 +623,7 @@ async function enterGame() {
     updateStatsUI();
     stats.visits++;
     updateStatsUI();
+    renderTop3();
 }
 
 document.getElementById('logoutBtn').addEventListener('click', function() {
@@ -596,6 +673,7 @@ function switchTab(tabId) {
     if (tabId === 'inventory') renderInventory();
     if (tabId === 'upgrade') renderUpgradeInventory();
     if (tabId === 'withdraw') renderWithdrawHistory();
+    if (tabId === 'cases') renderTop3();
 }
 
 document.querySelectorAll('.tabs button').forEach(btn => {
@@ -679,6 +757,7 @@ async function openCase() {
     const chosen = getRandomItem(currentCaseIndex);
     await spinRoulette(chosen, currentCaseIndex);
     inventory.push(Object.assign({}, chosen));
+    addWin(chosen.value);
     await savePlayer();
     document.getElementById('priceValue').textContent = chosen.value;
     document.getElementById('itemPrice').classList.add('show');
@@ -867,6 +946,7 @@ async function openWheel() {
             for (const i of sorted) inventory.splice(i, 1);
             inventory.push({ name: 'Апгрейд-предмет', img: 'https://cdn-icons-png.flaticon.com/512/427/427733.png', rarity: 'Легендарный', color: '#f5b342', value: newVal });
             selectedIndices = [];
+            addWin(newVal);
             await savePlayer();
             renderInventory();
             renderUpgradeInventory();
@@ -919,6 +999,7 @@ document.getElementById('adminAddBtn').addEventListener('click', async function(
         const player = getPlayer(nick);
         player.balance = (player.balance || 0) + amt;
         if (!player.pass) player.pass = '';
+        if (player.totalWin === undefined) player.totalWin = 0;
         await saveAll();
         document.getElementById('adminSuccess').style.display = 'block';
         setTimeout(() => document.getElementById('adminSuccess').style.display = 'none', 3000);
@@ -1078,4 +1159,4 @@ async function init() {
 init();
 </script>
 </body>
-</html>
+    </html>
