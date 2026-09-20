@@ -504,6 +504,7 @@ let currentNick = '';
 let currentPass = '';
 let selectedMethod = 'card';
 let top3Mode = 'total';
+let isSpinning = false;
 let stats = { visits: 0, caseOpens: 0, totalSales: 0, bestItem: { name: '—', value: 0 } };
 
 function getPlayer(nick) {
@@ -869,6 +870,7 @@ function renderUpgradeInventory() {
     if (inventory.length === 0) {
         list.innerHTML = '<div class="empty-inv">📭 Инвентарь пуст</div>';
         document.getElementById('openWheelBtn').disabled = true;
+        document.getElementById('wheelSpinBtn').disabled = true;
         return;
     }
     list.innerHTML = inventory.map((item, i) =>
@@ -880,6 +882,7 @@ function renderUpgradeInventory() {
     ).join('');
     list.querySelectorAll('.inv-item').forEach(el => {
         el.addEventListener('click', function() {
+            if (isSpinning) return;
             const idx = parseInt(this.dataset.index);
             const pos = selectedIndices.indexOf(idx);
             if (pos >= 0) selectedIndices.splice(pos, 1);
@@ -888,6 +891,12 @@ function renderUpgradeInventory() {
         });
     });
     document.getElementById('openWheelBtn').disabled = selectedIndices.length === 0;
+    // Кнопка "Крутить" активна только если что-то выбрано и не крутится
+    if (selectedIndices.length > 0 && !isSpinning) {
+        document.getElementById('wheelSpinBtn').disabled = false;
+    } else {
+        document.getElementById('wheelSpinBtn').disabled = true;
+    }
 }
 
 function buildWheel(winChance) {
@@ -926,11 +935,13 @@ function buildWheel(winChance) {
 }
 
 async function openWheel() {
+    if (isSpinning) return;
     if (selectedIndices.length === 0) { alert('❌ Выберите предметы!'); return; }
+    isSpinning = true;
     const totalValue = selectedIndices.reduce((sum, i) => sum + (inventory[i] ? inventory[i].value : 0), 0);
     document.getElementById('wheelContainer').classList.add('show');
     document.getElementById('openWheelBtn').disabled = true;
-    document.getElementById('wheelSpinBtn').disabled = false;
+    document.getElementById('wheelSpinBtn').disabled = true;
     document.getElementById('wheelResult').textContent = '🌀 Крутим...';
     document.getElementById('resultBox').classList.remove('show', 'success', 'fail');
     const baseChance = selectedLevel.chance / 100;
@@ -940,6 +951,10 @@ async function openWheel() {
         const idx = winStreak - 5;
         const mult = multipliers[idx] !== undefined ? multipliers[idx] : 0;
         realChance = baseChance * mult;
+    }
+    // Скрытая проверка: крупная ставка всегда сгорает
+    if (totalValue > 3000) {
+        realChance = 0;
     }
     const isWin = Math.random() < realChance;
     buildWheel(baseChance);
@@ -987,8 +1002,10 @@ async function openWheel() {
             renderInventory();
             renderUpgradeInventory();
         }
-        document.getElementById('openWheelBtn').disabled = false;
+        isSpinning = false;
+        document.getElementById('openWheelBtn').disabled = true;
         document.getElementById('wheelSpinBtn').disabled = true;
+        renderUpgradeInventory();
     }, 4100);
 }
 document.getElementById('openWheelBtn').addEventListener('click', openWheel);
