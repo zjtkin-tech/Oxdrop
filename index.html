@@ -19,7 +19,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
 body{min-height:100vh;background:linear-gradient(145deg,#0b0e1a,#1a1f2f);display:flex;justify-content:center;align-items:center;padding:15px}
-.container{max-width:1200px;width:100%;border-radius:48px;padding:20px;border:1px solid rgba(255,215,0,0.15);background:rgba(255,255,255,0.05)}
+.container{max-width:950px;width:100%;border-radius:48px;padding:20px;border:1px solid rgba(255,215,0,0.15);background:rgba(255,255,255,0.05)}
 .auth-screen{display:flex;flex-direction:column;gap:12px;padding:20px 10px}
 .auth-screen h2{color:#f5b342;text-align:center;font-size:1.4rem;margin-bottom:10px}
 .auth-screen input{width:100%;padding:14px;border-radius:20px;border:1px solid #2f3a55;background:#0e121f;color:white;font-size:1rem;text-align:center}
@@ -49,35 +49,8 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .stats-row .stat-item{color:#96a9d1;font-size:0.8rem;text-align:center}
 .stats-row .stat-item .stat-value{color:#f5b342;font-weight:700;display:block;font-size:1.1rem;margin-top:2px}
 .tabs{display:flex;gap:8px;margin:15px 0 5px;flex-wrap:wrap}
-.tabs button{flex:1;padding:12px;border:none;border-radius:30px;font-weight:700;font-size:0.9rem;cursor:pointer;transition:0.3s;background:#2a3349;color:#96a9d1;border:2px solid #3d4a66}
+.tabs button{flex:1;padding:12px;border:none;border-radius:30px;font-weight:700;font-size:0.85rem;cursor:pointer;transition:0.3s;background:#2a3349;color:#96a9d1;border:2px solid #3d4a66;white-space:nowrap}
 .tabs button.active{background:linear-gradient(135deg,#f5b342,#e8922a);color:#0b0e1a;border-color:#f5b342;box-shadow:0 0 30px #f5b342;transform:scale(1.05)}
-
-/* ===== ГЛАВНАЯ СЕТКА: КОНТЕНТ + ТОП СПРАВА ===== */
-.main-layout{display:grid;grid-template-columns:1fr 240px;gap:20px;align-items:start}
-
-/* ===== ТОП-3 ===== */
-.top3-box{background:linear-gradient(145deg,rgba(30,38,59,0.95),rgba(12,16,30,0.95));border-radius:30px;padding:18px 15px;border:2px solid #f5b34255;position:sticky;top:20px;box-shadow:0 0 30px rgba(245,179,66,0.15)}
-.top3-title{color:#f5b342;text-align:center;font-size:1rem;font-weight:900;margin-bottom:15px;text-transform:uppercase;letter-spacing:2px;text-shadow:0 0 15px #f5b34266}
-.top3-list{display:flex;flex-direction:column;gap:10px}
-.top3-item{background:rgba(12,16,30,0.7);border-radius:18px;padding:10px 12px;display:flex;align-items:center;gap:10px;border-left:3px solid #4a5a7a;transition:0.2s}
-.top3-item.gold{border-left-color:#FFD700;background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(12,16,30,0.7));box-shadow:0 0 20px rgba(255,215,0,0.2)}
-.top3-item.silver{border-left-color:#C0C0C0;background:linear-gradient(135deg,rgba(192,192,192,0.12),rgba(12,16,30,0.7))}
-.top3-item.bronze{border-left-color:#CD7F32;background:linear-gradient(135deg,rgba(205,127,50,0.12),rgba(12,16,30,0.7))}
-.top3-place{font-size:1.3rem;flex-shrink:0;width:28px;text-align:center}
-.top3-info{flex:1;min-width:0}
-.top3-name{color:#eaf0ff;font-weight:700;font-size:0.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.top3-value{color:#ffd966;font-weight:900;font-size:0.9rem;margin-top:2px}
-.top3-empty{color:#96a9d1;text-align:center;padding:15px;font-size:0.75rem;font-style:italic}
-
-/* ===== Мобильная адаптация ===== */
-@media(max-width:900px){
-  .main-layout{grid-template-columns:1fr}
-  .top3-box{position:static;order:-1;margin-bottom:15px}
-  .top3-list{flex-direction:row;overflow-x:auto;gap:8px}
-  .top3-item{min-width:130px;flex-shrink:0}
-  .top3-title{font-size:0.85rem;margin-bottom:10px}
-}
-
 .tab-content{display:none}
 .tab-content.active{display:block}
 .balance-box{text-align:right;color:#b9c8e6;font-size:1.1rem;margin-bottom:15px;display:flex;justify-content:flex-end;align-items:center;gap:12px;flex-wrap:wrap}
@@ -115,6 +88,28 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .history-items{display:flex;flex-wrap:wrap;gap:6px}
 .history-items span{background:#1b2339;padding:4px 14px;border-radius:40px;font-size:0.8rem;color:#d3defa;border-left:3px solid #f5b342}
 .price-tag{text-align:center;color:#ffd966;font-size:1.1rem;margin:10px 0;font-weight:600}
+
+/* ===== ТОП-3 ===== */
+.top3-page{max-width:700px;margin:0 auto;padding:20px 0}
+.top3-page-title{color:#f5b342;text-align:center;font-size:1.6rem;font-weight:900;margin-bottom:10px;text-transform:uppercase;letter-spacing:3px;text-shadow:0 0 20px #f5b34266}
+.top3-page-sub{text-align:center;color:#96a9d1;font-size:0.9rem;margin-bottom:20px}
+.top3-switch{display:flex;gap:10px;justify-content:center;margin-bottom:25px;flex-wrap:wrap}
+.top3-switch button{background:rgba(30,38,59,0.85);border:2px solid #2f3a55;color:#96a9d1;padding:12px 24px;border-radius:30px;font-weight:700;font-size:0.85rem;cursor:pointer;transition:0.3s}
+.top3-switch button.active{background:linear-gradient(135deg,#f5b342,#e8922a);color:#0b0e1a;border-color:#f5b342;box-shadow:0 0 25px #f5b34266}
+.top3-list-page{display:flex;flex-direction:column;gap:15px}
+.top3-card{background:linear-gradient(145deg,rgba(30,38,59,0.95),rgba(12,16,30,0.95));border-radius:25px;padding:20px 25px;display:flex;align-items:center;gap:20px;border:2px solid #4a5a7a;transition:0.3s}
+.top3-card.gold{border-color:#FFD700;background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(12,16,30,0.95));box-shadow:0 0 30px rgba(255,215,0,0.3)}
+.top3-card.silver{border-color:#C0C0C0;background:linear-gradient(135deg,rgba(192,192,192,0.15),rgba(12,16,30,0.95))}
+.top3-card.bronze{border-color:#CD7F32;background:linear-gradient(135deg,rgba(205,127,50,0.15),rgba(12,16,30,0.95))}
+.top3-card .tc-place{font-size:2.5rem;flex-shrink:0;width:60px;text-align:center}
+.top3-card .tc-info{flex:1;min-width:0}
+.top3-card .tc-name{color:#eaf0ff;font-weight:900;font-size:1.2rem;margin-bottom:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top3-card .tc-value{color:#ffd966;font-weight:900;font-size:1.5rem}
+.top3-card .tc-item-name{color:#a2b6e0;font-weight:600;font-size:0.85rem;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top3-card .tc-label{color:#96a9d1;font-size:0.75rem;text-transform:uppercase;letter-spacing:1px}
+.top3-card .tc-img{width:60px;height:60px;object-fit:contain;border-radius:12px;background:rgba(12,16,30,0.7);padding:5px;border:2px solid #4a5a7a;flex-shrink:0}
+.top3-empty-page{text-align:center;color:#96a9d1;padding:60px 20px;font-size:1rem;font-style:italic}
+
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1000;justify-content:center;align-items:center;padding:20px}
 .modal.show{display:flex}
 .modal-content{background:#1a1f2f;border-radius:30px;padding:25px;max-width:600px;width:100%;max-height:80vh;overflow-y:auto;border:1px solid #f5b34233}
@@ -156,7 +151,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .result-box.fail{background:#ff220033;border:1px solid #ff2200}
 .result-box .result-title{font-size:1.2rem;font-weight:700}
 .result-box .result-desc{color:#b9c8e6;font-size:0.9rem;margin-top:5px}
-@media(max-width:600px){.case-menu button{width:80px;height:120px;padding:6px 4px}.case-menu button img{width:40px;height:40px}.wheel{width:220px;height:220px}.menu-toggle{display:flex}.tabs{display:none}.roulette-item{width:100px;height:100px}.roulette-item .roulette-name{font-size:0.5rem}}
+@media(max-width:600px){.case-menu button{width:80px;height:120px;padding:6px 4px}.case-menu button img{width:40px;height:40px}.wheel{width:220px;height:220px}.menu-toggle{display:flex}.tabs{display:none}.roulette-item{width:100px;height:100px}.roulette-item .roulette-name{font-size:0.5rem}.top3-card{padding:15px}.top3-card .tc-place{font-size:2rem;width:45px}.top3-card .tc-value{font-size:1.2rem}.top3-card .tc-name{font-size:1rem}}
 .admin-panel{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;justify-content:center;align-items:center}
 .admin-panel.open{display:flex}
 .admin-box{background:#1a1f2f;border-radius:30px;padding:30px;max-width:450px;width:100%;border:2px solid #f5b34233;text-align:center;max-height:90vh;overflow-y:auto}
@@ -223,6 +218,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
 <div class="mobile-menu" id="mobileMenu">
 <button class="cases-btn" onclick="switchTab('cases')">📦 Кейсы</button>
+<button onclick="switchTab('top')">🏆 Топ</button>
 <button onclick="switchTab('withdraw')">💳 Вывод</button>
 <button onclick="switchTab('inventory')">📦 Инвентарь</button>
 <button onclick="switchTab('upgrade')">⬆ Апгрейд</button>
@@ -236,13 +232,12 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 </div>
 <div class="tabs" id="mainTabs">
 <button class="active" data-tab="cases">📦 Кейсы</button>
+<button data-tab="top">🏆 Топ</button>
 <button data-tab="upgrade">⬆ Апгрейд</button>
 <button data-tab="inventory">📦 Инвентарь</button>
 <button data-tab="withdraw">💳 Вывод</button>
 </div>
 <div class="tab-content active" id="tab-cases">
-<div class="main-layout">
-<div class="main-content">
 <div class="balance-box">💰 <span id="balanceDisplay">0</span>
 <a href="https://www.donationalerts.com/r/phff" class="donate-btn" target="_blank">💳 Пополнить</a>
 </div>
@@ -312,11 +307,16 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <div class="history"><h3>📋 История</h3><div class="history-items" id="historyList"></div></div>
 </div>
 
-<div class="top3-box">
-<div class="top3-title">🏆 ТОП-3</div>
-<div class="top3-list" id="top3List">
-<div class="top3-empty">Пока никого нет</div>
+<div class="tab-content" id="tab-top">
+<div class="top3-page">
+<div class="top3-page-title">🏆 ТОП-3 ИГРОКОВ</div>
+<div class="top3-page-sub">Лучшие игроки OXDROP</div>
+<div class="top3-switch" id="top3Switch">
+<button class="active" data-mode="total">💰 Общий выигрыш</button>
+<button data-mode="best">💎 Лучший дроп</button>
 </div>
+<div class="top3-list-page" id="top3ListPage">
+<div class="top3-empty-page">Пока никого нет</div>
 </div>
 </div>
 </div>
@@ -400,7 +400,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <h2 id="previewTitle">📦 Кейс</h2>
 <div id="previewList"></div>
 </div>
-</div> <script>
+  </div> <script>
 const API_URL = 'https://api.npoint.io/6ebf279d65bba82f722e';
 
 async function loadCloudData() {
@@ -504,13 +504,15 @@ let winStreak = 0;
 let currentNick = '';
 let currentPass = '';
 let selectedMethod = 'card';
+let top3Mode = 'total';
 let stats = { visits: 0, caseOpens: 0, totalSales: 0, bestItem: { name: '—', value: 0 } };
 
 function getPlayer(nick) {
     if (!cloudData.players) cloudData.players = {};
-    if (!cloudData.players[nick]) cloudData.players[nick] = { balance: 0, inventory: [], pass: '', winStreak: 0, totalWin: 0 };
+    if (!cloudData.players[nick]) cloudData.players[nick] = { balance: 0, inventory: [], pass: '', winStreak: 0, totalWin: 0, bestDrop: null };
     if (cloudData.players[nick].winStreak === undefined) cloudData.players[nick].winStreak = 0;
     if (cloudData.players[nick].totalWin === undefined) cloudData.players[nick].totalWin = 0;
+    if (cloudData.players[nick].bestDrop === undefined) cloudData.players[nick].bestDrop = null;
     return cloudData.players[nick];
 }
 
@@ -519,41 +521,63 @@ async function saveAll() {
     try { localStorage.setItem('oxdrop_backup', JSON.stringify(cloudData)); } catch(e) {}
 }
 
-function addWin(amount) {
+function addWin(amount, item) {
     if (!currentNick) return;
     const player = getPlayer(currentNick);
     player.totalWin = (player.totalWin || 0) + amount;
+    if (item && (!player.bestDrop || item.value > (player.bestDrop.value || 0))) {
+        player.bestDrop = { name: item.name, value: item.value, img: item.img };
+    }
     renderTop3();
 }
 
 function renderTop3() {
-    const list = document.getElementById('top3List');
+    const list = document.getElementById('top3ListPage');
     if (!list) return;
     if (!cloudData.players) {
-        list.innerHTML = '<div class="top3-empty">Пока никого нет</div>';
+        list.innerHTML = '<div class="top3-empty-page">Пока никого нет</div>';
         return;
     }
-    const entries = Object.entries(cloudData.players)
-        .map(([nick, data]) => ({ nick, totalWin: data.totalWin || 0 }))
-        .filter(p => p.totalWin > 0)
-        .sort((a, b) => b.totalWin - a.totalWin)
-        .slice(0, 3);
+    const entries = Object.entries(cloudData.players).map(([nick, data]) => {
+        if (top3Mode === 'total') {
+            return { nick, value: data.totalWin || 0, item: null, img: null };
+        } else {
+            const best = data.bestDrop || null;
+            return { nick, value: best ? best.value : 0, item: best ? best.name : null, img: best ? best.img : null };
+        }
+    }).filter(p => p.value > 0).sort((a, b) => b.value - a.value).slice(0, 3);
+
     if (entries.length === 0) {
-        list.innerHTML = '<div class="top3-empty">Пока никого нет</div>';
+        list.innerHTML = '<div class="top3-empty-page">Пока никого нет</div>';
         return;
     }
     const medals = ['🥇', '🥈', '🥉'];
     const classes = ['gold', 'silver', 'bronze'];
-    list.innerHTML = entries.map((p, i) =>
-        '<div class="top3-item ' + classes[i] + '">' +
-        '<div class="top3-place">' + medals[i] + '</div>' +
-        '<div class="top3-info">' +
-        '<div class="top3-name">' + p.nick + '</div>' +
-        '<div class="top3-value">' + p.totalWin.toLocaleString('ru-RU') + '$</div>' +
-        '</div>' +
-        '</div>'
-    ).join('');
+    const labels = ['1-е место', '2-е место', '3-е место'];
+    list.innerHTML = entries.map((p, i) => {
+        const imgHtml = (top3Mode === 'best' && p.img) ? '<img class="tc-img" src="' + p.img + '" alt="' + (p.item || '') + '" onerror="this.style.opacity=0.2">' : '';
+        const itemHtml = (top3Mode === 'best' && p.item) ? '<div class="tc-item-name">' + p.item + '</div>' : '';
+        return '<div class="top3-card ' + classes[i] + '">' +
+            '<div class="tc-place">' + medals[i] + '</div>' +
+            imgHtml +
+            '<div class="tc-info">' +
+            '<div class="tc-label">' + labels[i] + '</div>' +
+            '<div class="tc-name">' + p.nick + '</div>' +
+            '<div class="tc-value">' + p.value.toLocaleString('ru-RU') + '$</div>' +
+            itemHtml +
+            '</div>' +
+            '</div>';
+    }).join('');
 }
+
+document.getElementById('top3Switch').addEventListener('click', function(e) {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    document.querySelectorAll('#top3Switch button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    top3Mode = btn.dataset.mode;
+    renderTop3();
+});
 
 document.getElementById('goRegister').addEventListener('click', function() {
     document.getElementById('loginForm').style.display = 'none';
@@ -578,7 +602,7 @@ document.getElementById('registerBtn').addEventListener('click', async function(
         msg.style.color = '#ff4444';
         return;
     }
-    cloudData.players[nick] = { balance: 0, inventory: [], pass: pass, winStreak: 0, totalWin: 0 };
+    cloudData.players[nick] = { balance: 0, inventory: [], pass: pass, winStreak: 0, totalWin: 0, bestDrop: null };
     await saveAll();
     msg.textContent = '✅ Аккаунт создан!';
     msg.style.color = '#00ff88';
@@ -673,7 +697,7 @@ function switchTab(tabId) {
     if (tabId === 'inventory') renderInventory();
     if (tabId === 'upgrade') renderUpgradeInventory();
     if (tabId === 'withdraw') renderWithdrawHistory();
-    if (tabId === 'cases') renderTop3();
+    if (tabId === 'top') renderTop3();
 }
 
 document.querySelectorAll('.tabs button').forEach(btn => {
@@ -757,7 +781,7 @@ async function openCase() {
     const chosen = getRandomItem(currentCaseIndex);
     await spinRoulette(chosen, currentCaseIndex);
     inventory.push(Object.assign({}, chosen));
-    addWin(chosen.value);
+    addWin(chosen.value, chosen);
     await savePlayer();
     document.getElementById('priceValue').textContent = chosen.value;
     document.getElementById('itemPrice').classList.add('show');
@@ -944,9 +968,10 @@ async function openWheel() {
             document.getElementById('wheelResult').textContent = '✅ Успех!';
             const sorted = [].concat(selectedIndices).sort((a,b) => b-a);
             for (const i of sorted) inventory.splice(i, 1);
-            inventory.push({ name: 'Апгрейд-предмет', img: 'https://cdn-icons-png.flaticon.com/512/427/427733.png', rarity: 'Легендарный', color: '#f5b342', value: newVal });
+            const upgradeItem = { name: 'Апгрейд-предмет', img: 'https://cdn-icons-png.flaticon.com/512/427/427733.png', rarity: 'Легендарный', color: '#f5b342', value: newVal };
+            inventory.push(upgradeItem);
             selectedIndices = [];
-            addWin(newVal);
+            addWin(newVal, upgradeItem);
             await savePlayer();
             renderInventory();
             renderUpgradeInventory();
@@ -1000,6 +1025,7 @@ document.getElementById('adminAddBtn').addEventListener('click', async function(
         player.balance = (player.balance || 0) + amt;
         if (!player.pass) player.pass = '';
         if (player.totalWin === undefined) player.totalWin = 0;
+        if (player.bestDrop === undefined) player.bestDrop = null;
         await saveAll();
         document.getElementById('adminSuccess').style.display = 'block';
         setTimeout(() => document.getElementById('adminSuccess').style.display = 'none', 3000);
@@ -1159,4 +1185,4 @@ async function init() {
 init();
 </script>
 </body>
-    </html>
+</html>
