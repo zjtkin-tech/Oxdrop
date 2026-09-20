@@ -389,26 +389,26 @@ function setStatus(text) {
 
 const cases = [
   { name: 'Мумия', price: 100, items: [
-    {name:'Радужная Ярость', img:'https://i.postimg.cc/ctWPXj9t/1789877140558.jpg', rarity:'Легендарный', color:'#d4a03a', value:500, chance:4},
-    {name:'AK-47 | Полная Коррозия', img:'https://i.postimg.cc/q6rWjYbr/1789877162505.jpg', rarity:'Редкий', color:'#8B4513', value:350, chance:8},
-    {name:'Револьвер', img:'https://i.postimg.cc/fSs1BF2T/1789877185974.jpg', rarity:'Редкий', color:'#C0C0C0', value:100, chance:23},
-    {name:'Маленький ящик', img:'https://i.postimg.cc/GTR6qN72/1789877208509.jpg', rarity:'Обычный', color:'#8B7355', value:40, chance:45},
-    {name:'Деревянная дверь', img:'https://i.postimg.cc/8fGxt3K7/1789877235712.jpg', rarity:'Обычный', color:'#8B5A2B', value:80, chance:20}
+    {name:'Калаш (Радужная ярость)', img:'https://i.postimg.cc/ctWPXj9t/1789877140558.jpg', rarity:'Легендарный', color:'#d4a03a', value:500, chance:4},
+    {name:'Калаш (Полная коррозия)', img:'https://i.postimg.cc/q6rWjYbr/1789877162505.jpg', rarity:'Редкий', color:'#8B4513', value:350, chance:8},
+    {name:'Револьвер (Акулий укус)', img:'https://i.postimg.cc/fSs1BF2T/1789877185974.jpg', rarity:'Редкий', color:'#C0C0C0', value:100, chance:23},
+    {name:'Маленький ящик (Молниеносный герой)', img:'https://i.postimg.cc/GTR6qN72/1789877208509.jpg', rarity:'Обычный', color:'#8B7355', value:40, chance:45},
+    {name:'Деревянная дверь (Зона отчуждения)', img:'https://i.postimg.cc/8fGxt3K7/1789877235712.jpg', rarity:'Обычный', color:'#8B5A2B', value:80, chance:20}
   ]},
   { name: 'Человек-паук', price: 50, items: [
-    {name:'Револьвер Позолоченный бык', img:'https://i.postimg.cc/wvPkVpLC/Screenshot-20260830-201522.jpg', rarity:'Легендарный', color:'#FFD700', value:76, chance:23},
-    {name:'Стикер Острые когти', img:'https://i.postimg.cc/VNhMyFvg/Screenshot-20260830-201457.jpg', rarity:'Эпический', color:'#C0C0C0', value:30, chance:20},
-    {name:'Стикер Позолоченные волки', img:'https://i.postimg.cc/YC1q2Ch0/Screenshot-20260830-201534.jpg', rarity:'Эпический', color:'#FFD700', value:25, chance:27},
-    {name:'Дигл Вердикт', img:'https://i.postimg.cc/MpHRTLhN/Screenshot-20260830-205349.jpg', rarity:'Эпический', color:'#C0C0C0', value:150, chance:4},
-    {name:'СНГ Змеиное логово', img:'https://i.postimg.cc/hP9ZsXvF/Screenshot-20260830-205146.jpg', rarity:'Редкий', color:'#00cc66', value:100, chance:14},
-    {name:'Токсичный Дрейк', img:'https://i.postimg.cc/TPQxhkgP/Screenshot-20260830-205118.jpg', rarity:'Легендарный', color:'#00ff00', value:35, chance:12}
+    {name:'Револьвер (Позолоченный бык)', img:'https://i.postimg.cc/Ln3gC1XH/1789878465349.jpg', rarity:'Легендарный', color:'#FFD700', value:76, chance:23},
+    {name:'Стикер (Острые когти)', img:'https://i.postimg.cc/JG5H6knM/1789878483714.jpg', rarity:'Эпический', color:'#C0C0C0', value:30, chance:20},
+    {name:'Стикер (Позолоченные волки)', img:'https://i.postimg.cc/7fnJs26y/1789878508746.jpg', rarity:'Эпический', color:'#FFD700', value:25, chance:27},
+    {name:'Дигл (Вердикт)', img:'https://i.postimg.cc/SJfYTMs4/1789878530348.jpg', rarity:'Эпический', color:'#C0C0C0', value:150, chance:4},
+    {name:'Пистолет-пулемёт (Змеиное логово)', img:'https://i.postimg.cc/vctxqVmJ/1789878551308.jpg', rarity:'Редкий', color:'#00cc66', value:100, chance:14},
+    {name:'Стикер (Токсичный Дрейк)', img:'https://i.postimg.cc/kMHKjNGC/1789878779491.jpg', rarity:'Легендарный', color:'#00ff00', value:35, chance:12}
   ]},
   { name: 'Золотой дракон', price: 200, items: [
-    {name:'Дигл | Убийственная молния', img:'https://i.postimg.cc/fSc5x8Qn/lv-0-20260919215106.jpg', rarity:'Редкий', color:'#00cc66', value:100, chance:25},
+    {name:'Дигл (Убийственная молния)', img:'https://i.postimg.cc/fSc5x8Qn/lv-0-20260919215106.jpg', rarity:'Редкий', color:'#00cc66', value:100, chance:25},
     {name:'Коптер', img:'https://i.postimg.cc/FkyGjTXN/lv-0-20260919215454.jpg', rarity:'Легендарный', color:'#FFD700', value:400, chance:3},
-    {name:'Стикер Точно в цель', img:'https://i.postimg.cc/wRXFhwY9/lv-0-20260919215704.jpg', rarity:'Обычный', color:'#8B7355', value:50, chance:40},
-    {name:'Винтовка Клык змеи', img:'https://i.postimg.cc/T5VQrtvR/1789830524541.jpg', rarity:'Эпический', color:'#a78bfa', value:200, chance:15},
-    {name:'РПГ Плазменный утилизатор', img:'https://i.postimg.cc/1VGMpv1Q/1789826470144.jpg', rarity:'Легендарный', color:'#FFD700', value:250, chance:17}
+    {name:'Стикер (Точно в цель)', img:'https://i.postimg.cc/wRXFhwY9/lv-0-20260919215704.jpg', rarity:'Обычный', color:'#8B7355', value:50, chance:40},
+    {name:'Винтовка (Клык змеи)', img:'https://i.postimg.cc/T5VQrtvR/1789830524541.jpg', rarity:'Эпический', color:'#a78bfa', value:200, chance:15},
+    {name:'РПГ (Плазменный утилизатор)', img:'https://i.postimg.cc/1VGMpv1Q/1789826470144.jpg', rarity:'Легендарный', color:'#FFD700', value:250, chance:17}
   ]},
   { name: 'Призрак', price: 30, items: [
     {name:'Стикер (Шумный район)', img:'https://i.postimg.cc/XptRWYnG/1789826412844.jpg', rarity:'Легендарный', color:'#FFD700', value:50, chance:8},
@@ -432,9 +432,9 @@ const cases = [
     {name:'Дигл (Золотой король)', img:'https://i.postimg.cc/Q9Jj8X1x/1789826581442.jpg', rarity:'Обычный', color:'#6b7280', value:100, chance:12}
   ]},
   { name: 'Королевский', price: 500, items: [
-    {name:'ДВХ (Последний рубеж)', img:'https://i.postimg.cc/kRxq5KZs/1789826442325.jpg', rarity:'Легендарный', color:'#FFD700', value:800, chance:10},
-    {name:'Костюм (Масляная капля)', img:'https://i.postimg.cc/1VpszwTM/1789826559591.jpg', rarity:'Легендарный', color:'#FFD700', value:600, chance:22},
-    {name:'Пулемёт (Белая королева)', img:'https://i.postimg.cc/q6847yYc/1789826642429.jpg', rarity:'Эпический', color:'#FFD700', value:400, chance:25},
+    {name:'ДВХ (Последний рубеж)', img:'https://i.postimg.cc/q6847yYc/1789826642429.jpg', rarity:'Легендарный', color:'#FFD700', value:800, chance:10},
+    {name:'Костюм (Масляная капля)', img:'https://i.postimg.cc/kRxq5KZs/1789826442325.jpg', rarity:'Легендарный', color:'#FFD700', value:600, chance:22},
+    {name:'Пулемёт (Белая королева)', img:'https://i.postimg.cc/1VpszwTM/1789826559591.jpg', rarity:'Эпический', color:'#FFD700', value:400, chance:25},
     {name:'Багги', img:'https://i.postimg.cc/PvmTqYc4/1789829694858.jpg', rarity:'Редкий', color:'#C0C0C0', value:300, chance:40},
     {name:'Карик', img:'https://i.postimg.cc/4ntJwR3M/lv-0-20260919215514.jpg', rarity:'Легендарный', color:'#FFD700', value:1000, chance:3}
   ]}
