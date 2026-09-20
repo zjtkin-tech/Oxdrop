@@ -358,12 +358,9 @@ async function loadCloudData() {
     try {
         const res = await fetch(API_URL);
         if (!res.ok) throw new Error('HTTP ' + res.status);
-        const data = await res.json();
-        setStatus('✅ Данные загружены');
-        setTimeout(() => setStatus(''), 2000);
-        return data || { players: {}, withdraw_requests: [] };
+        return await res.json() || { players: {}, withdraw_requests: [] };
     } catch(e) {
-        console.error(e);
+        console.error('loadCloudData error:', e);
         setStatus('⚠️ Нет связи');
         return null;
     }
@@ -381,7 +378,7 @@ async function saveCloudData(data) {
         setTimeout(() => setStatus(''), 2000);
         return true;
     } catch(e) {
-        console.error(e);
+        console.error('saveCloudData error:', e);
         setStatus('⚠️ Ошибка сохранения');
         return false;
     }
@@ -602,50 +599,71 @@ function getRandomItem(caseIndex) {
     return pool[0];
 }
 
+// === РУЛЕТКА (лента) ===
+function getItemWidth() {
+    return window.innerWidth <= 600 ? 110 : 140; // 100px + 10px gap для мобилки, 130 + 10 для десктопа
+}
+
 function createRouletteItem(item) {
     const div = document.createElement('div');
     div.className = 'roulette-item';
-    div.style.borderColor = item.color;
-    div.innerHTML = '<img src="' + item.img + '" alt="' + item.name + '"><span class="roulette-name">' + item.name + '</span>';
+    div.style.borderColor = item.color || '#4a5a7a';
+    div.innerHTML = '<img src="' + item.img + '" alt="' + item.name + '" onerror="this.style.opacity=0.2"><span class="roulette-name">' + item.name + '</span>';
     return div;
 }
 
-function buildRoulette(caseIndex, winnerItem, winnerPosition) {
+function fillRoulette(caseIndex) {
     const track = document.getElementById('rouletteTrack');
+    if (!track) return;
     track.innerHTML = '';
     track.style.transition = 'none';
     track.style.transform = 'translateX(0)';
     const pool = cases[caseIndex].items;
-    const totalItems = 60;
-    const items = [];
-    for (let i = 0; i < totalItems; i++) {
-        if (i === winnerPosition) {
-            items.push(winnerItem);
-        } else {
-            items.push(pool[Math.floor(Math.random() * pool.length)]);
-        }
+    for (let k = 0; k < 30; k++) {
+        track.appendChild(createRouletteItem(pool[k % pool.length]));
     }
-    items.forEach(item => track.appendChild(createRouletteItem(item)));
-    return track;
 }
 
 async function spinRoulette(chosen, caseIndex) {
     const track = document.getElementById('rouletteTrack');
     const viewport = document.querySelector('.roulette-viewport');
+    if (!track || !viewport) {
+        console.error('rouletteTrack или viewport не найдены!');
+        return;
+    }
+
     const winnerPosition = 50;
-    buildRoulette(caseIndex, chosen, winnerPosition);
-    await new Promise(r => setTimeout(r, 50));
-    const itemWidth = 140;
+    const totalItems = 60;
+
+    // Строим ленту с выигрышем на 50-й позиции
+    track.innerHTML = '';
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(0)';
+    const pool = cases[caseIndex].items;
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < totalItems; i++) {
+        const item = (i === winnerPosition) ? chosen : pool[Math.floor(Math.random() * pool.length)];
+        fragment.appendChild(createRouletteItem(item));
+    }
+    track.appendChild(fragment);
+
+    // Даём браузеру отрисовать
+    await new Promise(r => setTimeout(r, 100));
+
+    const itemWidth = getItemWidth();
     const viewportWidth = viewport.offsetWidth;
     const centerOffset = viewportWidth / 2;
     const targetOffset = (winnerPosition * itemWidth) + (itemWidth / 2) - centerOffset;
-    const randomShift = (Math.random() - 0.5) * 60;
+    const randomShift = (Math.random() - 0.5) * 40;
     const totalDistance = targetOffset + randomShift;
+
     track.style.transition = 'transform 5s cubic-bezier(0.15, 0.85, 0.25, 1)';
     requestAnimationFrame(() => {
         track.style.transform = 'translateX(-' + totalDistance + 'px)';
     });
+
     await new Promise(r => setTimeout(r, 5100));
+
     const winnerEl = track.children[winnerPosition];
     if (winnerEl) winnerEl.classList.add('winner');
 }
@@ -660,8 +678,10 @@ async function openCase() {
     document.getElementById('openCaseBtn').disabled = true;
     document.getElementById('itemPrice').classList.remove('show');
     document.getElementById('sellBtn').classList.remove('show');
+
     const chosen = getRandomItem(currentCaseIndex);
     await spinRoulette(chosen, currentCaseIndex);
+
     inventory.push(Object.assign({}, chosen));
     await savePlayer();
     document.getElementById('priceValue').textContent = chosen.value;
@@ -1028,14 +1048,7 @@ function switchCase(i) {
     document.getElementById('sellBtn').classList.remove('show');
     lastItem = null;
     document.querySelectorAll('.case-menu button').forEach((b, j) => b.classList.toggle('active', j === i));
-    const track = document.getElementById('rouletteTrack');
-    track.innerHTML = '';
-    track.style.transition = 'none';
-    track.style.transform = 'translateX(0)';
-    const pool = cases[i].items;
-    for (let k = 0; k < 30; k++) {
-        track.appendChild(createRouletteItem(pool[k % pool.length]));
-    }
+    fillRoulette(i);
 }
 
 function updateStatsUI() {
@@ -1044,6 +1057,10 @@ function updateStatsUI() {
     document.getElementById('totalSales').textContent = stats.totalSales;
     document.getElementById('bestItem').textContent = stats.bestItem.name + ' (' + stats.bestItem.value + '$)';
 }
+
+window.addEventListener('resize', () => {
+    if (!isOpening) fillRoulette(currentCaseIndex);
+});
 
 async function init() {
     await loadCloudData().then(d => { if (d) cloudData = d; });
