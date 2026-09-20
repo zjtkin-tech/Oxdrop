@@ -37,7 +37,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .stats-row .stat-item{color:#96a9d1;font-size:0.8rem;text-align:center}
 .stats-row .stat-item .stat-value{color:#f5b342;font-weight:700;display:block;font-size:1.1rem;margin-top:2px}
 .tabs{display:flex;gap:8px;margin:15px 0 5px;flex-wrap:wrap}
-.tabs button{flex:1;padding:12px;border:none;border-radius:30px;font-weight:700;font-size:0.9rem;cursor:pointer;transition:0.3s;background:#2a3349;color:#96a9d1;border:2px solid #3d4a66}
+.tabs button{flex:1;padding:12px;border:none;border-radius:30px;font-weight:700;font-size:0.85rem;cursor:pointer;transition:0.3s;background:#2a3349;color:#96a9d1;border:2px solid #3d4a66;white-space:nowrap}
 .tabs button.active{background:linear-gradient(135deg,#f5b342,#e8922a);color:#0b0e1a;border-color:#f5b342;box-shadow:0 0 30px #f5b342;transform:scale(1.05)}
 .tab-content{display:none}
 .tab-content.active{display:block}
@@ -117,7 +117,50 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .result-box.fail{background:#ff220033;border:1px solid #ff2200}
 .result-box .result-title{font-size:1.2rem;font-weight:700}
 .result-box .result-desc{color:#b9c8e6;font-size:0.9rem;margin-top:5px}
-@media(max-width:600px){.case-menu button{width:80px;height:120px;padding:6px 4px}.case-menu button img{width:40px;height:40px}.wheel{width:220px;height:220px}.menu-toggle{display:flex}.tabs{display:none}.roulette-item{width:100px;height:100px}.roulette-item .roulette-name{font-size:0.5rem}}
+
+/* ===== БАТТЛЫ ===== */
+.battle-box{background:rgba(12,16,30,0.7);border-radius:30px;padding:25px 20px;border:2px solid #2f3a55;margin:15px 0}
+.battle-title{color:#f5b342;text-align:center;font-size:1.4rem;margin-bottom:15px;font-weight:900}
+.battle-case-select{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:20px}
+.battle-case-select button{background:rgba(30,38,59,0.85);border:2px solid #2f3a55;color:#b9c8e6;padding:8px 14px;border-radius:20px;font-weight:700;font-size:0.75rem;cursor:pointer;transition:0.2s;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:70px}
+.battle-case-select button img{width:35px;height:35px;object-fit:contain;border-radius:8px}
+.battle-case-select button.active{border-color:#f5b342;background:rgba(42,51,73,0.9);box-shadow:0 0 20px #f5b34244}
+.battle-case-select button span{font-size:0.55rem;color:#ffd966}
+.battle-arena{display:flex;gap:10px;align-items:stretch;justify-content:center;margin:20px 0;flex-wrap:wrap}
+.battle-player{flex:1;min-width:140px;background:rgba(0,0,0,0.4);border-radius:20px;padding:15px;border:2px solid #2f3a55;display:flex;flex-direction:column;align-items:center;gap:10px;position:relative}
+.battle-player.you{border-color:#4CAF50}
+.battle-player.bot{border-color:#b34747}
+.battle-player.winner{border-color:#f5b342;box-shadow:0 0 30px #f5b34266;animation:battleWin 1s ease-in-out infinite}
+.battle-player.loser{opacity:0.4;filter:grayscale(1)}
+@keyframes battleWin{0%,100%{box-shadow:0 0 30px #f5b34266}50%{box-shadow:0 0 50px #f5b342aa}}
+.battle-player .bp-name{font-weight:900;font-size:0.9rem;color:#eaf0ff;text-align:center}
+.battle-player.you .bp-name{color:#4CAF50}
+.battle-player.bot .bp-name{color:#ff6666}
+.battle-player .bp-slot{width:110px;height:110px;background:#111624;border-radius:20px;display:flex;align-items:center;justify-content:center;border:3px solid #4a5a7a;padding:8px}
+.battle-player .bp-slot img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px}
+.battle-player .bp-item-name{font-size:0.7rem;color:#a2b6e0;text-align:center;min-height:18px;font-weight:600}
+.battle-player .bp-item-value{font-size:1rem;color:#ffd966;font-weight:900}
+.battle-vs{display:flex;align-items:center;justify-content:center;font-size:2rem;color:#f5b342;font-weight:900;padding:0 10px;text-shadow:0 0 20px #f5b342}
+.battle-btn{background:linear-gradient(135deg,#dc2626,#b91c1c);border:none;color:white;padding:18px;border-radius:50px;font-weight:900;font-size:1.3rem;cursor:pointer;width:100%;box-shadow:0 8px 0 #7f1d1d;text-transform:uppercase;margin-top:15px;letter-spacing:2px}
+.battle-btn:disabled{opacity:0.5;pointer-events:none;box-shadow:none}
+.battle-result{margin-top:20px;padding:20px;border-radius:20px;text-align:center;display:none}
+.battle-result.show{display:block}
+.battle-result.win{background:linear-gradient(135deg,#00ff8833,#00ff8811);border:2px solid #00ff88}
+.battle-result.lose{background:linear-gradient(135deg,#ff220033,#ff220011);border:2px solid #ff2200}
+.battle-result.draw{background:linear-gradient(135deg,#ffd96633,#ffd96611);border:2px solid #ffd966}
+.battle-result .br-title{font-size:1.6rem;font-weight:900;margin-bottom:5px}
+.battle-result .br-desc{color:#b9c8e6;font-size:0.9rem}
+.battle-history{margin-top:20px;background:rgba(12,16,30,0.7);border-radius:30px;padding:14px 18px;border:1px solid #29324b}
+.battle-history h3{color:#96a9d1;font-weight:400;font-size:0.85rem;margin-bottom:8px}
+.battle-history-item{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(0,0,0,0.3);border-radius:10px;margin-bottom:5px;font-size:0.8rem;color:#eaf0ff;border-left:3px solid #4a5a7a}
+.battle-history-item.win{border-left-color:#00ff88}
+.battle-history-item.lose{border-left-color:#ff2200}
+.battle-history-item.draw{border-left-color:#ffd966}
+.battle-history-item .bh-info{flex:1}
+.battle-history-item .bh-bot{color:#f5b342;font-weight:700}
+.battle-history-item .bh-result{font-weight:900;margin-left:8px}
+
+@media(max-width:600px){.case-menu button{width:80px;height:120px;padding:6px 4px}.case-menu button img{width:40px;height:40px}.wheel{width:220px;height:220px}.menu-toggle{display:flex}.tabs{display:none}.roulette-item{width:100px;height:100px}.roulette-item .roulette-name{font-size:0.5rem}.battle-arena{flex-direction:column}.battle-vs{padding:10px 0}}
 .admin-panel{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;justify-content:center;align-items:center}
 .admin-panel.open{display:flex}
 .admin-box{background:#1a1f2f;border-radius:30px;padding:30px;max-width:450px;width:100%;border:2px solid #f5b34233;text-align:center;max-height:90vh;overflow-y:auto}
@@ -184,6 +227,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
 <div class="mobile-menu" id="mobileMenu">
 <button class="cases-btn" onclick="switchTab('cases')">📦 Кейсы</button>
+<button onclick="switchTab('battle')">⚔️ Баттлы</button>
 <button onclick="switchTab('withdraw')">💳 Вывод</button>
 <button onclick="switchTab('inventory')">📦 Инвентарь</button>
 <button onclick="switchTab('upgrade')">⬆ Апгрейд</button>
@@ -197,6 +241,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 </div>
 <div class="tabs" id="mainTabs">
 <button class="active" data-tab="cases">📦 Кейсы</button>
+<button data-tab="battle">⚔️ Баттлы</button>
 <button data-tab="upgrade">⬆ Апгрейд</button>
 <button data-tab="inventory">📦 Инвентарь</button>
 <button data-tab="withdraw">💳 Вывод</button>
@@ -270,6 +315,41 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <button class="case-btn" id="openCaseBtn">🎲 Открыть кейс</button>
 <div class="history"><h3>📋 История</h3><div class="history-items" id="historyList"></div></div>
 </div>
+
+<div class="tab-content" id="tab-battle">
+<h2 style="color:#f5b342;text-align:center;font-size:1.4rem;margin-bottom:10px;">⚔️ БАТТЛЫ 1v1</h2>
+<div style="text-align:center;color:#96a9d1;font-size:0.85rem;margin-bottom:15px;">Открой кейс против бота — у кого дороже дроп, тот победил!</div>
+<div class="battle-box">
+<div class="battle-title">Выбери кейс:</div>
+<div class="battle-case-select" id="battleCaseSelect"></div>
+<div class="battle-arena">
+<div class="battle-player you" id="battlePlayerYou">
+<div class="bp-name">👤 Ты</div>
+<div class="bp-slot" id="battleSlotYou"><span style="font-size:2rem;">🎰</span></div>
+<div class="bp-item-name" id="battleNameYou">—</div>
+<div class="bp-item-value" id="battleValueYou">0$</div>
+</div>
+<div class="battle-vs">VS</div>
+<div class="battle-player bot" id="battlePlayerBot">
+<div class="bp-name" id="battleBotName">🤖 ShadowPlayer</div>
+<div class="bp-slot" id="battleSlotBot"><span style="font-size:2rem;">🎰</span></div>
+<div class="bp-item-name" id="battleNameBot">—</div>
+<div class="bp-item-value" id="battleValueBot">0$</div>
+</div>
+</div>
+<div style="text-align:center;color:#ffd966;font-weight:700;font-size:1rem;">Ставка: <span id="battleBet">100</span>$</div>
+<button class="battle-btn" id="battleStartBtn">⚔️ В БОЙ</button>
+<div class="battle-result" id="battleResult">
+<div class="br-title" id="battleResultTitle"></div>
+<div class="br-desc" id="battleResultDesc"></div>
+</div>
+</div>
+<div class="battle-history">
+<h3>📋 История баттлов</h3>
+<div id="battleHistoryList"><div style="color:#96a9d1;text-align:center;padding:15px;">Баттлов ещё не было</div></div>
+</div>
+</div>
+
 <div class="tab-content" id="tab-upgrade">
 <h2 style="color:#f5b342;text-align:center;font-size:1.3rem;margin-bottom:10px;">⬆ Апгрейд</h2>
 <div style="text-align:center;color:#ffd966;font-weight:700;margin-bottom:10px;font-size:0.9rem;">
@@ -349,7 +429,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <h2 id="previewTitle">📦 Кейс</h2>
 <div id="previewList"></div>
 </div>
-</div> <script>
+</div><script>
 const API_URL = 'https://api.npoint.io/6ebf279d65bba82f722e';
 
 async function loadCloudData() {
@@ -455,6 +535,12 @@ let currentPass = '';
 let selectedMethod = 'card';
 let stats = { visits: 0, caseOpens: 0, totalSales: 0, bestItem: { name: '—', value: 0 } };
 
+// ===== БАТТЛЫ =====
+const BOT_NAMES = ['ShadowPlayer', 'CSKing', 'RandomBot', 'NightWolf', 'Legend_777'];
+let battleCaseIndex = 0;
+let battleHistory = [];
+let isBattleRunning = false;
+
 function getPlayer(nick) {
     if (!cloudData.players) cloudData.players = {};
     if (!cloudData.players[nick]) cloudData.players[nick] = { balance: 0, inventory: [], pass: '', winStreak: 0 };
@@ -535,6 +621,7 @@ async function enterGame() {
     updateStatsUI();
     stats.visits++;
     updateStatsUI();
+    initBattle();
 }
 
 document.getElementById('logoutBtn').addEventListener('click', function() {
@@ -584,6 +671,7 @@ function switchTab(tabId) {
     if (tabId === 'inventory') renderInventory();
     if (tabId === 'upgrade') renderUpgradeInventory();
     if (tabId === 'withdraw') renderWithdrawHistory();
+    if (tabId === 'battle') renderBattle();
 }
 
 document.querySelectorAll('.tabs button').forEach(btn => {
@@ -620,9 +708,7 @@ function fillRoulette(caseIndex) {
     for (let k = 0; k < 30; k++) {
         track.appendChild(createRouletteItem(pool[k % pool.length]));
     }
-}
-
-async function spinRoulette(chosen, caseIndex) {
+} async function spinRoulette(chosen, caseIndex) {
     const track = document.getElementById('rouletteTrack');
     const viewport = document.querySelector('.roulette-viewport');
     if (!track || !viewport) { console.error('rouletteTrack или viewport не найдены!'); return; }
@@ -705,7 +791,184 @@ async function sellLastItem() {
     }
 }
 
-function renderInventory() {
+// ===== БАТТЛЫ =====
+function renderBattleCaseSelect() {
+    const container = document.getElementById('battleCaseSelect');
+    if (!container) return;
+    container.innerHTML = cases.map((c, i) =>
+        '<button data-battle-case="' + i + '" class="' + (i === battleCaseIndex ? 'active' : '') + '">' +
+        '<img src="' + c.items[0].img + '" alt="' + c.name + '">' +
+        c.name + '<span>' + c.price + '$</span>' +
+        '</button>'
+    ).join('');
+    container.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (isBattleRunning) return;
+            battleCaseIndex = parseInt(this.dataset.battleCase);
+            renderBattleCaseSelect();
+            updateBattleBet();
+        });
+    });
+    updateBattleBet();
+}
+
+function updateBattleBet() {
+    const el = document.getElementById('battleBet');
+    if (el) el.textContent = cases[battleCaseIndex].price;
+}
+
+function renderBattle() {
+    renderBattleCaseSelect();
+    renderBattleHistory();
+}
+
+function renderBattleHistory() {
+    const list = document.getElementById('battleHistoryList');
+    if (!list) return;
+    if (battleHistory.length === 0) {
+        list.innerHTML = '<div style="color:#96a9d1;text-align:center;padding:15px;">Баттлов ещё не было</div>';
+        return;
+    }
+    list.innerHTML = battleHistory.map(b =>
+        '<div class="battle-history-item ' + b.result + '">' +
+        '<div class="bh-info">' +
+        '<span class="bh-bot">' + b.botName + '</span> · ' + b.caseName + ' · ' + b.bet + '$' +
+        '</div>' +
+        '<span class="bh-result">' + (b.result === 'win' ? '✅ +' + b.winValue + '$' : b.result === 'lose' ? '❌ −' + b.bet + '$' : '🤝 возврат') + '</span>' +
+        '</div>'
+    ).join('');
+}
+
+function resetBattleUI() {
+    document.getElementById('battleSlotYou').innerHTML = '<span style="font-size:2rem;">🎰</span>';
+    document.getElementById('battleSlotBot').innerHTML = '<span style="font-size:2rem;">🎰</span>';
+    document.getElementById('battleNameYou').textContent = '—';
+    document.getElementById('battleNameBot').textContent = '—';
+    document.getElementById('battleValueYou').textContent = '0$';
+    document.getElementById('battleValueBot').textContent = '0$';
+    document.getElementById('battleResult').className = 'battle-result';
+    document.getElementById('battlePlayerYou').classList.remove('winner', 'loser');
+    document.getElementById('battlePlayerBot').classList.remove('winner', 'loser');
+}
+
+async function startBattle() {
+    if (isBattleRunning) return;
+    const caseIdx = battleCaseIndex;
+    const bet = cases[caseIdx].price;
+    if (balance < bet) { alert('❌ Недостаточно баланса! Нужно ' + bet + '$'); return; }
+
+    isBattleRunning = true;
+    document.getElementById('battleStartBtn').disabled = true;
+    resetBattleUI();
+
+    const botName = BOT_NAMES[Math.floor(Math.random() * BOT_NAMES.length)];
+    document.getElementById('battleBotName').textContent = '🤖 ' + botName;
+
+    balance -= bet;
+    updateBalanceUI();
+
+    const myItem = getRandomItem(caseIdx);
+    const botItem = getRandomItem(caseIdx);
+
+    const slotYou = document.getElementById('battleSlotYou');
+    const slotBot = document.getElementById('battleSlotBot');
+    const nameYou = document.getElementById('battleNameYou');
+    const nameBot = document.getElementById('battleNameBot');
+    const valYou = document.getElementById('battleValueYou');
+    const valBot = document.getElementById('battleValueBot');
+
+    const pool = cases[caseIdx].items;
+    let ticks = 0;
+    const maxTicks = 20;
+    const tickInterval = setInterval(() => {
+        const rnd = pool[Math.floor(Math.random() * pool.length)];
+        slotYou.innerHTML = '<img src="' + rnd.img + '" alt="' + rnd.name + '">';
+        const rnd2 = pool[Math.floor(Math.random() * pool.length)];
+        slotBot.innerHTML = '<img src="' + rnd2.img + '" alt="' + rnd2.name + '">';
+        ticks++;
+        if (ticks >= maxTicks) {
+            clearInterval(tickInterval);
+            finishBattle(myItem, botItem, bet, botName, caseIdx);
+        }
+    }, 100);
+}
+
+async function finishBattle(myItem, botItem, bet, botName, caseIdx) {
+    const slotYou = document.getElementById('battleSlotYou');
+    const slotBot = document.getElementById('battleSlotBot');
+    const nameYou = document.getElementById('battleNameYou');
+    const nameBot = document.getElementById('battleNameBot');
+    const valYou = document.getElementById('battleValueYou');
+    const valBot = document.getElementById('battleValueBot');
+    const resBox = document.getElementById('battleResult');
+
+    slotYou.innerHTML = '<img src="' + myItem.img + '" alt="' + myItem.name + '">';
+    slotYou.parentElement.style.borderColor = myItem.color;
+    slotBot.innerHTML = '<img src="' + botItem.img + '" alt="' + botItem.name + '">';
+    slotBot.parentElement.style.borderColor = botItem.color;
+    nameYou.textContent = myItem.name;
+    nameBot.textContent = botItem.name;
+    valYou.textContent = myItem.value + '$';
+    valBot.textContent = botItem.value + '$';
+
+    await new Promise(r => setTimeout(r, 500));
+
+    let result = '';
+    let winValue = 0;
+
+    if (myItem.value > botItem.value) {
+        result = 'win';
+        winValue = myItem.value;
+        inventory.push(Object.assign({}, myItem));
+        await savePlayer();
+        document.getElementById('battlePlayerYou').classList.add('winner');
+        document.getElementById('battlePlayerBot').classList.add('loser');
+        resBox.className = 'battle-result show win';
+        document.getElementById('battleResultTitle').textContent = '🎉 ПОБЕДА!';
+        document.getElementById('battleResultDesc').textContent = 'Твой дроп дороже! ' + myItem.name + ' (' + myItem.value + '$) остаётся у тебя.';
+        stats.caseOpens++;
+        if (myItem.value > stats.bestItem.value) stats.bestItem = { name: myItem.name, value: myItem.value };
+        updateStatsUI();
+        renderInventory();
+        renderUpgradeInventory();
+    } else if (botItem.value > myItem.value) {
+        result = 'lose';
+        document.getElementById('battlePlayerBot').classList.add('winner');
+        document.getElementById('battlePlayerYou').classList.add('loser');
+        resBox.className = 'battle-result show lose';
+        document.getElementById('battleResultTitle').textContent = '💥 ПОРАЖЕНИЕ!';
+        document.getElementById('battleResultDesc').textContent = botName + ' выбил дороже (' + botItem.value + '$). Твой ' + myItem.name + ' сгорел!';
+    } else {
+        result = 'draw';
+        balance += bet;
+        await savePlayer();
+        updateBalanceUI();
+        resBox.className = 'battle-result show draw';
+        document.getElementById('battleResultTitle').textContent = '🤝 НИЧЬЯ!';
+        document.getElementById('battleResultDesc').textContent = 'Одинаковый дроп (' + myItem.value + '$). Ставка возвращена.';
+    }
+
+    battleHistory.unshift({
+        botName: botName,
+        caseName: cases[caseIdx].name,
+        bet: bet,
+        result: result,
+        winValue: winValue
+    });
+    if (battleHistory.length > 15) battleHistory.pop();
+    renderBattleHistory();
+
+    isBattleRunning = false;
+    document.getElementById('battleStartBtn').disabled = false;
+}
+
+document.getElementById('battleStartBtn').addEventListener('click', startBattle);
+
+function initBattle() {
+    renderBattleCaseSelect();
+    renderBattleHistory();
+    document.getElementById('battleStartBtn').addEventListener('click', startBattle);
+}function renderInventory() {
     const list = document.getElementById('inventoryList');
     if (!list) return;
     if (inventory.length === 0) {
