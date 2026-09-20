@@ -244,7 +244,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <button data-case="5">
 <img src="https://i.postimg.cc/28mQjPKk/37PNMy44Mdf-Qq71KUvp-Pr-XLRHC6Vttjwu8Yc-Mk-HMn-O4-SXl-E22e-Ii-Sc-Uw-TYs-KFAa0Vvp-UIc4BZOOug-VLu-G6d4.jpg" alt="Огонь">
 <span class="case-name">🔥 Огонь</span>
-<span class="case-price">300$</span>
+<span class="case-price">80$</span>
 <span class="badge">🔥</span>
 <span class="preview-btn" onclick="event.stopPropagation(); openPreview(5)">🔍</span>
 </button>
@@ -257,14 +257,12 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 </button>
 </div>
 <div class="price-tag">💰 Цена: <span id="priceDisplay">100</span>$</div>
-
 <div class="roulette-container">
 <div class="roulette-viewport">
 <div class="roulette-track" id="rouletteTrack"></div>
 </div>
 <div class="roulette-pointer"></div>
 </div>
-
 <div class="result-area">
 <div class="item-price" id="itemPrice">💰 Стоимость: <span class="value" id="priceValue">0</span> $</div>
 <button class="sell-btn" id="sellBtn">💰 Продать предмет</button>
@@ -426,12 +424,12 @@ const cases = [
     {name:'Топор (Белый шум)', img:'https://i.postimg.cc/SjKzpZvz/1789826602404.jpg', rarity:'Обычный', color:'#8B7355', value:80, chance:30},
     {name:'Ящик МЛ (Синтетическое хранилище)', img:'https://i.postimg.cc/kD5tdjpQ/1789826524875.jpg', rarity:'Обычный', color:'#6b7280', value:50, chance:32}
   ]},
-  { name: 'Огонь', price: 300, items: [
-    {name:'Пламенный Меч', img:'https://i.postimg.cc/7bQJPgFs/lv-0-20260919215429.jpg', rarity:'Легендарный', color:'#ff4500', value:2000, chance:2},
-    {name:'Огнемёт', img:'https://i.postimg.cc/c65t1Qp5/lv-0-20260919215454.jpg', rarity:'Эпический', color:'#ff6b35', value:800, chance:10},
-    {name:'Лавовый Дрейк', img:'https://i.postimg.cc/dDSZQ8bN/lv-0-20260919215514.jpg', rarity:'Редкий', color:'#dc2626', value:400, chance:25},
-    {name:'Уголёк', img:'https://i.postimg.cc/PNFvfmgS/lv-0-20260919215600.jpg', rarity:'Обычный', color:'#8B4513', value:120, chance:38},
-    {name:'Пепел', img:'https://i.postimg.cc/c65t1Qpc/lv-0-20260919215623.jpg', rarity:'Обычный', color:'#6b7280', value:180, chance:25}
+  { name: 'Огонь', price: 80, items: [
+    {name:'Дробовик (Аркадный охотник)', img:'https://i.postimg.cc/Q9Jj8X1D/1789826486212.jpg', rarity:'Легендарный', color:'#ff4500', value:60, chance:23},
+    {name:'Дверь (Лазерный закат)', img:'https://i.postimg.cc/xJ39f0Mr/1789826503737.jpg', rarity:'Эпический', color:'#ff6b35', value:70, chance:21},
+    {name:'Наклейка (Ещё живой)', img:'https://i.postimg.cc/Q9Jj8X1x/1789826581442.jpg', rarity:'Редкий', color:'#dc2626', value:20, chance:35},
+    {name:'Гаражная дверь (Цифровой демон)', img:'https://i.postimg.cc/ftfMzwmZ/1789829715865.jpg', rarity:'Обычный', color:'#8B4513', value:120, chance:9},
+    {name:'Дигл (Золотой король)', img:'https://i.postimg.cc/Hc9TYpXk/lv-0-20260919215725.jpg', rarity:'Обычный', color:'#6b7280', value:100, chance:12}
   ]},
   { name: 'Королевский', price: 500, items: [
     {name:'Королевский Кинжал', img:'https://i.postimg.cc/XXDBNwRK/lv-0-20260919215642.jpg', rarity:'Легендарный', color:'#FFD700', value:5000, chance:1},
@@ -599,9 +597,8 @@ function getRandomItem(caseIndex) {
     return pool[0];
 }
 
-// === РУЛЕТКА (лента) ===
 function getItemWidth() {
-    return window.innerWidth <= 600 ? 110 : 140; // 100px + 10px gap для мобилки, 130 + 10 для десктопа
+    return window.innerWidth <= 600 ? 110 : 140;
 }
 
 function createRouletteItem(item) {
@@ -627,15 +624,9 @@ function fillRoulette(caseIndex) {
 async function spinRoulette(chosen, caseIndex) {
     const track = document.getElementById('rouletteTrack');
     const viewport = document.querySelector('.roulette-viewport');
-    if (!track || !viewport) {
-        console.error('rouletteTrack или viewport не найдены!');
-        return;
-    }
-
+    if (!track || !viewport) { console.error('rouletteTrack или viewport не найдены!'); return; }
     const winnerPosition = 50;
     const totalItems = 60;
-
-    // Строим ленту с выигрышем на 50-й позиции
     track.innerHTML = '';
     track.style.transition = 'none';
     track.style.transform = 'translateX(0)';
@@ -646,24 +637,18 @@ async function spinRoulette(chosen, caseIndex) {
         fragment.appendChild(createRouletteItem(item));
     }
     track.appendChild(fragment);
-
-    // Даём браузеру отрисовать
     await new Promise(r => setTimeout(r, 100));
-
     const itemWidth = getItemWidth();
     const viewportWidth = viewport.offsetWidth;
     const centerOffset = viewportWidth / 2;
     const targetOffset = (winnerPosition * itemWidth) + (itemWidth / 2) - centerOffset;
     const randomShift = (Math.random() - 0.5) * 40;
     const totalDistance = targetOffset + randomShift;
-
     track.style.transition = 'transform 5s cubic-bezier(0.15, 0.85, 0.25, 1)';
     requestAnimationFrame(() => {
         track.style.transform = 'translateX(-' + totalDistance + 'px)';
     });
-
     await new Promise(r => setTimeout(r, 5100));
-
     const winnerEl = track.children[winnerPosition];
     if (winnerEl) winnerEl.classList.add('winner');
 }
@@ -678,10 +663,8 @@ async function openCase() {
     document.getElementById('openCaseBtn').disabled = true;
     document.getElementById('itemPrice').classList.remove('show');
     document.getElementById('sellBtn').classList.remove('show');
-
     const chosen = getRandomItem(currentCaseIndex);
     await spinRoulette(chosen, currentCaseIndex);
-
     inventory.push(Object.assign({}, chosen));
     await savePlayer();
     document.getElementById('priceValue').textContent = chosen.value;
