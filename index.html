@@ -16,6 +16,7 @@
 <meta name="twitter:image" content="https://i.postimg.cc/28mQjPKk/37PNMy44Mdf-Qq71KUvp-Pr-XLRHC6Vttjwu8Yc-Mk-HMn-O4-SXl-E22e-Ii-Sc-Uw-TYs-KFAa0Vvp-UIc4BZOOug-VLu-G6d4.jpg">
 <meta name="description" content="OXDROP — открывай кейсы, апгрейди предметы, выигрывай скины!">
 <meta name="theme-color" content="#0b0e1a">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
 body{min-height:100vh;background:linear-gradient(145deg,#0b0e1a,#1a1f2f);display:flex;justify-content:center;align-items:center;padding:15px}
@@ -406,23 +407,21 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <div id="previewList"></div>
 </div>
 </div><script>
-const API_URL = 'https://api.npoint.io/6ebf279d65bba82f722e';
+// ===== SUPABASE =====
+const SUPABASE_URL = 'https://tnuznuqqcqftepwjoabw.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_3qd00AWKUcBxgNZkrPMbQA_4XayvZ6P';
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ===== ЗВУКИ (Web Audio API) =====
+// ===== ЗВУКИ =====
 let audioCtx = null;
 let soundEnabled = true;
 
 function initAudio() {
     if (!audioCtx) {
-        try {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        } catch(e) { console.log('Audio не поддерживается'); }
+        try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
     }
-    if (audioCtx && audioCtx.state === 'suspended') {
-        audioCtx.resume();
-    }
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
 }
-
 function playTone(freq, duration, type, volume) {
     if (!soundEnabled || !audioCtx) return;
     try {
@@ -431,60 +430,85 @@ function playTone(freq, duration, type, volume) {
         osc.type = type || 'sine';
         osc.frequency.value = freq;
         gain.gain.value = volume || 0.1;
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
+        osc.connect(gain); gain.connect(audioCtx.destination);
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
         osc.start(audioCtx.currentTime);
         osc.stop(audioCtx.currentTime + duration);
     } catch(e) {}
 }
-
 function soundTick() { playTone(800 + Math.random() * 200, 0.03, 'square', 0.05); }
-
 function soundWin() {
     if (!soundEnabled || !audioCtx) return;
-    const notes = [523, 659, 784, 1047];
-    notes.forEach((freq, i) => { setTimeout(() => playTone(freq, 0.3, 'sine', 0.15), i * 80); });
+    [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => playTone(f, 0.3, 'sine', 0.15), i * 80));
 }
-
 function soundLose() {
     if (!soundEnabled || !audioCtx) return;
     playTone(400, 0.15, 'sawtooth', 0.1);
     setTimeout(() => playTone(300, 0.15, 'sawtooth', 0.1), 120);
     setTimeout(() => playTone(200, 0.3, 'sawtooth', 0.1), 240);
 }
-
 function soundClick() { playTone(600, 0.05, 'square', 0.06); }
-
 function soundCoin() {
     if (!soundEnabled || !audioCtx) return;
     playTone(1318, 0.1, 'sine', 0.12);
     setTimeout(() => playTone(1568, 0.15, 'sine', 0.12), 60);
 }
-
 document.addEventListener('click', function() { initAudio(); }, { once: true });
 document.addEventListener('touchstart', function() { initAudio(); }, { once: true });
 
+// ===== ЗАГРУЗКА И СОХРАНЕНИЕ (Supabase) =====
 async function loadCloudData() {
     try {
-        const res = await fetch(API_URL);
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        return await res.json() || { players: {}, withdraw_requests: [] };
+        const { data: players, error: err1 } = await supabaseClient.from('players').select('*');
+        if (err1) throw err1;
+        const { data: requests, error: err2 } = await supabaseClient.from('withdraw_requests').select('*');
+        if (err2) throw err2;
+        const cloudData = { players: {}, withdraw_requests: requests || [] };
+        (players || []).forEach(p => {
+            cloudData.players[p.nick] = {
+                balance: p.balance || 0,
+                inventory: p.inventory || [],
+                pass: p.pass || '',
+                winStreak: p.win_streak || 0,
+                totalWin: p.total_win || 0,
+                bestDrop: p.best_drop || null
+            };
+        });
+        setStatus('✅ Данные загружены');
+        setTimeout(() => setStatus(''), 2000);
+        return cloudData;
     } catch(e) {
         console.error('loadCloudData error:', e);
-        setStatus('⚠️ Нет связи');
+        setStatus('⚠️ Нет связи с базой');
         return null;
     }
 }
 
 async function saveCloudData(data) {
     try {
-        const res = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
+        if (data.players) {
+            const playersArray = Object.entries(data.players).map(([nick, p]) => ({
+                nick: nick,
+                balance: p.balance || 0,
+                inventory: p.inventory || [],
+                pass: p.pass || '',
+                win_streak: p.winStreak || 0,
+                total_win: p.totalWin || 0,
+                best_drop: p.bestDrop || null
+            }));
+            if (playersArray.length > 0) {
+                const { error } = await supabaseClient.from('players').upsert(playersArray, { onConflict: 'nick' });
+                if (error) throw error;
+            }
+        }
+        if (data.withdraw_requests && data.withdraw_requests.length > 0) {
+            const requestsArray = data.withdraw_requests.map(r => ({
+                id: r.id, nick: r.nick, amount: r.amount,
+                method: r.method, detail: r.detail, status: r.status, date: r.date
+            }));
+            const { error } = await supabaseClient.from('withdraw_requests').upsert(requestsArray, { onConflict: 'id' });
+            if (error) throw error;
+        }
         setStatus('✅ Сохранено');
         setTimeout(() => setStatus(''), 2000);
         return true;
@@ -597,39 +621,20 @@ function addWin(amount, item) {
 function renderTop3() {
     const list = document.getElementById('top3ListPage');
     if (!list) return;
-    if (!cloudData.players) {
-        list.innerHTML = '<div class="top3-empty-page">Пока никого нет</div>';
-        return;
-    }
+    if (!cloudData.players) { list.innerHTML = '<div class="top3-empty-page">Пока никого нет</div>'; return; }
     const entries = Object.entries(cloudData.players).map(([nick, data]) => {
-        if (top3Mode === 'total') {
-            return { nick, value: data.totalWin || 0, item: null, img: null };
-        } else {
-            const best = data.bestDrop || null;
-            return { nick, value: best ? best.value : 0, item: best ? best.name : null, img: best ? best.img : null };
-        }
+        if (top3Mode === 'total') return { nick, value: data.totalWin || 0, item: null, img: null };
+        const best = data.bestDrop || null;
+        return { nick, value: best ? best.value : 0, item: best ? best.name : null, img: best ? best.img : null };
     }).filter(p => p.value > 0).sort((a, b) => b.value - a.value).slice(0, 3);
-
-    if (entries.length === 0) {
-        list.innerHTML = '<div class="top3-empty-page">Пока никого нет</div>';
-        return;
-    }
+    if (entries.length === 0) { list.innerHTML = '<div class="top3-empty-page">Пока никого нет</div>'; return; }
     const medals = ['🥇', '🥈', '🥉'];
     const classes = ['gold', 'silver', 'bronze'];
     const labels = ['1-е место', '2-е место', '3-е место'];
     list.innerHTML = entries.map((p, i) => {
         const imgHtml = (top3Mode === 'best' && p.img) ? '<img class="tc-img" src="' + p.img + '" alt="' + (p.item || '') + '" onerror="this.style.opacity=0.2">' : '';
         const itemHtml = (top3Mode === 'best' && p.item) ? '<div class="tc-item-name">' + p.item + '</div>' : '';
-        return '<div class="top3-card ' + classes[i] + '">' +
-            '<div class="tc-place">' + medals[i] + '</div>' +
-            imgHtml +
-            '<div class="tc-info">' +
-            '<div class="tc-label">' + labels[i] + '</div>' +
-            '<div class="tc-name">' + p.nick + '</div>' +
-            '<div class="tc-value">🪙 ' + p.value.toLocaleString('ru-RU') + '</div>' +
-            itemHtml +
-            '</div>' +
-            '</div>';
+        return '<div class="top3-card ' + classes[i] + '"><div class="tc-place">' + medals[i] + '</div>' + imgHtml + '<div class="tc-info"><div class="tc-label">' + labels[i] + '</div><div class="tc-name">' + p.nick + '</div><div class="tc-value">🪙 ' + p.value.toLocaleString('ru-RU') + '</div>' + itemHtml + '</div></div>';
     }).join('');
 }
 
@@ -775,9 +780,7 @@ function getRandomItem(caseIndex) {
     return pool[0];
 }
 
-function getItemWidth() {
-    return window.innerWidth <= 600 ? 110 : 140;
-}
+function getItemWidth() { return window.innerWidth <= 600 ? 110 : 140; }
 
 function createRouletteItem(item) {
     const div = document.createElement('div');
@@ -794,15 +797,13 @@ function fillRoulette(caseIndex) {
     track.style.transition = 'none';
     track.style.transform = 'translateX(0)';
     const pool = cases[caseIndex].items;
-    for (let k = 0; k < 30; k++) {
-        track.appendChild(createRouletteItem(pool[k % pool.length]));
-    }
+    for (let k = 0; k < 30; k++) track.appendChild(createRouletteItem(pool[k % pool.length]));
 }
 
 async function spinRoulette(chosen, caseIndex) {
     const track = document.getElementById('rouletteTrack');
     const viewport = document.querySelector('.roulette-viewport');
-    if (!track || !viewport) { console.error('rouletteTrack или viewport не найдены!'); return; }
+    if (!track || !viewport) return;
     const winnerPosition = 50;
     const totalItems = 60;
     track.innerHTML = '';
@@ -823,17 +824,9 @@ async function spinRoulette(chosen, caseIndex) {
     const randomShift = (Math.random() - 0.5) * 40;
     const totalDistance = targetOffset + randomShift;
     track.style.transition = 'transform 5s cubic-bezier(0.15, 0.85, 0.25, 1)';
-    requestAnimationFrame(() => {
-        track.style.transform = 'translateX(-' + totalDistance + 'px)';
-    });
-    // Звук тиков при прокрутке
+    requestAnimationFrame(() => { track.style.transform = 'translateX(-' + totalDistance + 'px)'; });
     let tickCount = 0;
-    const maxTicks = 40;
-    const tickInterval = setInterval(() => {
-        soundTick();
-        tickCount++;
-        if (tickCount >= maxTicks) clearInterval(tickInterval);
-    }, 100);
+    const tickInterval = setInterval(() => { soundTick(); tickCount++; if (tickCount >= 40) clearInterval(tickInterval); }, 100);
     await new Promise(r => setTimeout(r, 5100));
     const winnerEl = track.children[winnerPosition];
     if (winnerEl) winnerEl.classList.add('winner');
@@ -896,17 +889,9 @@ async function sellLastItem() {
 function renderInventory() {
     const list = document.getElementById('inventoryList');
     if (!list) return;
-    if (inventory.length === 0) {
-        list.innerHTML = '<div class="empty-inv">📭 Инвентарь пуст</div>';
-        return;
-    }
+    if (inventory.length === 0) { list.innerHTML = '<div class="empty-inv">📭 Инвентарь пуст</div>'; return; }
     list.innerHTML = inventory.map((item, i) =>
-        '<div class="inv-item" style="border-left-color:' + (item.color || '#4a5a7a') + '">' +
-        '<img src="' + item.img + '" alt="' + item.name + '">' +
-        '<span class="inv-name">' + item.name + '</span>' +
-        '<span class="inv-value">🪙 ' + item.value + '</span>' +
-        '<button class="inv-sell" data-index="' + i + '">💰</button>' +
-        '</div>'
+        '<div class="inv-item" style="border-left-color:' + (item.color || '#4a5a7a') + '"><img src="' + item.img + '" alt="' + item.name + '"><span class="inv-name">' + item.name + '</span><span class="inv-value">🪙 ' + item.value + '</span><button class="inv-sell" data-index="' + i + '">💰</button></div>'
     ).join('');
     list.querySelectorAll('.inv-sell').forEach(btn => {
         btn.addEventListener('click', async function() {
@@ -948,28 +933,20 @@ function renderUpgradeInventory() {
         return;
     }
     list.innerHTML = inventory.map((item, i) =>
-        '<div class="inv-item ' + (selectedIndices.includes(i) ? 'selected' : '') + '" data-index="' + i + '" style="border-left-color:' + (item.color || '#4a5a7a') + '">' +
-        '<img src="' + item.img + '" alt="' + item.name + '">' +
-        '<span class="inv-name">' + item.name + '</span>' +
-        '<span class="inv-value">🪙 ' + item.value + '</span>' +
-        '</div>'
+        '<div class="inv-item ' + (selectedIndices.includes(i) ? 'selected' : '') + '" data-index="' + i + '" style="border-left-color:' + (item.color || '#4a5a7a') + '"><img src="' + item.img + '" alt="' + item.name + '"><span class="inv-name">' + item.name + '</span><span class="inv-value">🪙 ' + item.value + '</span></div>'
     ).join('');
     list.querySelectorAll('.inv-item').forEach(el => {
         el.addEventListener('click', function() {
             if (isSpinning) return;
             const idx = parseInt(this.dataset.index);
             const pos = selectedIndices.indexOf(idx);
-            if (pos >= 0) selectedIndices.splice(pos, 1);
-            else selectedIndices.push(idx);
+            if (pos >= 0) selectedIndices.splice(pos, 1); else selectedIndices.push(idx);
             renderUpgradeInventory();
         });
     });
     document.getElementById('openWheelBtn').disabled = selectedIndices.length === 0;
-    if (selectedIndices.length > 0 && !isSpinning) {
-        document.getElementById('wheelSpinBtn').disabled = false;
-    } else {
-        document.getElementById('wheelSpinBtn').disabled = true;
-    }
+    if (selectedIndices.length > 0 && !isSpinning) document.getElementById('wheelSpinBtn').disabled = false;
+    else document.getElementById('wheelSpinBtn').disabled = true;
 }
 
 function buildWheel(winChance) {
@@ -978,32 +955,16 @@ function buildWheel(winChance) {
     const winDeg = winChance * 360;
     wheelInner.style.background = 'conic-gradient(#dc2626 0deg ' + winDeg + 'deg, #94a3b8 ' + winDeg + 'deg 360deg)';
     if (winDeg > 40) {
-        const winLabel = document.createElement('div');
-        winLabel.style.position = 'absolute';
-        winLabel.style.top = '22%';
-        winLabel.style.left = '50%';
-        winLabel.style.transform = 'translateX(-50%)';
-        winLabel.style.color = 'white';
-        winLabel.style.fontWeight = '900';
-        winLabel.style.fontSize = '0.8rem';
-        winLabel.style.textShadow = '0 0 6px rgba(0,0,0,0.8)';
-        winLabel.style.pointerEvents = 'none';
-        winLabel.textContent = 'ПОБЕДА';
-        wheelInner.appendChild(winLabel);
+        const w = document.createElement('div');
+        w.style.cssText = 'position:absolute;top:22%;left:50%;transform:translateX(-50%);color:white;font-weight:900;font-size:0.8rem;text-shadow:0 0 6px rgba(0,0,0,0.8);pointer-events:none';
+        w.textContent = 'ПОБЕДА';
+        wheelInner.appendChild(w);
     }
     if (360 - winDeg > 40) {
-        const loseLabel = document.createElement('div');
-        loseLabel.style.position = 'absolute';
-        loseLabel.style.bottom = '22%';
-        loseLabel.style.left = '50%';
-        loseLabel.style.transform = 'translateX(-50%)';
-        loseLabel.style.color = '#0f172a';
-        loseLabel.style.fontWeight = '900';
-        loseLabel.style.fontSize = '0.8rem';
-        loseLabel.style.textShadow = '0 0 6px rgba(255,255,255,0.4)';
-        loseLabel.style.pointerEvents = 'none';
-        loseLabel.textContent = 'ПРОИГРЫШ';
-        wheelInner.appendChild(loseLabel);
+        const l = document.createElement('div');
+        l.style.cssText = 'position:absolute;bottom:22%;left:50%;transform:translateX(-50%);color:#0f172a;font-weight:900;font-size:0.8rem;text-shadow:0 0 6px rgba(255,255,255,0.4);pointer-events:none';
+        l.textContent = 'ПРОИГРЫШ';
+        wheelInner.appendChild(l);
     }
 }
 
@@ -1020,14 +981,11 @@ async function openWheel() {
     const baseChance = selectedLevel.chance / 100;
     let realChance = baseChance;
     if (winStreak >= 5) {
-        const multipliers = [0.55, 0.33, 0.11, 0.01, 0];
+        const mults = [0.55, 0.33, 0.11, 0.01, 0];
         const idx = winStreak - 5;
-        const mult = multipliers[idx] !== undefined ? multipliers[idx] : 0;
-        realChance = baseChance * mult;
+        realChance = baseChance * (mults[idx] !== undefined ? mults[idx] : 0);
     }
-    if (totalValue > 3000) {
-        realChance = 0;
-    }
+    if (totalValue > 3000) realChance = 0;
     const isWin = Math.random() < realChance;
     buildWheel(baseChance);
     const winDeg = baseChance * 360;
@@ -1041,9 +999,7 @@ async function openWheel() {
     wheelEl.style.transform = 'rotate(0deg)';
     void wheelEl.offsetWidth;
     wheelEl.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
-    setTimeout(() => {
-        wheelEl.style.transform = 'rotate(' + totalRotation + 'deg)';
-    }, 50);
+    setTimeout(() => { wheelEl.style.transform = 'rotate(' + totalRotation + 'deg)'; }, 50);
     setTimeout(async () => {
         if (isWin) {
             soundWin();
@@ -1055,10 +1011,10 @@ async function openWheel() {
             document.getElementById('wheelResult').textContent = '✅ Успех!';
             const sorted = [].concat(selectedIndices).sort((a,b) => b-a);
             for (const i of sorted) inventory.splice(i, 1);
-            const upgradeItem = { name: 'Апгрейд-предмет', img: 'https://cdn-icons-png.flaticon.com/512/427/427733.png', rarity: 'Легендарный', color: '#f5b342', value: newVal };
-            inventory.push(upgradeItem);
+            const upg = { name: 'Апгрейд-предмет', img: 'https://cdn-icons-png.flaticon.com/512/427/427733.png', rarity: 'Легендарный', color: '#f5b342', value: newVal };
+            inventory.push(upg);
             selectedIndices = [];
-            addWin(newVal, upgradeItem);
+            addWin(newVal, upg);
             await savePlayer();
             renderInventory();
             renderUpgradeInventory();
@@ -1114,8 +1070,6 @@ document.getElementById('adminAddBtn').addEventListener('click', async function(
         const player = getPlayer(nick);
         player.balance = (player.balance || 0) + amt;
         if (!player.pass) player.pass = '';
-        if (player.totalWin === undefined) player.totalWin = 0;
-        if (player.bestDrop === undefined) player.bestDrop = null;
         await saveAll();
         document.getElementById('adminSuccess').style.display = 'block';
         setTimeout(() => document.getElementById('adminSuccess').style.display = 'none', 3000);
@@ -1129,16 +1083,9 @@ function renderWithdrawHistory() {
     const hist = (cloudData.withdraw_requests || []).filter(r => r.nick === currentNick);
     const list = document.getElementById('withdrawHistoryList');
     if (!list) return;
-    if (hist.length === 0) {
-        list.innerHTML = '<div style="color:#96a9d1;text-align:center;padding:15px;">Заявок нет</div>';
-        return;
-    }
+    if (hist.length === 0) { list.innerHTML = '<div style="color:#96a9d1;text-align:center;padding:15px;">Заявок нет</div>'; return; }
     list.innerHTML = hist.map(r =>
-        '<div class="wh-item">' +
-        '<span>' + r.date + '</span>' +
-        '<span>🪙 ' + r.amount + '</span>' +
-        '<span class="wh-status ' + r.status + '">' + (r.status === 'pending' ? '⏳' : r.status === 'done' ? '✅' : '❌') + '</span>' +
-        '</div>'
+        '<div class="wh-item"><span>' + r.date + '</span><span>🪙 ' + r.amount + '</span><span class="wh-status ' + r.status + '">' + (r.status === 'pending' ? '⏳' : r.status === 'done' ? '✅' : '❌') + '</span></div>'
     ).join('');
 }
 
@@ -1148,14 +1095,7 @@ function renderWithdrawRequests() {
     const pending = (cloudData.withdraw_requests || []).filter(r => r.status === 'pending');
     if (pending.length === 0) { container.innerHTML = '<div class="empty">Нет заявок</div>'; return; }
     container.innerHTML = pending.map(r =>
-        '<div class="wr-item">' +
-        '<span class="wr-nick">' + r.nick + '</span>' +
-        '<span>🪙 ' + r.amount + '</span>' +
-        '<div class="wr-actions">' +
-        '<button onclick="confirmWithdraw(' + r.id + ')">✅</button>' +
-        '<button class="reject" onclick="rejectWithdraw(' + r.id + ')">✕</button>' +
-        '</div>' +
-        '</div>'
+        '<div class="wr-item"><span class="wr-nick">' + r.nick + '</span><span>🪙 ' + r.amount + '</span><div class="wr-actions"><button onclick="confirmWithdraw(' + r.id + ')">✅</button><button class="reject" onclick="rejectWithdraw(' + r.id + ')">✕</button></div></div>'
     ).join('');
 }
 
@@ -1224,12 +1164,7 @@ function openPreview(i) {
     const c = cases[i];
     document.getElementById('previewTitle').textContent = '📦 ' + c.name;
     document.getElementById('previewList').innerHTML = c.items.map(item =>
-        '<div class="preview-item" style="border-left-color:' + (item.color || '#4a5a7a') + '">' +
-        '<img src="' + item.img + '" alt="' + item.name + '">' +
-        '<span class="p-name">' + item.name + '</span>' +
-        '<span class="p-rarity" style="color:' + item.color + '">' + item.rarity + '</span>' +
-        '<span class="p-value">🪙 ' + item.value + '</span>' +
-        '</div>'
+        '<div class="preview-item" style="border-left-color:' + (item.color || '#4a5a7a') + '"><img src="' + item.img + '" alt="' + item.name + '"><span class="p-name">' + item.name + '</span><span class="p-rarity" style="color:' + item.color + '">' + item.rarity + '</span><span class="p-value">🪙 ' + item.value + '</span></div>'
     ).join('');
     document.getElementById('previewModal').classList.add('show');
 }
@@ -1252,9 +1187,7 @@ function updateStatsUI() {
     document.getElementById('bestItem').textContent = stats.bestItem.name + ' (🪙 ' + stats.bestItem.value + ')';
 }
 
-window.addEventListener('resize', () => {
-    if (!isOpening) fillRoulette(currentCaseIndex);
-});
+window.addEventListener('resize', () => { if (!isOpening) fillRoulette(currentCaseIndex); });
 
 async function init() {
     await loadCloudData().then(d => { if (d) cloudData = d; });
@@ -1273,9 +1206,7 @@ async function init() {
     });
     switchCase(0);
 
-    // Переключатель звука
     const soundBtn = document.getElementById('soundToggle');
-    // Проверяем сохранённую настройку
     const savedSound = localStorage.getItem('oxdrop_sound');
     if (savedSound === 'off') {
         soundEnabled = false;
