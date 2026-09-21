@@ -298,7 +298,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <button class="active" data-case="0">
 <img src="https://i.postimg.cc/28mQjPKk/37PNMy44Mdf-Qq71KUvp-Pr-XLRHC6Vttjwu8Yc-Mk-HMn-O4-SXl-E22e-Ii-Sc-Uw-TYs-KFAa0Vvp-UIc4BZOOug-VLu-G6d4.jpg" alt="Мумия">
 <span class="case-name">🧟 Мумия</span>
-<span class="case-price">🪙 100</span>
+<span class="case-price">🪙 110</span>
 <span class="badge">🔥</span>
 <span class="preview-btn" onclick="event.stopPropagation(); openPreview(0)">🔍</span>
 </button>
@@ -345,7 +345,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <span class="preview-btn" onclick="event.stopPropagation(); openPreview(6)">🔍</span>
 </button>
 </div>
-<div class="price-tag">💰 Цена: <span id="priceDisplay">🪙 100</span></div>
+<div class="price-tag">💰 Цена: <span id="priceDisplay">🪙 110</span></div>
 <div class="roulette-container">
 <div class="roulette-viewport">
 <div class="roulette-track" id="rouletteTrack"></div>
@@ -642,17 +642,17 @@ function setStatus(text) {
 
 // ===== КЕЙСЫ =====
 const cases = [
-  { name: 'Мумия', price: 100, items: [
-    {name:'Калаш (Радужная ярость)', img:'https://i.postimg.cc/ctWPXj9t/1789877140558.jpg', rarity:'Легендарный', color:'#d4a03a', value:500, chance:2},
-    {name:'Калаш (Полная коррозия)', img:'https://i.postimg.cc/q6rWjYbr/1789877162505.jpg', rarity:'Редкий', color:'#8B4513', value:350, chance:4},
-    {name:'Револьвер (Акулий укус)', img:'https://i.postimg.cc/fSs1BF2T/1789877185974.jpg', rarity:'Редкий', color:'#C0C0C0', value:100, chance:10},
-    {name:'Маленький ящик (Молниеносный герой)', img:'https://i.postimg.cc/GTR6qN72/1789877208509.jpg', rarity:'Обычный', color:'#8B7355', value:40, chance:18},
-    {name:'Деревянная дверь (Зона отчуждения)', img:'https://i.postimg.cc/8fGxt3K7/1789877235712.jpg', rarity:'Обычный', color:'#8B5A2B', value:80, chance:12},
-    {name:'Безмолвный убийца', img:'https://i.postimg.cc/XpNNpkGV/1789980239063.jpg', rarity:'Эпический', color:'#a78bfa', value:180, chance:8},
-    {name:'Маленький ящик (Ветражный)', img:'https://i.postimg.cc/2VjjV7b6/1789980225194.jpg', rarity:'Обычный', color:'#8B7355', value:60, chance:15},
-    {name:'Инфернальное пламя', img:'https://i.postimg.cc/6y66yf2T/1789980190872.jpg', rarity:'Эпический', color:'#a78bfa', value:300, chance:5},
-    {name:'Стикер Анубис', img:'https://i.postimg.cc/6y66yf2q/1789980167912.jpg', rarity:'Обычный', color:'#8B7355', value:20, chance:20},
-    {name:'Большой ветражный ящик', img:'https://i.postimg.cc/N5GG5k90/1789980210808.jpg', rarity:'Редкий', color:'#00cc66', value:100, chance:6}
+  { name: 'Мумия', price: 110, items: [
+    {name:'Калаш (Радужная ярость)', img:'https://i.postimg.cc/ctWPXj9t/1789877140558.jpg', rarity:'Легендарный', color:'#d4a03a', value:500, chance:3},
+    {name:'Калаш (Полная коррозия)', img:'https://i.postimg.cc/q6rWjYbr/1789877162505.jpg', rarity:'Эпический', color:'#a78bfa', value:350, chance:4},
+    {name:'Револьвер (Акулий укус)', img:'https://i.postimg.cc/fSs1BF2T/1789877185974.jpg', rarity:'Редкий', color:'#C0C0C0', value:100, chance:9},
+    {name:'Маленький ящик (Молниеносный герой)', img:'https://i.postimg.cc/GTR6qN72/1789877208509.jpg', rarity:'Обычный', color:'#8B7355', value:25, chance:16},
+    {name:'Деревянная дверь (Зона отчуждения)', img:'https://i.postimg.cc/8fGxt3K7/1789877235712.jpg', rarity:'Обычный', color:'#8B5A2B', value:50, chance:18},
+    {name:'Безмолвный убийца', img:'https://i.postimg.cc/XpNNpkGV/1789980239063.jpg', rarity:'Редкий', color:'#00cc66', value:180, chance:6},
+    {name:'Маленький ящик (Ветражный)', img:'https://i.postimg.cc/2VjjV7b6/1789980225194.jpg', rarity:'Обычный', color:'#8B7355', value:35, chance:16},
+    {name:'Инфернальное пламя', img:'https://i.postimg.cc/6y66yf2T/1789980190872.jpg', rarity:'Эпический', color:'#a78bfa', value:300, chance:3},
+    {name:'Стикер Анубис', img:'https://i.postimg.cc/6y66yf2q/1789980167912.jpg', rarity:'Обычный', color:'#8B7355', value:15, chance:20},
+    {name:'Большой ветражный ящик', img:'https://i.postimg.cc/N5GG5k90/1789980210808.jpg', rarity:'Редкий', color:'#00cc66', value:90, chance:5}
   ]},
   { name: 'Человек-паук', price: 50, items: [
     {name:'Револьвер (Позолоченный бык)', img:'https://i.postimg.cc/Ln3gC1XH/1789878465349.jpg', rarity:'Легендарный', color:'#FFD700', value:76, chance:23},
