@@ -434,7 +434,6 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <button class="modal-close" id="depositClose">✕</button>
 <div class="deposit-title">💰 ПОПОЛНИТЬ БАЛАНС</div>
 <div class="deposit-sub">Выберите сумму и способ</div>
-
 <div class="deposit-section-title">Сумма пополнения</div>
 <div class="deposit-amounts" id="depositAmounts">
 <button data-amount="100">🪙 100</button>
@@ -448,7 +447,6 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <input type="number" id="depositCustomInput" placeholder="Введите сумму" min="50" step="50">
 <button id="depositCustomApply">OK</button>
 </div>
-
 <div class="deposit-section-title" style="margin-top:20px;">Способ пополнения</div>
 <div class="deposit-method">
 <a href="#" id="depositDA" class="deposit-method-btn" target="_blank">
@@ -466,7 +464,6 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 </div>
 </a>
 </div>
-
 <div class="deposit-note">
 <p>⚠️ <strong>Обязательно укажите свой ник</strong> в комментарии к платежу — иначе не сможем начислить монеты!</p>
 </div>
@@ -477,7 +474,7 @@ const SUPABASE_URL = 'https://tnuznuqqcqftepwjoabw.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_3qd00AWKUcBxgNZkrPMbQA_4XayvZ6P';
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ===== КОНСТАНТЫ ДЛЯ ПОПОЛНЕНИЯ =====
+// ===== КОНСТАНТЫ ПОПОЛНЕНИЯ =====
 const DEPOSIT_DA_URL = 'https://www.donationalerts.com/r/phff';
 const DEPOSIT_TG_NICK = 'Hdhdjzls';
 let depositAmount = 500;
@@ -523,7 +520,7 @@ function soundCoin() {
 document.addEventListener('click', function() { initAudio(); }, { once: true });
 document.addEventListener('touchstart', function() { initAudio(); }, { once: true });
 
-// ===== SUPABASE LOAD/SAVE =====
+// ===== SUPABASE LOAD =====
 async function loadCloudData() {
     try {
         const { data: players, error: err1 } = await supabaseClient.from('players').select('*');
@@ -551,23 +548,9 @@ async function loadCloudData() {
     }
 }
 
+// ===== SAVE (только заявки — игроки сохраняются отдельно) =====
 async function saveCloudData(data) {
     try {
-        if (data.players) {
-            const playersArray = Object.entries(data.players).map(([nick, p]) => ({
-                nick: nick,
-                balance: p.balance || 0,
-                inventory: p.inventory || [],
-                pass: p.pass || '',
-                win_streak: p.winStreak || 0,
-                total_win: p.totalWin || 0,
-                best_drop: p.bestDrop || null
-            }));
-            if (playersArray.length > 0) {
-                const { error } = await supabaseClient.from('players').upsert(playersArray, { onConflict: 'nick' });
-                if (error) throw error;
-            }
-        }
         if (data.withdraw_requests && data.withdraw_requests.length > 0) {
             const requestsArray = data.withdraw_requests.map(r => ({
                 id: r.id, nick: r.nick, amount: r.amount,
@@ -670,9 +653,53 @@ function getPlayer(nick) {
     return cloudData.players[nick];
 }
 
-async function saveAll() {
-    await saveCloudData(cloudData);
-    try { localStorage.setItem('oxdrop_backup', JSON.stringify(cloudData)); } catch(e) {}
+// ===== SAVE PLAYER (только текущий игрок) =====
+async function savePlayer() {
+    if (!currentNick) return;
+    const player = getPlayer(currentNick);
+    player.balance = balance;
+    player.inventory = inventory;
+    if (currentPass) player.pass = currentPass;
+    player.winStreak = winStreak;
+
+    try {
+        const { error } = await supabaseClient.from('players').upsert([{
+            nick: currentNick,
+            balance: player.balance,
+            inventory: player.inventory,
+            pass: player.pass || '',
+            win_streak: player.winStreak || 0,
+            total_win: player.totalWin || 0,
+            best_drop: player.bestDrop || null
+        }], { onConflict: 'nick' });
+        if (error) throw error;
+        setStatus('✅ Сохранено');
+        setTimeout(() => setStatus(''), 2000);
+    } catch(e) {
+        console.error('savePlayer error:', e);
+        setStatus('⚠️ Ошибка сохранения');
+    }
+}
+
+// ===== SAVE игрока по нику (для админа) =====
+async function savePlayerByNick(nick) {
+    const player = getPlayer(nick);
+    try {
+        const { error } = await supabaseClient.from('players').upsert([{
+            nick: nick,
+            balance: player.balance || 0,
+            inventory: player.inventory || [],
+            pass: player.pass || '',
+            win_streak: player.winStreak || 0,
+            total_win: player.totalWin || 0,
+            best_drop: player.bestDrop || null
+        }], { onConflict: 'nick' });
+        if (error) throw error;
+        return true;
+    } catch(e) {
+        console.error('savePlayerByNick error:', e);
+        return false;
+    }
 }
 
 function addWin(amount, item) {
@@ -718,7 +745,7 @@ document.getElementById('top3Switch').addEventListener('click', function(e) {
 function updateDepositLinks() {
     const nick = currentNick || 'Ник';
     const amount = depositAmount;
-    const daLink = DEPOSIT_DA_URL + '?message=' + encodeURIComponent('OXDROP | Ник: ' + nick + ' | Сумма: ' + amount);
+    const daLink = DEPOSIT_DA_URL;
     document.getElementById('depositDA').href = daLink;
     const tgText = encodeURIComponent('Привет! Хочу пополнить баланс OXDROP.\n🎮 Ник: ' + nick + '\n💰 Сумма: ' + amount + '\n\nЖду реквизиты 🙏');
     document.getElementById('depositTG').href = 'https://t.me/' + DEPOSIT_TG_NICK + '?text=' + tgText;
@@ -728,11 +755,9 @@ document.getElementById('openDepositBtn').addEventListener('click', function() {
     document.getElementById('depositModal').classList.add('show');
     updateDepositLinks();
 });
-
 document.getElementById('depositClose').addEventListener('click', function() {
     document.getElementById('depositModal').classList.remove('show');
 });
-
 document.getElementById('depositModal').addEventListener('click', function(e) {
     if (e.target === this) this.classList.remove('show');
 });
@@ -788,7 +813,14 @@ document.getElementById('registerBtn').addEventListener('click', async function(
         return;
     }
     cloudData.players[nick] = { balance: 0, inventory: [], pass: pass, winStreak: 0, totalWin: 0, bestDrop: null };
-    await saveAll();
+    // Сохраняем ТОЛЬКО нового игрока
+    try {
+        const { error } = await supabaseClient.from('players').upsert([{
+            nick: nick, balance: 0, inventory: [], pass: pass,
+            win_streak: 0, total_win: 0, best_drop: null
+        }], { onConflict: 'nick' });
+        if (error) throw error;
+    } catch(e) { console.error('register error:', e); }
     msg.textContent = '✅ Аккаунт создан!';
     msg.style.color = '#00ff88';
     setTimeout(() => {
@@ -853,16 +885,6 @@ document.getElementById('logoutBtn').addEventListener('click', function() {
 function updateBalanceUI() {
     document.getElementById('balanceDisplay').textContent = balance;
     document.getElementById('withdrawBalance').textContent = '🪙 ' + balance;
-}
-
-async function savePlayer() {
-    if (!currentNick) return;
-    const player = getPlayer(currentNick);
-    player.balance = balance;
-    player.inventory = inventory;
-    player.pass = currentPass;
-    player.winStreak = winStreak;
-    await saveAll();
 }
 
 document.getElementById('menuToggle').addEventListener('click', function() {
@@ -1186,8 +1208,7 @@ document.getElementById('adminAddBtn').addEventListener('click', async function(
         await loadCloudData().then(d => { if (d) cloudData = d; });
         const player = getPlayer(nick);
         player.balance = (player.balance || 0) + amt;
-        if (!player.pass) player.pass = '';
-        await saveAll();
+        await savePlayerByNick(nick);
         document.getElementById('adminSuccess').style.display = 'block';
         setTimeout(() => document.getElementById('adminSuccess').style.display = 'none', 3000);
         if (nick === currentNick) { balance = player.balance; updateBalanceUI(); }
@@ -1224,7 +1245,8 @@ window.confirmWithdraw = async function(id) {
         if ((player.balance || 0) >= r.amount) {
             player.balance -= r.amount;
             r.status = 'done';
-            await saveAll();
+            await saveCloudData(cloudData);
+            await savePlayerByNick(r.nick);
             renderWithdrawRequests();
             renderWithdrawHistory();
             if (r.nick === currentNick) { balance = player.balance; updateBalanceUI(); }
@@ -1236,7 +1258,7 @@ window.confirmWithdraw = async function(id) {
 window.rejectWithdraw = async function(id) {
     await loadCloudData().then(d => { if (d) cloudData = d; });
     const r = (cloudData.withdraw_requests || []).find(x => x.id === id);
-    if (r) { r.status = 'rejected'; await saveAll(); renderWithdrawRequests(); renderWithdrawHistory(); alert('❌ Отклонено'); }
+    if (r) { r.status = 'rejected'; await saveCloudData(cloudData); renderWithdrawRequests(); renderWithdrawHistory(); alert('❌ Отклонено'); }
 };
 
 document.getElementById('withdrawBtn').addEventListener('click', async function() {
@@ -1248,7 +1270,7 @@ document.getElementById('withdrawBtn').addEventListener('click', async function(
     await loadCloudData().then(d => { if (d) cloudData = d; });
     if (!cloudData.withdraw_requests) cloudData.withdraw_requests = [];
     cloudData.withdraw_requests.push({ id: Date.now(), nick: currentNick, amount: amt, method: selectedMethod, detail: detail, status: 'pending', date: new Date().toLocaleString() });
-    await saveAll();
+    await saveCloudData(cloudData);
     renderWithdrawHistory();
     renderWithdrawRequests();
     alert('✅ Заявка отправлена!');
