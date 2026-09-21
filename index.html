@@ -298,7 +298,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <button class="active" data-case="0">
 <img src="https://i.postimg.cc/28mQjPKk/37PNMy44Mdf-Qq71KUvp-Pr-XLRHC6Vttjwu8Yc-Mk-HMn-O4-SXl-E22e-Ii-Sc-Uw-TYs-KFAa0Vvp-UIc4BZOOug-VLu-G6d4.jpg" alt="Мумия">
 <span class="case-name">🧟 Мумия</span>
-<span class="case-price">🪙 110</span>
+<span class="case-price">🪙 120</span>
 <span class="badge">🔥</span>
 <span class="preview-btn" onclick="event.stopPropagation(); openPreview(0)">🔍</span>
 </button>
@@ -345,7 +345,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <span class="preview-btn" onclick="event.stopPropagation(); openPreview(6)">🔍</span>
 </button>
 </div>
-<div class="price-tag">💰 Цена: <span id="priceDisplay">🪙 110</span></div>
+<div class="price-tag">💰 Цена: <span id="priceDisplay">🪙 120</span></div>
 <div class="roulette-container">
 <div class="roulette-viewport">
 <div class="roulette-track" id="rouletteTrack"></div>
@@ -532,7 +532,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <p>⚠️ <strong>Обязательно укажите свой ник</strong> в комментарии к платежу — иначе не сможем начислить монеты!</p>
 </div>
 </div>
-</div><script>
+</div> <script>
 // ===== SUPABASE =====
 const SUPABASE_URL = 'https://tnuznuqqcqftepwjoabw.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_3qd00AWKUcBxgNZkrPMbQA_4XayvZ6P';
@@ -642,7 +642,7 @@ function setStatus(text) {
 
 // ===== КЕЙСЫ =====
 const cases = [
-  { name: 'Мумия', price: 110, items: [
+  { name: 'Мумия', price: 120, items: [
     {name:'Калаш (Радужная ярость)', img:'https://i.postimg.cc/ctWPXj9t/1789877140558.jpg', rarity:'Легендарный', color:'#d4a03a', value:500, chance:3},
     {name:'Калаш (Полная коррозия)', img:'https://i.postimg.cc/q6rWjYbr/1789877162505.jpg', rarity:'Эпический', color:'#a78bfa', value:350, chance:4},
     {name:'Револьвер (Акулий укус)', img:'https://i.postimg.cc/fSs1BF2T/1789877185974.jpg', rarity:'Редкий', color:'#C0C0C0', value:100, chance:9},
@@ -1479,4 +1479,4 @@ async function init() {
 init();
 </script>
 </body>
-</html>
+    </html>
