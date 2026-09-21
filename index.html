@@ -133,8 +133,6 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .result-box.fail{background:#ff220033;border:1px solid #ff2200}
 .result-box .result-title{font-size:1.2rem;font-weight:700}
 .result-box .result-desc{color:#b9c8e6;font-size:0.9rem;margin-top:5px}
-
-/* ===== МОДАЛКА ПОПОЛНЕНИЯ ===== */
 .deposit-modal-content{max-width:500px}
 .deposit-title{color:#f5b342;text-align:center;font-size:1.4rem;margin-bottom:5px}
 .deposit-sub{text-align:center;color:#96a9d1;font-size:0.85rem;margin-bottom:20px}
@@ -155,8 +153,6 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .deposit-method-btn .dm-desc{color:#96a9d1;font-size:0.75rem;line-height:1.3}
 .deposit-note{margin-top:20px;padding:12px 15px;background:rgba(245,179,66,0.1);border:1px solid #f5b34255;border-radius:15px;text-align:center}
 .deposit-note p{color:#ffd966;font-size:0.8rem;line-height:1.4}
-
-/* ===== ТОП-3 ===== */
 .top3-page{max-width:700px;margin:0 auto;padding:20px 0}
 .top3-page-title{color:#f5b342;text-align:center;font-size:1.6rem;font-weight:900;margin-bottom:10px;text-transform:uppercase;letter-spacing:3px;text-shadow:0 0 20px #f5b34266}
 .top3-page-sub{text-align:center;color:#96a9d1;font-size:0.9rem;margin-bottom:20px}
@@ -548,7 +544,7 @@ async function loadCloudData() {
     }
 }
 
-// ===== SAVE (только заявки — игроки сохраняются отдельно) =====
+// ===== SAVE только заявок =====
 async function saveCloudData(data) {
     try {
         if (data.withdraw_requests && data.withdraw_requests.length > 0) {
@@ -653,7 +649,7 @@ function getPlayer(nick) {
     return cloudData.players[nick];
 }
 
-// ===== SAVE PLAYER (только текущий игрок) =====
+// ===== SAVE PLAYER (только текущий) =====
 async function savePlayer() {
     if (!currentNick) return;
     const player = getPlayer(currentNick);
@@ -745,8 +741,7 @@ document.getElementById('top3Switch').addEventListener('click', function(e) {
 function updateDepositLinks() {
     const nick = currentNick || 'Ник';
     const amount = depositAmount;
-    const daLink = DEPOSIT_DA_URL;
-    document.getElementById('depositDA').href = daLink;
+    document.getElementById('depositDA').href = DEPOSIT_DA_URL;
     const tgText = encodeURIComponent('Привет! Хочу пополнить баланс OXDROP.\n🎮 Ник: ' + nick + '\n💰 Сумма: ' + amount + '\n\nЖду реквизиты 🙏');
     document.getElementById('depositTG').href = 'https://t.me/' + DEPOSIT_TG_NICK + '?text=' + tgText;
 }
@@ -761,7 +756,6 @@ document.getElementById('depositClose').addEventListener('click', function() {
 document.getElementById('depositModal').addEventListener('click', function(e) {
     if (e.target === this) this.classList.remove('show');
 });
-
 document.getElementById('depositAmounts').addEventListener('click', function(e) {
     const btn = e.target.closest('button');
     if (!btn) return;
@@ -778,7 +772,6 @@ document.getElementById('depositAmounts').addEventListener('click', function(e) 
         updateDepositLinks();
     }
 });
-
 document.getElementById('depositCustomApply').addEventListener('click', function() {
     const val = parseInt(document.getElementById('depositCustomInput').value);
     if (!val || val < 50) { alert('❌ Минимум 🪙 50'); return; }
@@ -813,7 +806,6 @@ document.getElementById('registerBtn').addEventListener('click', async function(
         return;
     }
     cloudData.players[nick] = { balance: 0, inventory: [], pass: pass, winStreak: 0, totalWin: 0, bestDrop: null };
-    // Сохраняем ТОЛЬКО нового игрока
     try {
         const { error } = await supabaseClient.from('players').upsert([{
             nick: nick, balance: 0, inventory: [], pass: pass,
@@ -1333,6 +1325,9 @@ async function init() {
     const savedNick = localStorage.getItem('oxdrop_nick');
     if (savedNick && cloudData.players && cloudData.players[savedNick]) {
         currentNick = savedNick;
+        // Восстанавливаем пароль из базы
+        const p = cloudData.players[savedNick];
+        if (p && p.pass) currentPass = p.pass;
         enterGame();
     } else {
         document.getElementById('authScreen').style.display = 'flex';
