@@ -81,7 +81,6 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .roulette-item.winner{border-color:#f5b342;box-shadow:0 0 40px #f5b342,0 0 80px #f5b34266;transform:scale(1.05);animation:winnerPulse 1s ease-in-out infinite}
 @keyframes winnerPulse{0%,100%{box-shadow:0 0 40px #f5b342,0 0 80px #f5b34266}50%{box-shadow:0 0 60px #f5b342,0 0 120px #f5b34299}}
 
-/* ===== ТРЯСКА КЕЙСА ПЕРЕД ОТКРЫТИЕМ ===== */
 @keyframes caseShake {
   0%   { transform: translateX(0) rotate(0deg); }
   10%  { transform: translateX(-4px) rotate(-0.5deg); }
@@ -383,6 +382,20 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 </div>
 <button class="case-btn" id="openCaseBtn">🎲 Открыть кейс</button>
 <div class="history"><h3>📋 История</h3><div class="history-items" id="historyList"></div></div>
+
+<!-- 🎟 ПРОМОКОД -->
+<div style="margin-top:20px;background:rgba(12,16,30,0.7);border-radius:30px;padding:18px;border:1px solid #29324b;">
+<h3 style="color:#96a9d1;font-weight:400;font-size:0.9rem;margin-bottom:10px;">🎟 Промокод</h3>
+<div style="display:flex;gap:8px;">
+<input type="text" id="promoInput" placeholder="Введите промокод" maxlength="30" autocomplete="off"
+style="flex:1;padding:12px;border-radius:20px;border:1px solid #2f3a55;background:#0e121f;color:white;font-size:1rem;text-transform:uppercase;text-align:center;">
+<button id="promoBtn"
+style="background:linear-gradient(135deg,#f5b342,#e8922a);border:none;color:#0b0e1a;padding:12px 24px;border-radius:20px;font-weight:700;cursor:pointer;">
+Активировать
+</button>
+</div>
+<div id="promoMsg" style="text-align:center;font-size:0.9rem;margin-top:8px;min-height:20px;font-weight:600;"></div>
+</div>
 </div>
 
 <div class="tab-content" id="tab-top">
@@ -562,6 +575,9 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 const SUPABASE_URL = 'https://tnuznuqqcqftepwjoabw.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_3qd00AWKUcBxgNZkrPMbQA_4XayvZ6P';
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ===== ПРОМОКОДЫ URL =====
+const PROMO_FUNCTION_URL = 'https://tnuznuqqcqftepwjoabw.supabase.co/functions/v1/hyper-action';
 
 // ===== КОНСТАНТЫ =====
 const DEPOSIT_DA_URL = 'https://www.donationalerts.com/r/phff';
@@ -1391,7 +1407,6 @@ async function openWheel() {
             for (const i of sorted) inventory.splice(i, 1);
             selectedIndices = [];
 
-            // ===== КЕШБЭК 10% ОТ ПРОИГРЫША =====
             const cashback = Math.floor(totalValue * 0.10);
             if (cashback > 0) {
                 balance += cashback;
@@ -1492,6 +1507,70 @@ function updateStatsUI() {
     document.getElementById('bestItem').textContent = stats.bestItem.name + ' (🪙 ' + stats.bestItem.value + ')';
 }
 window.addEventListener('resize', () => { if (!isOpening) fillRoulette(currentCaseIndex); });
+
+// ===== ПРОМОКОДЫ =====
+async function activatePromo() {
+  const input = document.getElementById('promoInput');
+  const msg = document.getElementById('promoMsg');
+  const btn = document.getElementById('promoBtn');
+  const code = input.value.trim().toUpperCase();
+
+  if (!code) {
+    msg.textContent = '❌ Введите промокод';
+    msg.style.color = '#ff4444';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = '...';
+
+  try {
+    const res = await fetch(PROMO_FUNCTION_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'apikey': SUPABASE_KEY
+      },
+      body: JSON.stringify({ nick: currentNick, code: code })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      msg.textContent = data.error || '❌ Ошибка';
+      msg.style.color = '#ff4444';
+      soundLose();
+      return;
+    }
+
+    msg.textContent = data.message;
+    msg.style.color = '#00ff88';
+    balance = data.newBalance;
+    if (data.newInventory) inventory = data.newInventory;
+    updateBalanceUI();
+    renderInventory();
+    renderUpgradeInventory();
+    soundCoin();
+    input.value = '';
+
+    const player = getPlayer(currentNick);
+    player.balance = balance;
+    player.inventory = inventory;
+
+  } catch (e) {
+    msg.textContent = '❌ Ошибка сети';
+    msg.style.color = '#ff4444';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Активировать';
+  }
+}
+
+document.getElementById('promoBtn').addEventListener('click', activatePromo);
+document.getElementById('promoInput').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') activatePromo();
+});
 
 async function init() {
     await loadCloudData().then(d => { if (d) cloudData = d; });
