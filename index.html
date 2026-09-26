@@ -395,6 +395,10 @@ style="background:linear-gradient(135deg,#f5b342,#e8922a);border:none;color:#0b0
 </button>
 </div>
 <div id="promoMsg" style="text-align:center;font-size:0.9rem;margin-top:8px;min-height:20px;font-weight:600;"></div>
+<div id="activeBonusBox" style="display:none;margin-top:12px;padding:12px;background:linear-gradient(135deg,#00ff8822,#0e121f);border:1px solid #00ff88;border-radius:16px;text-align:center;">
+<div style="color:#00ff88;font-weight:700;font-size:0.95rem;">🎁 Активен бонус: <span id="activeBonusPercent">0</span>% к пополнению</div>
+<div style="color:#96a9d1;font-size:0.75rem;margin-top:4px;">Код: <span id="activeBonusCode">—</span> · Сгорит после пополнения</div>
+</div>
 </div>
 </div>
 
@@ -518,6 +522,11 @@ style="background:linear-gradient(135deg,#f5b342,#e8922a);border:none;color:#0b0
 <input type="number" id="adminAmount" value="100">
 <button class="give-btn" id="adminAddBtn">💰 Выдать</button>
 <div class="success" id="adminSuccess">✅ Выдано!</div>
+<hr style="border-color:#2f3a55;margin:15px 0;">
+<h3 style="color:#96a9d1;font-size:0.9rem;">🎁 Активные бонусы</h3>
+<div id="activeBonusesList" style="max-height:200px;overflow-y:auto;">
+  <div class="empty">Нет активных бонусов</div>
+</div>
 <hr style="border-color:#2f3a55;margin:15px 0;">
 <h3 style="color:#96a9d1;font-size:0.9rem;">📤 Заявки на вывод</h3>
 <div class="withdraw-requests" id="withdrawRequests"><div class="empty">Нет заявок</div></div>
@@ -655,7 +664,9 @@ async function loadCloudData() {
                 pass: p.pass || '',
                 winStreak: p.win_streak || 0,
                 totalWin: p.total_win || 0,
-                bestDrop: p.best_drop || null
+                bestDrop: p.best_drop || null,
+                deposit_bonus_percent: p.deposit_bonus_percent || 0,
+                deposit_bonus_code: p.deposit_bonus_code || ''
             };
         });
         setStatus('✅ Данные загружены');
@@ -779,10 +790,12 @@ const WITHDRAW_METHODS = {
 
 function getPlayer(nick) {
     if (!cloudData.players) cloudData.players = {};
-    if (!cloudData.players[nick]) cloudData.players[nick] = { balance: 0, inventory: [], pass: '', winStreak: 0, totalWin: 0, bestDrop: null };
+    if (!cloudData.players[nick]) cloudData.players[nick] = { balance: 0, inventory: [], pass: '', winStreak: 0, totalWin: 0, bestDrop: null, deposit_bonus_percent: 0, deposit_bonus_code: '' };
     if (cloudData.players[nick].winStreak === undefined) cloudData.players[nick].winStreak = 0;
     if (cloudData.players[nick].totalWin === undefined) cloudData.players[nick].totalWin = 0;
     if (cloudData.players[nick].bestDrop === undefined) cloudData.players[nick].bestDrop = null;
+    if (cloudData.players[nick].deposit_bonus_percent === undefined) cloudData.players[nick].deposit_bonus_percent = 0;
+    if (cloudData.players[nick].deposit_bonus_code === undefined) cloudData.players[nick].deposit_bonus_code = '';
     return cloudData.players[nick];
 }
 
@@ -802,7 +815,9 @@ async function savePlayer() {
             pass: player.pass || '',
             win_streak: player.winStreak || 0,
             total_win: player.totalWin || 0,
-            best_drop: player.bestDrop || null
+            best_drop: player.bestDrop || null,
+            deposit_bonus_percent: player.deposit_bonus_percent || 0,
+            deposit_bonus_code: player.deposit_bonus_code || ''
         }], { onConflict: 'nick' });
         if (error) throw error;
         setStatus('✅ Сохранено');
@@ -823,7 +838,9 @@ async function savePlayerByNick(nick) {
             pass: player.pass || '',
             win_streak: player.winStreak || 0,
             total_win: player.totalWin || 0,
-            best_drop: player.bestDrop || null
+            best_drop: player.bestDrop || null,
+            deposit_bonus_percent: player.deposit_bonus_percent || 0,
+            deposit_bonus_code: player.deposit_bonus_code || ''
         }], { onConflict: 'nick' });
         if (error) throw error;
         return true;
@@ -1063,11 +1080,12 @@ document.getElementById('registerBtn').addEventListener('click', async function(
         msg.style.color = '#ff4444';
         return;
     }
-    cloudData.players[nick] = { balance: 0, inventory: [], pass: pass, winStreak: 0, totalWin: 0, bestDrop: null };
+    cloudData.players[nick] = { balance: 0, inventory: [], pass: pass, winStreak: 0, totalWin: 0, bestDrop: null, deposit_bonus_percent: 0, deposit_bonus_code: '' };
     try {
         const { error } = await supabaseClient.from('players').upsert([{
             nick: nick, balance: 0, inventory: [], pass: pass,
-            win_streak: 0, total_win: 0, best_drop: null
+            win_streak: 0, total_win: 0, best_drop: null,
+            deposit_bonus_percent: 0, deposit_bonus_code: ''
         }], { onConflict: 'nick' });
         if (error) throw error;
     } catch(e) { console.error('register error:', e); }
@@ -1114,6 +1132,7 @@ async function enterGame() {
     updateStatsUI();
     renderTop3();
     updateWithdrawUI();
+    renderActiveBonus();
 }
 document.getElementById('logoutBtn').addEventListener('click', function() {
     if (confirm('Выйти из аккаунта?')) {
@@ -1451,6 +1470,7 @@ document.getElementById('adminLoginBtn').addEventListener('click', function() {
         document.getElementById('adminLogin').style.display = 'none';
         document.getElementById('adminContent').style.display = 'block';
         renderWithdrawRequests();
+        loadActiveBonuses();
     } else {
         document.getElementById('adminError').style.display = 'block';
         setTimeout(() => document.getElementById('adminError').style.display = 'none', 3000);
@@ -1472,6 +1492,39 @@ document.getElementById('adminAddBtn').addEventListener('click', async function(
         alert('✅ ' + nick + ' выдано 🪙 ' + amt);
     }
 });
+
+// ===== АКТИВНЫЕ БОНУСЫ (АДМИН) =====
+async function loadActiveBonuses() {
+  const container = document.getElementById('activeBonusesList');
+  if (!container) return;
+  try {
+    const { data } = await supabaseClient
+      .from('players')
+      .select('nick, deposit_bonus_percent, deposit_bonus_code')
+      .gt('deposit_bonus_percent', 0);
+    if (!data || data.length === 0) {
+      container.innerHTML = '<div class="empty">Нет активных бонусов</div>';
+      return;
+    }
+    container.innerHTML = data.map(p => `
+      <div class="wr-item">
+        <span class="wr-nick">${p.nick}</span>
+        <span style="color:#00ff88;">+${p.deposit_bonus_percent}%</span>
+        <span style="color:#96a9d1;font-size:0.7rem;">${p.deposit_bonus_code}</span>
+        <button onclick="clearBonus('${p.nick}')" style="background:#b34747;border:none;color:white;padding:4px 12px;border-radius:20px;cursor:pointer;font-size:0.7rem;">Списать</button>
+      </div>
+    `).join('');
+  } catch(e) { console.error(e); }
+}
+
+window.clearBonus = async function(nick) {
+  if (!confirm('Списать бонус у ' + nick + '?')) return;
+  await supabaseClient.from('players').update({
+    deposit_bonus_percent: 0,
+    deposit_bonus_code: ''
+  }).eq('nick', nick);
+  loadActiveBonuses();
+};
 
 document.getElementById('upgradeLevels').addEventListener('click', function(e) {
     const level = e.target.closest('.upgrade-level');
@@ -1547,16 +1600,18 @@ async function activatePromo() {
     msg.textContent = data.message;
     msg.style.color = '#00ff88';
     balance = data.newBalance;
-    if (data.newInventory) inventory = data.newInventory;
-    updateBalanceUI();
-    renderInventory();
-    renderUpgradeInventory();
-    soundCoin();
-    input.value = '';
 
     const player = getPlayer(currentNick);
     player.balance = balance;
-    player.inventory = inventory;
+    player.deposit_bonus_percent = data.deposit_bonus_percent || 0;
+    player.deposit_bonus_code = data.deposit_bonus_code || '';
+
+    updateBalanceUI();
+    renderInventory();
+    renderUpgradeInventory();
+    renderActiveBonus();
+    soundCoin();
+    input.value = '';
 
   } catch (e) {
     msg.textContent = '❌ Ошибка сети';
@@ -1564,6 +1619,19 @@ async function activatePromo() {
   } finally {
     btn.disabled = false;
     btn.textContent = 'Активировать';
+  }
+}
+
+function renderActiveBonus() {
+  const player = getPlayer(currentNick);
+  const box = document.getElementById('activeBonusBox');
+  const percent = player.deposit_bonus_percent || 0;
+  if (percent > 0 && box) {
+    box.style.display = 'block';
+    document.getElementById('activeBonusPercent').textContent = percent;
+    document.getElementById('activeBonusCode').textContent = player.deposit_bonus_code || '—';
+  } else if (box) {
+    box.style.display = 'none';
   }
 }
 
