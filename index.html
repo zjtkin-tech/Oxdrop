@@ -25,12 +25,9 @@ html,body{min-height:100vh;overflow-x:hidden}
 body{background:#0a0a0f;color:#eaf0ff;position:relative;display:flex;justify-content:center;align-items:flex-start;padding:15px;min-height:100vh}
 body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at top,#1a1a2e 0%,#0a0a0f 60%),radial-gradient(ellipse at bottom right,#2a1a00 0%,transparent 50%);z-index:-2;pointer-events:none}
 body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background-image:radial-gradient(2px 2px at 20% 30%,rgba(255,215,0,0.25),transparent),radial-gradient(1px 1px at 60% 70%,rgba(255,215,0,0.15),transparent),radial-gradient(1.5px 1.5px at 80% 20%,rgba(255,180,0,0.2),transparent);background-size:250px 250px,400px 400px,300px 300px;z-index:-1;pointer-events:none;opacity:0.5}
-
 h1,h2,h3{font-family:'Orbitron',sans-serif;letter-spacing:1px}
-
 .container{max-width:950px;width:100%;border-radius:40px;padding:25px;background:rgba(15,15,25,0.85);border:1px solid rgba(255,215,0,0.2);box-shadow:0 0 40px rgba(255,180,0,0.08);position:relative;z-index:1}
 
-/* ЭКРАН ВХОДА */
 .auth-screen{display:none;flex-direction:column;gap:15px;padding:30px 15px;min-height:70vh;justify-content:center;align-items:center;position:relative}
 .auth-screen.show{display:flex}
 .auth-logo{text-align:center;margin-bottom:20px;animation:logoFloat 3s ease-in-out infinite}
@@ -41,28 +38,21 @@ h1,h2,h3{font-family:'Orbitron',sans-serif;letter-spacing:1px}
 
 .auth-card{background:rgba(20,20,30,0.95);border:2px solid rgba(255,215,0,0.3);border-radius:30px;padding:30px 25px;width:100%;max-width:420px;position:relative;box-shadow:0 0 35px rgba(255,180,0,0.15);animation:cardFadeIn 0.6s ease-out}
 @keyframes cardFadeIn{from{opacity:0;transform:translateY(20px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
-
 .auth-card h2{color:#FFD700;text-align:center;font-size:1.4rem;margin-bottom:20px;letter-spacing:2px}
 .auth-card input{width:100%;padding:15px 18px;border-radius:16px;border:2px solid #2f3a55;background:#0e121f;color:white;font-size:1rem;text-align:center;transition:0.3s;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;margin-bottom:12px}
 .auth-card input:focus{outline:none;border-color:#FFD700;box-shadow:0 0 25px rgba(255,215,0,0.4);background:#141a2a}
 .auth-card input::placeholder{color:#5a6a8a;letter-spacing:0.5px}
-
 .btn-gold{width:100%;padding:15px;border-radius:50px;border:none;background:linear-gradient(135deg,#FFD700,#FFA500,#FFB700);background-size:200% 200%;color:#0a0a0f;font-weight:900;font-size:1.05rem;cursor:pointer;text-transform:uppercase;letter-spacing:2px;font-family:'Orbitron',sans-serif;box-shadow:0 4px 0 #8B6508,0 0 30px rgba(255,180,0,0.4);transition:0.2s;animation:goldShine 3s ease-in-out infinite;margin-top:5px}
 .btn-gold:hover{transform:translateY(-2px);box-shadow:0 6px 0 #8B6508,0 0 50px rgba(255,180,0,0.6)}
 .btn-gold:active{transform:translateY(2px);box-shadow:0 2px 0 #8B6508}
 .btn-gold:disabled{opacity:0.6;pointer-events:none}
-
 .auth-switch{text-align:center;color:#96a9d1;font-size:0.9rem;margin-top:15px;cursor:pointer;transition:0.2s}
 .auth-switch:hover{color:#FFD700;text-shadow:0 0 10px rgba(255,215,0,0.5)}
-
 .msg{text-align:center;font-size:0.9rem;min-height:24px;margin-top:10px;font-weight:600}
 
-/* ИГРОВОЙ ЭКРАН */
 .game-screen{display:none}
 .game-screen.show{display:block}
-
 h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135deg,#FFD700,#FFA500,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200% 200%;animation:goldShine 3s ease-in-out infinite;margin-bottom:15px;cursor:pointer;font-weight:900;letter-spacing:3px;text-shadow:0 0 30px rgba(255,215,0,0.3);font-family:'Orbitron',sans-serif}
-
 .top-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
 .user-info{color:#96a9d1;font-size:0.9rem}
 .user-info span{color:#FFD700;font-weight:700;text-shadow:0 0 10px rgba(255,215,0,0.3)}
@@ -70,7 +60,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .logout-btn{background:linear-gradient(135deg,#b34747,#8a2a2a);border:1px solid rgba(255,80,80,0.3);color:white;padding:7px 18px;border-radius:20px;font-weight:700;font-size:0.85rem;cursor:pointer;font-family:'Rajdhani',sans-serif}
 .sound-btn{background:rgba(30,38,59,0.9);border:1px solid #2f3a55;color:#b9c8e6;padding:7px 18px;border-radius:20px;font-weight:700;font-size:0.85rem;cursor:pointer;transition:0.2s;font-family:'Rajdhani',sans-serif}
 .sound-btn.off{opacity:0.5}
-
 .menu-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:10px;background:rgba(30,38,59,0.9);border-radius:15px;border:1px solid #2f3a55;margin-bottom:10px;align-items:center}
 .menu-toggle span{display:block;width:28px;height:3px;background:#FFD700;border-radius:5px;transition:0.3s}
 .menu-toggle.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
@@ -81,25 +70,19 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .mobile-menu button{background:rgba(30,38,59,0.9);border:1px solid #2f3a55;color:#b9c8e6;padding:12px;border-radius:20px;font-weight:700;font-size:0.9rem;cursor:pointer;text-align:center;font-family:'Rajdhani',sans-serif;transition:0.2s}
 .mobile-menu button:hover{border-color:#FFD700;color:#FFD700}
 .mobile-menu button.cases-btn{background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0a0f;border-color:#FFD700}
-
 .donate-notice{background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,165,0,0.05));border:1px solid rgba(255,215,0,0.4);border-radius:20px;padding:12px 18px;margin:12px 0;text-align:center}
 .donate-notice p{color:#FFD700;font-size:0.85rem;font-weight:600}
-
 .stats-row{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0;padding:14px 15px;background:rgba(10,10,15,0.6);border-radius:20px;border:1px solid rgba(255,215,0,0.15);justify-content:space-around}
 .stats-row .stat-item{color:#96a9d1;font-size:0.75rem;text-align:center;text-transform:uppercase;letter-spacing:1px}
 .stats-row .stat-item .stat-value{color:#FFD700;font-weight:900;display:block;font-size:1.15rem;margin-top:4px;font-family:'Orbitron',sans-serif;text-shadow:0 0 10px rgba(255,215,0,0.4)}
-
 .tabs{display:flex;gap:8px;margin:18px 0 5px;flex-wrap:wrap}
 .tabs button{flex:1;padding:12px;border:none;border-radius:30px;font-weight:700;font-size:0.85rem;cursor:pointer;transition:0.3s;background:rgba(30,38,59,0.9);color:#96a9d1;border:2px solid #2f3a55;white-space:nowrap;font-family:'Rajdhani',sans-serif;letter-spacing:0.5px}
 .tabs button.active{background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0a0f;border-color:#FFD700;box-shadow:0 0 25px rgba(255,215,0,0.5);transform:scale(1.03)}
-
 .tab-content{display:none}
 .tab-content.active{display:block}
-
 .balance-box{text-align:right;color:#b9c8e6;font-size:1.1rem;margin-bottom:15px;display:flex;justify-content:flex-end;align-items:center;gap:12px;flex-wrap:wrap}
 .balance-box span{background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,165,0,0.05));padding:8px 24px;border-radius:60px;border:2px solid rgba(255,215,0,0.5);color:#FFD700;font-weight:900;font-size:1.5rem;font-family:'Orbitron',sans-serif;text-shadow:0 0 15px rgba(255,215,0,0.5);box-shadow:0 0 25px rgba(255,215,0,0.2)}
 .donate-btn{background:linear-gradient(135deg,#ff6b35,#f7931e);border:none;color:white;padding:8px 20px;border-radius:40px;font-weight:700;font-size:0.9rem;text-decoration:none;cursor:pointer;font-family:'Rajdhani',sans-serif}
-
 .case-menu{display:flex;gap:10px;margin:20px 0;flex-wrap:wrap;justify-content:center}
 .case-menu button{background:rgba(20,20,30,0.9);border:2px solid #2f3a55;color:#b9c8e6;width:95px;height:140px;padding:8px 6px;border-radius:25px;font-weight:700;font-size:0.75rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;position:relative;transition:0.3s;font-family:'Rajdhani',sans-serif}
 .case-menu button img{width:55px;height:55px;object-fit:contain;border-radius:12px;background:rgba(12,16,30,0.7);padding:5px}
@@ -108,7 +91,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .case-menu button .preview-btn{font-size:0.5rem;background:rgba(30,38,59,0.9);border:1px solid #4f5b7a;color:white;padding:2px 12px;border-radius:20px;margin-top:auto;cursor:pointer}
 .case-menu button .badge{position:absolute;top:-6px;right:-6px;background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0a0f;font-size:0.5rem;font-weight:900;padding:3px 8px;border-radius:20px;box-shadow:0 0 15px rgba(255,215,0,0.6)}
 .case-menu button.active{border-color:#FFD700;background:rgba(30,25,10,0.95);box-shadow:0 0 30px rgba(255,215,0,0.35);transform:translateY(-5px)}
-
 .roulette-container{position:relative;margin:25px 0;padding:20px 0;background:rgba(10,10,15,0.9);border-radius:30px;border:2px solid rgba(255,215,0,0.2);overflow:hidden}
 .roulette-viewport{overflow:hidden;position:relative;padding:0 10px}
 .roulette-track{display:flex;gap:10px;will-change:transform}
@@ -120,34 +102,27 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .roulette-pointer::after{content:'▲';position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);color:#FFD700;font-size:1.5rem;text-shadow:0 0 15px #FFD700}
 .roulette-item.winner{border-color:#FFD700;box-shadow:0 0 40px #FFD700,0 0 80px rgba(255,215,0,0.5);transform:scale(1.05);animation:winnerPulse 1s ease-in-out infinite}
 @keyframes winnerPulse{0%,100%{box-shadow:0 0 40px #FFD700,0 0 80px rgba(255,215,0,0.4)}50%{box-shadow:0 0 60px #FFD700,0 0 120px rgba(255,215,0,0.6)}}
-
 @keyframes caseShake{0%,100%{transform:translateX(0) rotate(0deg)}10%,30%,50%,70%,90%{transform:translateX(-6px) rotate(-0.5deg)}20%,40%,60%,80%{transform:translateX(6px) rotate(0.5deg)}}
 .roulette-container.shaking{animation:caseShake 0.4s ease-in-out infinite;box-shadow:0 0 40px rgba(255,215,0,0.4);border-color:#FFD700}
-
 .item-price{font-size:1.1rem;font-weight:700;margin-top:10px;color:#b9c8e6;background:rgba(14,18,31,0.9);padding:8px 24px;border-radius:40px;border:2px solid rgba(255,215,0,0.4);display:none;font-family:'Rajdhani',sans-serif}
 .item-price.show{display:block}
 .item-price .value{color:#FFD700;text-shadow:0 0 10px rgba(255,215,0,0.5)}
 .sell-btn{background:linear-gradient(135deg,#4CAF50,#2e7d32);border:none;color:white;padding:10px 28px;border-radius:40px;font-weight:700;font-size:0.9rem;cursor:pointer;margin-top:10px;display:none;box-shadow:0 4px 0 #1b5e20;font-family:'Rajdhani',sans-serif}
 .sell-btn.show{display:inline-block}
-
 .case-btn{display:block;width:100%;padding:18px;font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,#FFD700,#FFA500,#FFB700);background-size:200% 200%;border:none;border-radius:60px;color:#0a0a0f;cursor:pointer;box-shadow:0 8px 0 #8B6508,0 0 30px rgba(255,180,0,0.35);text-transform:uppercase;font-family:'Orbitron',sans-serif;letter-spacing:3px;animation:goldShine 3s ease-in-out infinite;transition:0.2s}
 .case-btn:active{transform:translateY(3px);box-shadow:0 5px 0 #8B6508}
 .case-btn:disabled{opacity:0.5;pointer-events:none}
 .result-area{display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:15px;min-height:80px}
-
 .history{margin-top:20px;background:rgba(10,10,15,0.7);border-radius:25px;padding:16px 20px;border:1px solid rgba(255,215,0,0.2)}
 .history h3{color:#96a9d1;font-weight:400;font-size:0.85rem;margin-bottom:10px;font-family:'Rajdhani',sans-serif;text-transform:uppercase;letter-spacing:1px}
 .history-items{display:flex;flex-wrap:wrap;gap:6px}
 .history-items span{background:rgba(30,38,59,0.9);padding:5px 14px;border-radius:40px;font-size:0.8rem;color:#d3defa;border-left:3px solid #FFD700}
-
 .price-tag{text-align:center;color:#FFD700;font-size:1.15rem;margin:12px 0;font-weight:700;text-shadow:0 0 15px rgba(255,215,0,0.4);font-family:'Orbitron',sans-serif;letter-spacing:1px}
-
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:1000;justify-content:center;align-items:center;padding:20px}
 .modal.show{display:flex}
 .modal-content{background:linear-gradient(145deg,#1a1f2f,#0a0a0f);border-radius:30px;padding:25px;max-width:600px;width:100%;max-height:80vh;overflow-y:auto;border:2px solid rgba(255,215,0,0.3);box-shadow:0 0 50px rgba(255,215,0,0.15)}
 .modal-content h2{color:#FFD700;margin-bottom:15px;text-align:center;font-family:'Orbitron',sans-serif;text-shadow:0 0 20px rgba(255,215,0,0.4)}
 .modal-close{float:right;background:linear-gradient(135deg,#b34747,#8a2a2a);border:none;color:white;padding:5px 15px;border-radius:30px;font-size:1.2rem;cursor:pointer}
-
 .inv-list{display:flex;flex-direction:column;gap:8px;margin:15px 0;max-height:400px;overflow-y:auto}
 .inv-item{display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,15,0.7);padding:12px 16px;border-radius:15px;border-left:4px solid #4a5a7a;cursor:pointer;transition:0.2s;position:relative}
 .inv-item:hover{background:rgba(30,38,59,0.9)}
@@ -158,13 +133,11 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .inv-item .inv-value{color:#FFD700;font-weight:700;font-size:0.9rem}
 .inv-item .inv-sell{background:linear-gradient(135deg,#4CAF50,#2e7d32);border:none;color:white;padding:5px 16px;border-radius:20px;cursor:pointer;font-weight:700}
 .empty-inv{color:#96a9d1;text-align:center;padding:40px 20px;font-style:italic}
-
 .preview-item{display:flex;align-items:center;gap:12px;background:rgba(10,10,15,0.7);padding:12px 16px;border-radius:15px;margin-bottom:8px;border-left:4px solid #4a5a7a}
 .preview-item img{width:48px;height:48px;object-fit:contain;border-radius:8px}
 .preview-item .p-name{color:#eaf0ff;font-weight:600;flex:1}
 .preview-item .p-rarity{font-size:0.7rem;padding:3px 12px;border-radius:20px;background:rgba(30,38,59,0.9);color:#96a9d1}
 .preview-item .p-value{color:#FFD700;font-weight:700;font-size:0.9rem}
-
 .upgrade-levels{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin:20px 0}
 @media(max-width:600px){.upgrade-levels{grid-template-columns:1fr 1fr}}
 .upgrade-level{background:rgba(10,10,15,0.7);border:2px solid #2f3a55;border-radius:20px;padding:14px 8px;text-align:center;cursor:pointer;color:#b9c8e6;transition:0.2s}
@@ -172,7 +145,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .upgrade-level.selected{border-color:#FFD700;background:rgba(30,25,10,0.95);box-shadow:0 0 25px rgba(255,215,0,0.4)}
 .upgrade-level .level-mult{font-size:1.3rem;font-weight:900;color:#FFD700;font-family:'Orbitron',sans-serif;text-shadow:0 0 10px rgba(255,215,0,0.4)}
 .upgrade-level .level-desc{font-size:0.65rem;color:#96a9d1;margin-top:4px}
-
 .wheel-container{display:none;margin-top:25px;padding:25px;background:rgba(10,10,15,0.9);border-radius:30px;border:2px solid rgba(255,215,0,0.3)}
 .wheel-container.show{display:block}
 .wheel-title{color:#FFD700;text-align:center;font-size:1rem;font-weight:700;margin-bottom:15px;font-family:'Orbitron',sans-serif;letter-spacing:3px;text-shadow:0 0 15px rgba(255,215,0,0.5)}
@@ -189,7 +161,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .result-box.fail{background:rgba(255,34,0,0.15);border:2px solid #ff2200;box-shadow:0 0 25px rgba(255,34,0,0.3)}
 .result-box .result-title{font-size:1.3rem;font-weight:900;font-family:'Orbitron',sans-serif}
 .result-box .result-desc{color:#b9c8e6;font-size:0.9rem;margin-top:6px}
-
 .upgrade-win-display{display:none;margin-top:20px;padding:20px;background:linear-gradient(135deg,rgba(0,255,136,0.1),rgba(10,10,15,0.9));border:2px solid #00ff88;border-radius:25px;text-align:center;box-shadow:0 0 30px rgba(0,255,136,0.25)}
 .upgrade-win-display.show{display:block;animation:winPop 0.5s ease-out}
 @keyframes winPop{0%{transform:scale(0.8);opacity:0}50%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
@@ -223,27 +194,10 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .withdraw-summary{background:rgba(0,0,0,0.4);border-radius:20px;padding:16px;margin-top:15px;font-size:0.9rem;color:#b9c8e6;border:1px solid rgba(255,215,0,0.2)}
 .withdraw-summary-row{display:flex;justify-content:space-between;padding:7px 0}
 .withdraw-summary-row.total{border-top:1px solid rgba(255,215,0,0.3);margin-top:10px;padding-top:12px;color:#FFD700;font-weight:900;font-size:1.15rem;font-family:'Orbitron',sans-serif}
-.withdraw-submit{width:100%;padding:17px;background:linear-gradient(135deg,#FFD700,#FFA500,#FFB700);background-size:200% 200%;border:none;color:#0a0a0f;border-radius:50px;font-weight:900;font-size:1rem;cursor:pointer;text-transform:uppercase;letter-spacing:2px;margin-top:15px;box-shadow:0 6px 0 #8B6508;font-family:'Orbitron',sans-serif;animation:goldShine 3s ease-in-out infinite}
-.withdraw-submit:active{transform:translateY(3px);box-shadow:0 3px 0 #8B6508}
-.withdraw-tg-btn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:16px;background:linear-gradient(135deg,#229ED9,#1a7aab);border:none;color:white;border-radius:50px;font-weight:900;font-size:1rem;cursor:pointer;text-decoration:none;margin-top:12px;box-shadow:0 5px 0 #0e5273;font-family:'Rajdhani',sans-serif;transition:0.2s}
-.withdraw-tg-btn:hover{transform:translateY(-2px)}
-.withdraw-tg-btn .tg-icon{font-size:1.5rem}
-.withdraw-tg-btn .tg-text{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
-.withdraw-tg-btn .tg-name{font-size:0.95rem;font-weight:900}
-.withdraw-tg-btn .tg-desc{font-size:0.7rem;font-weight:400;opacity:0.85}
-.withdraw-note{margin-top:15px;padding:14px 16px;background:linear-gradient(135deg,rgba(255,215,0,0.12),rgba(255,165,0,0.05));border:1px solid rgba(255,215,0,0.4);border-radius:15px;text-align:center}
-.withdraw-note p{color:#FFD700;font-size:0.8rem;line-height:1.4}
-
-.withdraw-history{margin-top:20px;background:rgba(10,10,15,0.7);border-radius:25px;padding:18px;border:1px solid rgba(255,215,0,0.2)}
-.withdraw-history h3{color:#96a9d1;font-weight:400;font-size:0.85rem;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
-.withdraw-history-empty{color:#96a9d1;text-align:center;padding:20px;font-size:0.85rem;font-style:italic}
-.withdraw-history-item{display:flex;justify-content:space-between;align-items:center;padding:12px 15px;background:rgba(0,0,0,0.4);border-radius:12px;margin-bottom:6px;font-size:0.8rem;color:#eaf0ff;border-left:3px solid #4a5a7a}
-.withdraw-history-item.pending{border-left-color:#FFD700}
-.withdraw-history-item.done{border-left-color:#00ff88}
-.withdraw-history-item.rejected{border-left-color:#ff4444}
-.withdraw-history-item .wh-date{color:#96a9d1;font-size:0.7rem}
-.withdraw-history-item .wh-amount{color:#FFD700;font-weight:700}
-.withdraw-history-item .wh-status{font-weight:700}
+.withdraw-submit{width:100%;padding:17px;background:linear-gradient(135deg,#229ED9,#1a7aab);border:none;color:white;border-radius:50px;font-weight:900;font-size:1rem;cursor:pointer;text-transform:uppercase;letter-spacing:2px;margin-top:15px;box-shadow:0 6px 0 #0e5273;font-family:'Orbitron',sans-serif}
+.withdraw-submit:active{transform:translateY(3px);box-shadow:0 3px 0 #0e5273}
+.withdraw-note{margin-top:15px;padding:14px 16px;background:linear-gradient(135deg,rgba(34,158,217,0.12),rgba(10,10,15,0.4));border:1px solid rgba(34,158,217,0.4);border-radius:15px;text-align:center}
+.withdraw-note p{color:#7DD3FC;font-size:0.8rem;line-height:1.4}
 
 .top3-page{max-width:700px;margin:0 auto;padding:20px 0}
 .top3-page-title{color:#FFD700;text-align:center;font-size:1.7rem;font-weight:900;margin-bottom:10px;text-transform:uppercase;letter-spacing:4px;text-shadow:0 0 30px rgba(255,215,0,0.5);font-family:'Orbitron',sans-serif}
@@ -289,12 +243,10 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .admin-box .give-btn{background:linear-gradient(135deg,#4CAF50,#2e7d32);border:none;color:white;padding:12px;border-radius:30px;font-weight:900;font-size:1rem;cursor:pointer;width:100%;font-family:'Rajdhani',sans-serif;margin-bottom:10px}
 .admin-box .error{color:#ff4444;font-size:0.9rem;margin-top:8px;display:none;font-weight:600}
 .admin-box .success{color:#00ff88;font-size:0.9rem;margin-top:8px;display:none;font-weight:600}
-.admin-box .withdraw-requests{margin-top:15px;text-align:left}
+.admin-box .empty{color:#96a9d1;text-align:center;padding:15px;font-size:0.8rem;font-style:italic}
 .admin-box .wr-item{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:rgba(0,0,0,0.4);border-radius:10px;margin-bottom:6px;font-size:0.8rem;color:#eaf0ff;gap:8px;flex-wrap:wrap}
 .admin-box .wr-item .wr-nick{color:#FFD700;font-weight:700}
-.admin-box .wr-actions button{background:#4CAF50;border:none;color:white;padding:4px 12px;border-radius:20px;cursor:pointer;font-size:0.7rem;margin-left:5px}
-.admin-box .wr-actions button.reject{background:#b34747}
-.admin-box .empty{color:#96a9d1;text-align:center;padding:15px;font-size:0.8rem;font-style:italic}
+.admin-box .withdraw-requests{margin-top:15px;text-align:left}
 .status-bar{text-align:center;color:#96a9d1;font-size:0.75rem;margin-top:10px;padding:5px;min-height:20px}
 
 .deposit-modal-content{max-width:500px}
@@ -569,11 +521,9 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 <div class="withdraw-section-title">📱 Способ вывода</div>
 <div class="withdraw-methods-grid" id="withdrawMethods">
 <button class="selected" data-method="card">💳 Карта РФ</button>
-<button data-method="sbp">📱 СБП</button>
-<button data-method="usdt">🪙 USDT TRC-20</button>
 <button data-method="game">🎮 В игру</button>
 </div>
-<div class="withdraw-detail" id="withdrawDetailWrap">
+<div class="withdraw-detail show" id="withdrawDetailWrap">
 <input type="text" id="withdrawDetail" placeholder="Номер карты">
 </div>
 </div>
@@ -582,20 +532,9 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 <div class="withdraw-summary-row"><span>Комиссия (5%):</span><span>−🪙 <span id="sumFee">0</span></span></div>
 <div class="withdraw-summary-row total"><span>К получению:</span><span>🪙 <span id="sumReceive">0</span></span></div>
 </div>
-<button class="withdraw-submit" id="withdrawBtn">📤 ОТПРАВИТЬ ЗАЯВКУ</button>
-<a href="#" id="withdrawTgBtn" class="withdraw-tg-btn" target="_blank">
-<div class="tg-icon">💬</div>
-<div class="tg-text">
-<div class="tg-name">Написать админу в Telegram</div>
-<div class="tg-desc">@LIYsHp — быстро и удобно</div>
-</div>
-</a>
+<button class="withdraw-submit" id="withdrawBtn">💬 НАПИСАТЬ В TELEGRAM</button>
 <div class="withdraw-note">
-<p>⏱ Обработка до 24 часов · Минимум 🪙 100 · Комиссия 5%</p>
-</div>
-<div class="withdraw-history">
-<h3>📋 История заявок</h3>
-<div id="withdrawHistoryList"><div class="withdraw-history-empty">Заявок нет</div></div>
+<p>💬 Нажмите кнопку — откроется Telegram с вашей заявкой. Админ ответит и переведёт деньги в течение 24 часов.</p>
 </div>
 </div>
 </div>
@@ -618,14 +557,18 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 <input type="number" id="adminAmount" value="100">
 <button class="give-btn" id="adminAddBtn">💰 ВЫДАТЬ</button>
 <div class="success" id="adminSuccess">✅ Выдано!</div>
+
+<hr style="border-color:#2f3a55;margin:15px 0;">
+<h3 style="color:#96a9d1;font-size:0.9rem;">💸 Обработать вывод</h3>
+<input type="text" id="wdNick" placeholder="Ник игрока" autocomplete="off">
+<input type="number" id="wdAmount" placeholder="Сумма к списанию">
+<button class="give-btn" id="wdBtn" style="background:linear-gradient(135deg,#b34747,#8a2a2a);">📤 СПИСАТЬ ВЫВОД</button>
+
 <hr style="border-color:#2f3a55;margin:15px 0;">
 <h3 style="color:#96a9d1;font-size:0.9rem;">🎁 Активные бонусы</h3>
 <div id="activeBonusesList" style="max-height:200px;overflow-y:auto;">
 <div class="empty">Нет активных бонусов</div>
 </div>
-<hr style="border-color:#2f3a55;margin:15px 0;">
-<h3 style="color:#96a9d1;font-size:0.9rem;">📤 Заявки на вывод</h3>
-<div class="withdraw-requests" id="withdrawRequests"><div class="empty">Нет заявок</div></div>
 </div>
 </div>
 </div>
@@ -712,9 +655,7 @@ async function loadCloudData(){
   try{
     const {data:players,error:err1}=await supabaseClient.from('players').select('*');
     if(err1)throw err1;
-    const {data:requests,error:err2}=await supabaseClient.from('withdraw_requests').select('*');
-    if(err2)throw err2;
-    const cloudData={players:{},withdraw_requests:requests||[]};
+    const cloudData={players:{}};
     (players||[]).forEach(p=>{
       cloudData.players[p.nick]={
         balance:p.balance||0,inventory:p.inventory||[],pass:p.pass||'',
@@ -727,18 +668,6 @@ async function loadCloudData(){
     setTimeout(()=>setStatus(''),2000);
     return cloudData;
   }catch(e){console.error('loadCloudData error:',e);setStatus('⚠️ Нет связи с базой');return null;}
-}
-async function saveCloudData(data){
-  try{
-    if(data.withdraw_requests&&data.withdraw_requests.length>0){
-      const requestsArray=data.withdraw_requests.map(r=>({id:r.id,nick:r.nick,amount:r.amount,method:r.method,detail:r.detail,status:r.status,date:r.date}));
-      const {error}=await supabaseClient.from('withdraw_requests').upsert(requestsArray,{onConflict:'id'});
-      if(error)throw error;
-    }
-    setStatus('✅ Сохранено');
-    setTimeout(()=>setStatus(''),2000);
-    return true;
-  }catch(e){console.error('saveCloudData error:',e);setStatus('⚠️ Ошибка сохранения');return false;}
 }
 function setStatus(text){const el=document.getElementById('statusBar');if(el)el.textContent=text;}
 
@@ -804,10 +733,10 @@ const cases = [
   ]}
 ];
 
-let cloudData={players:{},withdraw_requests:[]};
+let cloudData={players:{}};
 let balance=0,isOpening=false,currentCaseIndex=0,history=[],inventory=[],lastItem=null,selectedIndices=[],selectedLevel={mult:1.1,chance:90},winStreak=0,currentNick='',currentPass='',top3Mode='total',isSpinning=false,selectedWithdrawMethod='card';
 let stats={visits:0,caseOpens:0,totalSales:0,bestItem:{name:'—',value:0}};
-const WITHDRAW_METHODS={card:{name:'Карта РФ',placeholder:'Номер карты'},sbp:{name:'СБП',placeholder:'Номер телефона'},usdt:{name:'USDT TRC-20',placeholder:'Адрес кошелька'},game:{name:'В игру',placeholder:'Ссылка на обмен'}};
+const WITHDRAW_METHODS={card:{name:'Карта РФ',placeholder:'Номер карты'},game:{name:'В игру',placeholder:'Ссылка на обмен'}};
 
 function getPlayer(nick){
   if(!cloudData.players)cloudData.players={};
@@ -910,13 +839,6 @@ function updateWithdrawUI(){
     document.getElementById('sumReceive').textContent=receive.toLocaleString('ru-RU');
     document.getElementById('withdrawSummary').style.display='block';
   }else document.getElementById('withdrawSummary').style.display='none';
-  updateWithdrawTgLink(amount);
-}
-function updateWithdrawTgLink(amount){
-  const nick=currentNick||'Ник';
-  const methodName=WITHDRAW_METHODS[selectedWithdrawMethod].name;
-  const text=encodeURIComponent('Привет! Хочу вывести с OXDROP.\n\n🎮 Ник: '+nick+'\n💰 Сумма: '+amount+' 🪙\n📱 Способ: '+methodName+'\n\nЖду выплату 🙏');
-  document.getElementById('withdrawTgBtn').href='https://t.me/'+WITHDRAW_TG_NICK+'?text='+text;
 }
 document.getElementById('withdrawPresets').addEventListener('click',function(e){
   const btn=e.target.closest('button');if(!btn||btn.disabled)return;
@@ -936,55 +858,17 @@ document.getElementById('withdrawMethods').addEventListener('click',function(e){
   detailInput.placeholder=WITHDRAW_METHODS[selectedWithdrawMethod].placeholder;detailInput.value='';
   updateWithdrawUI();
 });
-document.getElementById('withdrawBtn').addEventListener('click',async function(){
+document.getElementById('withdrawBtn').addEventListener('click',function(){
   const amt=parseInt(document.getElementById('withdrawAmount').value)||0;
   const detail=document.getElementById('withdrawDetail').value.trim();
   if(amt<WITHDRAW_MIN){alert('❌ Минимум 🪙 '+WITHDRAW_MIN);return;}
   if(amt>balance){alert('❌ Недостаточно средств!');return;}
   if(!detail){alert('❌ Укажите реквизиты: '+WITHDRAW_METHODS[selectedWithdrawMethod].placeholder);return;}
   const methodName=WITHDRAW_METHODS[selectedWithdrawMethod].name;
-  const fee=Math.floor(amt*WITHDRAW_FEE),receive=amt-fee;
-  await loadCloudData().then(d=>{if(d)cloudData=d;});
-  if(!cloudData.withdraw_requests)cloudData.withdraw_requests=[];
-  cloudData.withdraw_requests.push({id:Date.now(),nick:currentNick,amount:amt,method:selectedWithdrawMethod,detail:methodName+' | '+detail,status:'pending',date:new Date().toLocaleString('ru-RU')});
-  await saveCloudData(cloudData);renderWithdrawHistory();renderWithdrawRequests();soundCoin();
-  alert('✅ Заявка отправлена!\n\nСумма: 🪙 '+amt+'\nКомиссия: 🪙 '+fee+'\nК получению: 🪙 '+receive+'\n\nОжидайте выплату до 24 часов.');
-  document.getElementById('withdrawAmount').value='';document.getElementById('withdrawDetail').value='';
-  document.querySelectorAll('#withdrawPresets button').forEach(b=>b.classList.remove('selected'));
-  updateWithdrawUI();
+  const text=encodeURIComponent('💸 ЗАЯВКА НА ВЫВОД OXDROP\n\n🎮 Ник: '+currentNick+'\n💰 Сумма: '+amt+' 🪙\n📱 Способ: '+methodName+'\n📋 Реквизиты: '+detail+'\n\nЖду выплату 🙏');
+  window.open('https://t.me/'+WITHDRAW_TG_NICK+'?text='+text,'_blank');
+  soundCoin();
 });
-function renderWithdrawHistory(){
-  const hist=(cloudData.withdraw_requests||[]).filter(r=>r.nick===currentNick);
-  const list=document.getElementById('withdrawHistoryList');if(!list)return;
-  if(hist.length===0){list.innerHTML='<div class="withdraw-history-empty">Заявок нет</div>';return;}
-  const statusText={pending:'⏳ В обработке',done:'✅ Выплачено',rejected:'❌ Отклонено'};
-  list.innerHTML=hist.slice().reverse().map(r=>'<div class="withdraw-history-item '+r.status+'"><div><div class="wh-amount">🪙 '+r.amount+'</div><div class="wh-date">'+r.date+'</div></div><div class="wh-status">'+statusText[r.status]+'</div></div>').join('');
-}
-function renderWithdrawRequests(){
-  const container=document.getElementById('withdrawRequests');if(!container)return;
-  const pending=(cloudData.withdraw_requests||[]).filter(r=>r.status==='pending');
-  if(pending.length===0){container.innerHTML='<div class="empty">Нет заявок</div>';return;}
-  container.innerHTML=pending.map(r=>'<div class="wr-item"><span class="wr-nick">'+r.nick+'</span><span>🪙 '+r.amount+'</span><div class="wr-actions"><button onclick="confirmWithdraw('+r.id+')">✅</button><button class="reject" onclick="rejectWithdraw('+r.id+')">✕</button></div></div>').join('');
-}
-window.confirmWithdraw=async function(id){
-  await loadCloudData().then(d=>{if(d)cloudData=d;});
-  const r=(cloudData.withdraw_requests||[]).find(x=>x.id===id);
-  if(r){
-    const player=getPlayer(r.nick);
-    if((player.balance||0)>=r.amount){
-      player.balance-=r.amount;r.status='done';
-      await saveCloudData(cloudData);await savePlayerByNick(r.nick);
-      renderWithdrawRequests();renderWithdrawHistory();
-      if(r.nick===currentNick){balance=player.balance;updateBalanceUI();}
-      alert('✅ Подтверждено!');
-    }else alert('❌ Мало баланса!');
-  }
-};
-window.rejectWithdraw=async function(id){
-  await loadCloudData().then(d=>{if(d)cloudData=d;});
-  const r=(cloudData.withdraw_requests||[]).find(x=>x.id===id);
-  if(r){r.status='rejected';await saveCloudData(cloudData);renderWithdrawRequests();renderWithdrawHistory();alert('❌ Отклонено');}
-};
 
 document.getElementById('goRegister').addEventListener('click',function(){document.getElementById('loginForm').style.display='none';document.getElementById('registerForm').style.display='block';});
 document.getElementById('goLogin').addEventListener('click',function(){document.getElementById('registerForm').style.display='none';document.getElementById('loginForm').style.display='block';});
@@ -1024,7 +908,7 @@ async function enterGame(){
   document.getElementById('userNickDisplay').textContent=currentNick;
   const player=getPlayer(currentNick);
   balance=player.balance||0;inventory=player.inventory||[];winStreak=player.winStreak||0;
-  updateBalanceUI();renderInventory();renderUpgradeInventory();renderWithdrawHistory();updateStatsUI();
+  updateBalanceUI();renderInventory();renderUpgradeInventory();updateStatsUI();
   stats.visits++;updateStatsUI();renderTop3();updateWithdrawUI();renderActiveBonus();
 }
 document.getElementById('logoutBtn').addEventListener('click',function(){
@@ -1048,7 +932,7 @@ function switchTab(tabId){
   document.getElementById('mobileMenu').classList.remove('show');
   if(tabId==='inventory')renderInventory();
   if(tabId==='upgrade')renderUpgradeInventory();
-  if(tabId==='withdraw'){renderWithdrawHistory();updateWithdrawUI();}
+  if(tabId==='withdraw')updateWithdrawUI();
   if(tabId==='top')renderTop3();
 }
 document.querySelectorAll('.tabs button').forEach(btn=>{btn.addEventListener('click',function(){switchTab(this.dataset.tab);});});
@@ -1223,18 +1107,14 @@ async function openWheel(){
     if(isWin){
       soundWin();winStreak++;
       const newVal=Math.round(totalValue*selectedLevel.mult);
-
       const selectedItems=selectedIndices.map(i=>inventory[i]).filter(Boolean);
       const bestItem=selectedItems.reduce((best,it)=>(it.value>(best?.value||0)?it:best),null);
-
       document.getElementById('resultBox').className='result-box show success';
       document.getElementById('resultTitle').textContent='🎉 ПОБЕДА!';
       document.getElementById('resultDesc').textContent=selectedIndices.length+' предметов → 🪙 '+newVal;
       document.getElementById('wheelResult').textContent='✅ Успех!';
-
       const sorted=[].concat(selectedIndices).sort((a,b)=>b-a);
       for(const i of sorted)inventory.splice(i,1);
-
       const upg={
         name:bestItem?('Апгрейд: '+bestItem.name):'Апгрейд-предмет',
         img:bestItem?bestItem.img:'https://cdn-icons-png.flaticon.com/512/427/427733.png',
@@ -1242,11 +1122,9 @@ async function openWheel(){
         color:bestItem?bestItem.color:'#FFD700',
         value:newVal
       };
-
       inventory.push(upg);selectedIndices=[];
       addWin(newVal,upg);
       await savePlayer();renderInventory();renderUpgradeInventory();
-
       document.getElementById('upgradeWinImg').src=upg.img;
       document.getElementById('upgradeWinName').textContent=upg.name;
       document.getElementById('upgradeWinValue').textContent='🪙 '+newVal;
@@ -1277,7 +1155,6 @@ document.getElementById('mainTitle').addEventListener('dblclick',function(){
   document.getElementById('adminContent').style.display='none';
   document.getElementById('adminPass').value='';
   document.getElementById('adminError').style.display='none';
-  renderWithdrawRequests();
 });
 document.getElementById('adminClose').addEventListener('click',()=>document.getElementById('adminPanel').classList.remove('open'));
 document.getElementById('adminLoginBtn').addEventListener('click',function(){
@@ -1285,7 +1162,7 @@ document.getElementById('adminLoginBtn').addEventListener('click',function(){
     document.getElementById('adminError').style.display='none';
     document.getElementById('adminLogin').style.display='none';
     document.getElementById('adminContent').style.display='block';
-    renderWithdrawRequests();loadActiveBonuses();
+    loadActiveBonuses();
   }else{
     document.getElementById('adminError').style.display='block';
     setTimeout(()=>document.getElementById('adminError').style.display='none',3000);
@@ -1295,16 +1172,36 @@ document.getElementById('adminAddBtn').addEventListener('click',async function()
   const nick=document.getElementById('adminNick').value.trim();
   const amt=parseInt(document.getElementById('adminAmount').value)||0;
   if(!nick){alert('❌ Введите ник!');return;}
-  if(amt>0){
-    await loadCloudData().then(d=>{if(d)cloudData=d;});
-    const player=getPlayer(nick);
-    player.balance=(player.balance||0)+amt;
-    await savePlayerByNick(nick);
-    document.getElementById('adminSuccess').style.display='block';
-    setTimeout(()=>document.getElementById('adminSuccess').style.display='none',3000);
-    if(nick===currentNick){balance=player.balance;updateBalanceUI();}
-    soundCoin();alert('✅ '+nick+' выдано 🪙 '+amt);
-  }
+  if(amt===0){alert('❌ Введите сумму');return;}
+  await loadCloudData().then(d=>{if(d)cloudData=d;});
+  const player=getPlayer(nick);
+  player.balance=(player.balance||0)+amt;
+  if(player.balance<0){alert('❌ Нельзя списать больше, чем есть');player.balance=(player.balance||0)-amt;return;}
+  await savePlayerByNick(nick);
+  document.getElementById('adminSuccess').style.display='block';
+  setTimeout(()=>document.getElementById('adminSuccess').style.display='none',3000);
+  if(nick===currentNick){balance=player.balance;updateBalanceUI();}
+  soundCoin();
+  alert('✅ ' + nick + ': ' + (amt > 0 ? 'выдано' : 'списано') + ' 🪙 ' + Math.abs(amt) + '\n💰 Новый баланс: 🪙 ' + player.balance);
+});
+
+// 💸 ОБРАБОТКА ВЫВОДА
+document.getElementById('wdBtn').addEventListener('click',async function(){
+  const nick=document.getElementById('wdNick').value.trim();
+  const amt=parseInt(document.getElementById('wdAmount').value)||0;
+  if(!nick||amt<=0){alert('❌ Заполните ник и сумму (больше нуля)');return;}
+  await loadCloudData().then(d=>{if(d)cloudData=d;});
+  const player=getPlayer(nick);
+  const oldBalance=player.balance||0;
+  if(oldBalance<amt){alert('❌ У игрока только 🪙 '+oldBalance);return;}
+  if(!confirm('Списать 🪙 '+amt+' у '+nick+'?\nОстаток: 🪙 '+(oldBalance-amt)))return;
+  player.balance=oldBalance-amt;
+  await savePlayerByNick(nick);
+  if(nick===currentNick){balance=player.balance;updateBalanceUI();}
+  document.getElementById('wdNick').value='';
+  document.getElementById('wdAmount').value='';
+  soundCoin();
+  alert('✅ Готово!\n\n'+nick+'\nБыло: 🪙 '+oldBalance+'\nСписано: 🪙 '+amt+'\nОсталось: 🪙 '+player.balance);
 });
 
 async function loadActiveBonuses(){
@@ -1413,4 +1310,4 @@ async function init(){
 init();
 </script>
 </body>
-                                             </html>
+  </html>
