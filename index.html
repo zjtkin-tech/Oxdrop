@@ -30,7 +30,7 @@ h1,h2,h3{font-family:'Orbitron',sans-serif;letter-spacing:1px}
 
 .container{max-width:950px;width:100%;border-radius:40px;padding:25px;background:rgba(15,15,25,0.85);border:1px solid rgba(255,215,0,0.2);box-shadow:0 0 40px rgba(255,180,0,0.08);position:relative;z-index:1}
 
-/* ===== ЭКРАН ВХОДА ===== */
+/* ЭКРАН ВХОДА */
 .auth-screen{display:none;flex-direction:column;gap:15px;padding:30px 15px;min-height:70vh;justify-content:center;align-items:center;position:relative}
 .auth-screen.show{display:flex}
 .auth-logo{text-align:center;margin-bottom:20px;animation:logoFloat 3s ease-in-out infinite}
@@ -57,7 +57,7 @@ h1,h2,h3{font-family:'Orbitron',sans-serif;letter-spacing:1px}
 
 .msg{text-align:center;font-size:0.9rem;min-height:24px;margin-top:10px;font-weight:600}
 
-/* ===== ИГРОВОЙ ЭКРАН ===== */
+/* ИГРОВОЙ ЭКРАН */
 .game-screen{display:none}
 .game-screen.show{display:block}
 
@@ -265,7 +265,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .top3-card .tc-img{width:60px;height:60px;object-fit:contain;border-radius:12px;background:rgba(10,10,15,0.7);padding:5px;border:2px solid #4a5a7a;flex-shrink:0}
 .top3-empty-page{text-align:center;color:#96a9d1;padding:60px 20px;font-size:1rem;font-style:italic}
 
-/* ===== ПРОМОКОД ===== */
 .promo-block{margin-top:20px;background:rgba(10,10,15,0.7);border-radius:25px;padding:20px;border:1px solid rgba(255,215,0,0.25)}
 .promo-block h3{color:#96a9d1;font-weight:400;font-size:0.9rem;margin-bottom:12px;font-family:'Rajdhani',sans-serif;text-transform:uppercase;letter-spacing:1px}
 .promo-row{display:flex;gap:8px}
@@ -278,7 +277,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .active-bonus-title{color:#00ff88;font-weight:900;font-size:1rem;font-family:'Orbitron',sans-serif}
 .active-bonus-sub{color:#96a9d1;font-size:0.75rem;margin-top:5px}
 
-/* ===== АДМИНКА ===== */
 .admin-panel{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:9999;justify-content:center;align-items:center;padding:15px}
 .admin-panel.open{display:flex}
 .admin-box{background:linear-gradient(145deg,#1a1f2f,#0a0a0f);border-radius:30px;padding:30px;max-width:450px;width:100%;border:2px solid rgba(255,215,0,0.3);text-align:center;max-height:90vh;overflow-y:auto;box-shadow:0 0 50px rgba(255,215,0,0.15)}
@@ -343,7 +341,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 <body>
 <div class="container">
 
-<!-- ЭКРАН ВХОДА -->
 <div class="auth-screen show" id="authScreen">
   <div class="auth-logo">
     <h1>🐂 OXDROP</h1>
@@ -368,7 +365,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
   </div>
 </div>
 
-<!-- ИГРОВОЙ ЭКРАН -->
 <div class="game-screen" id="gameScreen">
 <h1 class="main-title" id="mainTitle">🐂 OXDROP</h1>
 
@@ -607,7 +603,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 <div class="status-bar" id="statusBar"></div>
 </div>
 
-<!-- АДМИН-ПАНЕЛЬ -->
 <div class="admin-panel" id="adminPanel">
 <div class="admin-box">
 <button class="close-btn" id="adminClose">✕</button>
@@ -635,7 +630,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 </div>
 </div>
 
-<!-- ПРЕВЬЮ КЕЙСА -->
 <div class="modal" id="previewModal">
 <div class="modal-content">
 <button class="modal-close" id="previewClose">✕</button>
@@ -644,7 +638,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 </div>
 </div>
 
-<!-- МОДАЛКА ПОПОЛНЕНИЯ -->
 <div class="modal" id="depositModal">
 <div class="modal-content deposit-modal-content">
 <button class="modal-close" id="depositClose">✕</button>
@@ -763,12 +756,16 @@ const cases = [
     {name:'Большой ветражный ящик', img:'https://i.postimg.cc/N5GG5k90/1789980210808.jpg', rarity:'Редкий', color:'#00cc66', value:90, chance:5}
   ]},
   { name: 'Человек-паук', price: 50, items: [
-    {name:'Револьвер (Позолоченный бык)', img:'https://i.postimg.cc/Ln3gC1XH/1789878465349.jpg', rarity:'Легендарный', color:'#FFD700', value:76, chance:23},
-    {name:'Стикер (Острые когти)', img:'https://i.postimg.cc/JG5H6knM/1789878483714.jpg', rarity:'Эпический', color:'#C0C0C0', value:30, chance:20},
-    {name:'Стикер (Позолоченные волки)', img:'https://i.postimg.cc/7fnJs26y/1789878508746.jpg', rarity:'Эпический', color:'#FFD700', value:25, chance:27},
-    {name:'Дигл (Вердикт)', img:'https://i.postimg.cc/SJfYTMs4/1789878530348.jpg', rarity:'Эпический', color:'#C0C0C0', value:150, chance:4},
-    {name:'Пистолет-пулемёт (Змеиное логово)', img:'https://i.postimg.cc/vctxqVmJ/1789878551308.jpg', rarity:'Редкий', color:'#00cc66', value:100, chance:14},
-    {name:'Стикер (Токсичный Дрейк)', img:'https://i.postimg.cc/kMHKjNGC/1789878779491.jpg', rarity:'Легендарный', color:'#00ff00', value:35, chance:12}
+    {name:'Револьвер (Позолоченный бык)', img:'https://i.postimg.cc/Ln3gC1XH/1789878465349.jpg', rarity:'Редкий', color:'#00cc66', value:76, chance:5},
+    {name:'Стикер (Острые когти)', img:'https://i.postimg.cc/JG5H6knM/1789878483714.jpg', rarity:'Обычный', color:'#8B7355', value:30, chance:20},
+    {name:'Стикер (Позолоченные волки)', img:'https://i.postimg.cc/7fnJs26y/1789878508746.jpg', rarity:'Обычный', color:'#8B7355', value:25, chance:14},
+    {name:'Дигл (Вердикт)', img:'https://i.postimg.cc/SJfYTMs4/1789878530348.jpg', rarity:'Эпический', color:'#a78bfa', value:150, chance:1.5},
+    {name:'Пистолет-пулемёт (Змеиное логово)', img:'https://i.postimg.cc/vctxqVmJ/1789878551308.jpg', rarity:'Эпический', color:'#a78bfa', value:100, chance:3},
+    {name:'Стикер (Токсичный Дрейк)', img:'https://i.postimg.cc/kMHKjNGC/1789878779491.jpg', rarity:'Обычный', color:'#8B7355', value:35, chance:20},
+    {name:'Дигл (Печать суда)', img:'https://i.postimg.cc/mgBTGsVL/1790489525098.jpg', rarity:'Легендарный', color:'#FFD700', value:200, chance:0.5},
+    {name:'Костяной шлем (Ухмылка бездны)', img:'https://i.postimg.cc/pTwtcby6/1790489600981.jpg', rarity:'Эпический', color:'#a78bfa', value:100, chance:2},
+    {name:'Стикер (Глючный байкер)', img:'https://i.postimg.cc/rpb6zXGr/1790489740197.jpg', rarity:'Обычный', color:'#8B7355', value:25, chance:14},
+    {name:'Стикер (Атомный череп)', img:'https://i.postimg.cc/FsgQp6vG/1790489666349.jpg', rarity:'Обычный', color:'#8B7355', value:30, chance:20}
   ]},
   { name: 'Золотой дракон', price: 200, items: [
     {name:'Дигл (Убийственная молния)', img:'https://i.postimg.cc/fSc5x8Qn/lv-0-20260919215106.jpg', rarity:'Редкий', color:'#00cc66', value:100, chance:25},
@@ -1227,7 +1224,6 @@ async function openWheel(){
       soundWin();winStreak++;
       const newVal=Math.round(totalValue*selectedLevel.mult);
 
-      // Сохраняем предметы ДО удаления — берём лучший по цене
       const selectedItems=selectedIndices.map(i=>inventory[i]).filter(Boolean);
       const bestItem=selectedItems.reduce((best,it)=>(it.value>(best?.value||0)?it:best),null);
 
@@ -1236,11 +1232,9 @@ async function openWheel(){
       document.getElementById('resultDesc').textContent=selectedIndices.length+' предметов → 🪙 '+newVal;
       document.getElementById('wheelResult').textContent='✅ Успех!';
 
-      // Удаляем выбранные предметы
       const sorted=[].concat(selectedIndices).sort((a,b)=>b-a);
       for(const i of sorted)inventory.splice(i,1);
 
-      // Создаём апгрейд-предмет на основе лучшего скина
       const upg={
         name:bestItem?('Апгрейд: '+bestItem.name):'Апгрейд-предмет',
         img:bestItem?bestItem.img:'https://cdn-icons-png.flaticon.com/512/427/427733.png',
@@ -1253,7 +1247,6 @@ async function openWheel(){
       addWin(newVal,upg);
       await savePlayer();renderInventory();renderUpgradeInventory();
 
-      // Показываем большой блок с выигранным скином
       document.getElementById('upgradeWinImg').src=upg.img;
       document.getElementById('upgradeWinName').textContent=upg.name;
       document.getElementById('upgradeWinValue').textContent='🪙 '+newVal;
@@ -1420,4 +1413,4 @@ async function init(){
 init();
 </script>
 </body>
-  </html>
+                                             </html>
