@@ -106,7 +106,7 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .item-price .value{color:#FFD700;text-shadow:0 0 10px rgba(255,215,0,0.5)}
 .sell-btn{background:linear-gradient(135deg,#4CAF50,#2e7d32);border:none;color:white;padding:10px 28px;border-radius:40px;font-weight:700;font-size:0.9rem;cursor:pointer;margin-top:10px;display:none;box-shadow:0 4px 0 #1b5e20;font-family:'Rajdhani',sans-serif}
 .sell-btn.show{display:inline-block}
-.case-btn{display:block;width:100%;padding:18px;font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,#FFD700,#FFA500,#FFB700);background-size:200% 200%;border:none;border-radius:60px;color:#0a0a0f;cursor:pointer;box-shadow:0 8px 0 #8B6508,0 0 30px rgba(255,180,0,0.35);text-transform:uppercase;font-family:'Orbitron',sans-serif;letter-spacing:3px;animation:goldShine 3s ease-in-out infinite;transition:0.2s}
+.case-btn{display:block;width:100%;padding:18px;font-size:1.3rem;font-weight:900;background:linear-gradient(135deg,#FFD700,#FFA500,#FFB700);background-size:200% 200%;border:none;border-radius:60px;color:#0a0a0f;cursor:pointer;box-shadow:0 8px 0 #8B6508,0 0 30px rgba(255,180,0,0.35);text-transform:uppercase;font-family:'Orbitron',sans-serif;letter-spacing:2px;animation:goldShine 3s ease-in-out infinite;transition:0.2s}
 .case-btn:active{transform:translateY(3px);box-shadow:0 5px 0 #8B6508}
 .case-btn:disabled{opacity:0.5;pointer-events:none}
 .multi-count-btn{padding:12px;border-radius:20px;border:2px solid #2f3a55;background:rgba(30,38,59,0.9);color:#b9c8e6;font-weight:900;font-size:1rem;cursor:pointer;font-family:'Orbitron',sans-serif;letter-spacing:1px;transition:0.2s;flex:1;max-width:120px}
@@ -218,10 +218,10 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .top3-empty-page{text-align:center;color:#96a9d1;padding:60px 20px;font-size:1rem;font-style:italic}
 .promo-block{margin-top:20px;background:rgba(10,10,15,0.7);border-radius:25px;padding:20px;border:1px solid rgba(255,215,0,0.25)}
 .promo-block h3{color:#96a9d1;font-weight:400;font-size:0.9rem;margin-bottom:12px;font-family:'Rajdhani',sans-serif;text-transform:uppercase;letter-spacing:1px}
-.promo-row{display:flex;gap:8px}
-.promo-row input{flex:1;padding:14px;border-radius:20px;border:2px solid #2f3a55;background:#0e121f;color:white;font-size:1rem;text-transform:uppercase;text-align:center;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:2px}
+.promo-row{display:flex;gap:8px;flex-wrap:wrap}
+.promo-row input{flex:1;min-width:150px;padding:14px;border-radius:20px;border:2px solid #2f3a55;background:#0e121f;color:white;font-size:1rem;text-transform:uppercase;text-align:center;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:2px}
 .promo-row input:focus{outline:none;border-color:#FFD700;box-shadow:0 0 20px rgba(255,215,0,0.3)}
-.promo-row button{background:linear-gradient(135deg,#FFD700,#FFA500);border:none;color:#0a0a0f;padding:14px 26px;border-radius:20px;font-weight:900;cursor:pointer;font-family:'Orbitron',sans-serif;font-size:0.85rem;letter-spacing:1px;box-shadow:0 0 20px rgba(255,215,0,0.4)}
+.promo-row button{background:linear-gradient(135deg,#FFD700,#FFA500);border:none;color:#0a0a0f;padding:14px 20px;border-radius:20px;font-weight:900;cursor:pointer;font-family:'Orbitron',sans-serif;font-size:0.8rem;letter-spacing:1px;box-shadow:0 0 20px rgba(255,215,0,0.4);white-space:nowrap;flex-shrink:0}
 .promo-msg{text-align:center;font-size:0.9rem;margin-top:10px;min-height:20px;font-weight:600}
 .active-bonus-box{display:none;margin-top:14px;padding:14px;background:linear-gradient(135deg,rgba(0,255,136,0.15),rgba(10,10,15,0.9));border:2px solid #00ff88;border-radius:18px;text-align:center;box-shadow:0 0 20px rgba(0,255,136,0.25)}
 .active-bonus-box.show{display:block}
@@ -234,6 +234,8 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .admin-box .close-btn{float:right;background:linear-gradient(135deg,#b34747,#8a2a2a);border:none;color:white;padding:5px 15px;border-radius:30px;font-size:1.2rem;cursor:pointer}
 .admin-box input{width:100%;padding:13px;border-radius:20px;border:2px solid #2f3a55;background:#0e121f;color:white;font-size:1rem;margin-bottom:12px;text-align:center;font-family:'Rajdhani',sans-serif}
 .admin-box input:focus{outline:none;border-color:#FFD700}
+.admin-box select{width:100%;padding:13px;border-radius:20px;border:2px solid #2f3a55;background:#0e121f;color:white;font-size:1rem;margin-bottom:12px;text-align:center;font-family:'Rajdhani',sans-serif}
+.admin-box select:focus{outline:none;border-color:#FFD700}
 .admin-box .login-btn{background:linear-gradient(135deg,#FFD700,#FFA500);border:none;color:#0a0a0f;padding:13px;border-radius:30px;font-weight:900;font-size:1rem;cursor:pointer;width:100%;font-family:'Orbitron',sans-serif;letter-spacing:1px}
 .admin-box .admin-content{display:none;margin-top:15px}
 .admin-box .give-btn{background:linear-gradient(135deg,#4CAF50,#2e7d32);border:none;color:white;padding:12px;border-radius:30px;font-weight:900;font-size:1rem;cursor:pointer;width:100%;font-family:'Rajdhani',sans-serif;margin-bottom:10px}
@@ -263,6 +265,20 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .deposit-method-btn .dm-desc{color:#96a9d1;font-size:0.75rem;line-height:1.3}
 .deposit-note{margin-top:20px;padding:14px 16px;background:linear-gradient(135deg,rgba(255,215,0,0.12),rgba(255,165,0,0.05));border:1px solid rgba(255,215,0,0.4);border-radius:15px;text-align:center}
 .deposit-note p{color:#FFD700;font-size:0.8rem;line-height:1.4}
+.promo-admin-block{background:rgba(0,0,0,0.3);border-radius:20px;padding:15px;margin-bottom:12px;text-align:left}
+.promo-admin-code{color:#FFD700;font-weight:900;font-size:1rem;display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.promo-admin-meta{color:#96a9d1;font-size:0.75rem;margin-bottom:4px}
+.promo-admin-stat{color:#ffd966;font-size:0.75rem;margin-bottom:8px}
+.promo-admin-buttons{display:flex;gap:6px;flex-wrap:wrap}
+.promo-admin-buttons button{background:rgba(30,38,59,0.9);border:1px solid #4f5b7a;color:#eaf0ff;padding:5px 12px;border-radius:20px;cursor:pointer;font-size:0.7rem;font-weight:700}
+.promo-admin-buttons button.delete{background:#b34747;border-color:#8a2a2a}
+.promo-users-list{display:none;margin-top:8px;width:100%}
+.promo-user-row{color:#eaf0ff;font-size:0.75rem;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;gap:8px}
+.promo-user-row .nick{color:#FFD700;font-weight:700}
+.promo-user-row .date{color:#96a9d1;font-size:0.65rem}
+.pending-promo-card{background:linear-gradient(135deg,rgba(255,215,0,0.1),rgba(0,0,0,0.4));border:1px solid rgba(255,215,0,0.4);border-radius:16px;padding:12px;margin-bottom:8px;text-align:left}
+.pending-promo-card .pp-nick{color:#FFD700;font-weight:900;font-size:0.95rem;margin-bottom:4px}
+.pending-promo-card .pp-code{color:#eaf0ff;font-size:0.8rem;margin-bottom:8px}
 @media(max-width:600px){
   .auth-logo h1{font-size:2.5rem}
   .case-menu button{width:80px;height:120px;padding:6px 4px}
@@ -280,6 +296,8 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
   .withdraw-presets{grid-template-columns:1fr 1fr}
   h1.main-title{font-size:1.8rem}
   .upgrade-win-display img{width:90px;height:90px}
+  .promo-row{flex-direction:column}
+  .promo-row button{width:100%}
 }
 </style>
 </head>
@@ -427,7 +445,7 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 <div class="promo-msg" id="promoMsg"></div>
 <div class="active-bonus-box" id="activeBonusBox">
 <div class="active-bonus-title">🎁 АКТИВЕН БОНУС: <span id="activeBonusPercent">0</span>%</div>
-<div class="active-bonus-sub">Код: <span id="activeBonusCode">—</span> · Сгорит после пополнения</div>
+<div class="active-bonus-sub">Код: <span id="activeBonusCode">—</span> · Спишется после пополнения</div>
 </div>
 </div>
 </div>
@@ -538,6 +556,7 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 <div class="status-bar" id="statusBar"></div>
 </div>
 
+<!-- АДМИН-ПАНЕЛЬ -->
 <div class="admin-panel" id="adminPanel">
 <div class="admin-box">
 <button class="close-btn" id="adminClose">✕</button>
@@ -548,21 +567,57 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 <div class="error" id="adminError">❌ Неверный пароль!</div>
 </div>
 <div class="admin-content" id="adminContent">
+
 <h3 style="color:#96a9d1;font-size:0.9rem;">💰 Выдать баланс</h3>
 <input type="text" id="adminNick" placeholder="Ник игрока" autocomplete="off">
 <input type="number" id="adminAmount" value="100">
 <button class="give-btn" id="adminAddBtn">💰 ВЫДАТЬ</button>
 <div class="success" id="adminSuccess">✅ Выдано!</div>
+
 <hr style="border-color:#2f3a55;margin:15px 0;">
 <h3 style="color:#96a9d1;font-size:0.9rem;">💸 Обработать вывод</h3>
 <input type="text" id="wdNick" placeholder="Ник игрока" autocomplete="off">
 <input type="number" id="wdAmount" placeholder="Сумма к списанию">
 <button class="give-btn" id="wdBtn" style="background:linear-gradient(135deg,#b34747,#8a2a2a);">📤 СПИСАТЬ ВЫВОД</button>
+
 <hr style="border-color:#2f3a55;margin:15px 0;">
-<h3 style="color:#96a9d1;font-size:0.9rem;">🎁 Активные бонусы</h3>
-<div id="activeBonusesList" style="max-height:200px;overflow-y:auto;">
-<div class="empty">Нет активных бонусов</div>
+<h3 style="color:#96a9d1;font-size:0.9rem;">🎟 Создать промокод</h3>
+<select id="promoType">
+<option value="coins">🪙 Монеты</option>
+<option value="deposit_bonus">💰 % к пополнению</option>
+<option value="item">🎁 Скин</option>
+</select>
+<input type="text" id="promoCode" placeholder="Код (например VASYA100)" autocomplete="off">
+<input type="number" id="promoValue" placeholder="Значение (монеты / %)" value="100">
+<input type="number" id="promoMax" placeholder="Лимит активаций (0 = безлимит)" value="0">
+<input type="text" id="promoSource" placeholder="Источник (блогер / канал)" autocomplete="off">
+<div id="promoItemFields" style="display:none;">
+<input type="text" id="promoItemName" placeholder="Название скина" autocomplete="off">
+<input type="text" id="promoItemImg" placeholder="Ссылка на картинку" autocomplete="off">
+<input type="number" id="promoItemVal" placeholder="Цена скина (монеты)" value="100">
+<select id="promoItemRarity">
+<option value="Обычный">⚪ Обычный</option>
+<option value="Редкий">🟢 Редкий</option>
+<option value="Эпический">🟣 Эпический</option>
+<option value="Легендарный">🟡 Легендарный</option>
+</select>
 </div>
+<button class="give-btn" id="promoCreateBtn" style="background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0a0f;">🎟 СОЗДАТЬ ПРОМОКОД</button>
+<div class="success" id="promoSuccess" style="display:none;">✅ Промокод создан!</div>
+<div class="error" id="promoError" style="display:none;"></div>
+
+<hr style="border-color:#2f3a55;margin:15px 0;">
+<h3 style="color:#96a9d1;font-size:0.9rem;">📊 Все промокоды</h3>
+<div id="promoList" style="max-height:400px;overflow-y:auto;">
+<div class="empty">Загрузка...</div>
+</div>
+
+<hr style="border-color:#2f3a55;margin:15px 0;">
+<h3 style="color:#96a9d1;font-size:0.9rem;">🎁 Ожидают бонуса</h3>
+<div id="pendingPromoList" style="max-height:300px;overflow-y:auto;">
+<div class="empty">Нет ожидающих</div>
+</div>
+
 </div>
 </div>
 </div>
@@ -616,9 +671,7 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 </div>
 </div>
 
-</div>
-
-<script>
+  </div> <script>
 const SUPABASE_URL = 'https://tnuznuqqcqftepwjoabw.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_3qd00AWKUcBxgNZkrPMbQA_4XayvZ6P';
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -655,7 +708,8 @@ async function loadCloudData(){
         balance:p.balance||0,inventory:p.inventory||[],pass:p.pass||'',
         winStreak:p.win_streak||0,totalWin:p.total_win||0,bestDrop:p.best_drop||null,
         deposit_bonus_percent:p.deposit_bonus_percent||0,
-        deposit_bonus_code:p.deposit_bonus_code||''
+        deposit_bonus_code:p.deposit_bonus_code||'',
+        pending_promo:p.pending_promo||''
       };
     });
     setStatus('✅ Данные загружены');
@@ -740,13 +794,14 @@ const WITHDRAW_METHODS={card:{name:'Карта РФ',placeholder:'Номер к�
 
 function getPlayer(nick){
   if(!cloudData.players)cloudData.players={};
-  if(!cloudData.players[nick])cloudData.players[nick]={balance:0,inventory:[],pass:'',winStreak:0,totalWin:0,bestDrop:null,deposit_bonus_percent:0,deposit_bonus_code:''};
+  if(!cloudData.players[nick])cloudData.players[nick]={balance:0,inventory:[],pass:'',winStreak:0,totalWin:0,bestDrop:null,deposit_bonus_percent:0,deposit_bonus_code:'',pending_promo:''};
   const p=cloudData.players[nick];
   if(p.winStreak===undefined)p.winStreak=0;
   if(p.totalWin===undefined)p.totalWin=0;
   if(p.bestDrop===undefined)p.bestDrop=null;
   if(p.deposit_bonus_percent===undefined)p.deposit_bonus_percent=0;
   if(p.deposit_bonus_code===undefined)p.deposit_bonus_code='';
+  if(p.pending_promo===undefined)p.pending_promo='';
   return p;
 }
 async function savePlayer(){
@@ -756,7 +811,7 @@ async function savePlayer(){
   if(currentPass)player.pass=currentPass;
   player.winStreak=winStreak;
   try{
-    const {error}=await supabaseClient.from('players').upsert([{nick:currentNick,balance:player.balance,inventory:player.inventory,pass:player.pass||'',win_streak:player.winStreak||0,total_win:player.totalWin||0,best_drop:player.bestDrop||null,deposit_bonus_percent:player.deposit_bonus_percent||0,deposit_bonus_code:player.deposit_bonus_code||''}],{onConflict:'nick'});
+    const {error}=await supabaseClient.from('players').upsert([{nick:currentNick,balance:player.balance,inventory:player.inventory,pass:player.pass||'',win_streak:player.winStreak||0,total_win:player.totalWin||0,best_drop:player.bestDrop||null,deposit_bonus_percent:player.deposit_bonus_percent||0,deposit_bonus_code:player.deposit_bonus_code||'',pending_promo:player.pending_promo||''}],{onConflict:'nick'});
     if(error)throw error;
     setStatus('✅ Сохранено');setTimeout(()=>setStatus(''),2000);
   }catch(e){console.error('savePlayer error:',e);setStatus('⚠️ Ошибка сохранения');}
@@ -764,7 +819,7 @@ async function savePlayer(){
 async function savePlayerByNick(nick){
   const player=getPlayer(nick);
   try{
-    const {error}=await supabaseClient.from('players').upsert([{nick:nick,balance:player.balance||0,inventory:player.inventory||[],pass:player.pass||'',win_streak:player.winStreak||0,total_win:player.totalWin||0,best_drop:player.bestDrop||null,deposit_bonus_percent:player.deposit_bonus_percent||0,deposit_bonus_code:player.deposit_bonus_code||''}],{onConflict:'nick'});
+    const {error}=await supabaseClient.from('players').upsert([{nick:nick,balance:player.balance||0,inventory:player.inventory||[],pass:player.pass||'',win_streak:player.winStreak||0,total_win:player.totalWin||0,best_drop:player.bestDrop||null,deposit_bonus_percent:player.deposit_bonus_percent||0,deposit_bonus_code:player.deposit_bonus_code||'',pending_promo:player.pending_promo||''}],{onConflict:'nick'});
     if(error)throw error;
     return true;
   }catch(e){console.error('savePlayerByNick error:',e);return false;}
@@ -879,8 +934,8 @@ document.getElementById('registerBtn').addEventListener('click',async function()
   if(pass!==pass2){msg.textContent='❌ Пароли не совпадают';msg.style.color='#ff4444';return;}
   await loadCloudData().then(d=>{if(d)cloudData=d;});
   if(cloudData.players&&cloudData.players[nick]){msg.textContent='❌ Этот ник уже занят!';msg.style.color='#ff4444';return;}
-  cloudData.players[nick]={balance:0,inventory:[],pass:pass,winStreak:0,totalWin:0,bestDrop:null,deposit_bonus_percent:0,deposit_bonus_code:''};
-  try{const {error}=await supabaseClient.from('players').upsert([{nick:nick,balance:0,inventory:[],pass:pass,win_streak:0,total_win:0,best_drop:null,deposit_bonus_percent:0,deposit_bonus_code:''}],{onConflict:'nick'});if(error)throw error;}catch(e){console.error('register error:',e);}
+  cloudData.players[nick]={balance:0,inventory:[],pass:pass,winStreak:0,totalWin:0,bestDrop:null,deposit_bonus_percent:0,deposit_bonus_code:'',pending_promo:''};
+  try{const {error}=await supabaseClient.from('players').upsert([{nick:nick,balance:0,inventory:[],pass:pass,win_streak:0,total_win:0,best_drop:null,deposit_bonus_percent:0,deposit_bonus_code:'',pending_promo:''}],{onConflict:'nick'});if(error)throw error;}catch(e){console.error('register error:',e);}
   msg.textContent='✅ Аккаунт создан!';msg.style.color='#00ff88';
   setTimeout(()=>{currentNick=nick;currentPass=pass;localStorage.setItem('oxdrop_nick',nick);enterGame();},800);
 });
@@ -1223,6 +1278,7 @@ async function openWheel(){
 }
 document.getElementById('openWheelBtn').addEventListener('click',openWheel);
 document.getElementById('wheelSpinBtn').addEventListener('click',openWheel);
+
 document.getElementById('mainTitle').addEventListener('dblclick',function(){
   document.getElementById('adminPanel').classList.add('open');
   document.getElementById('adminLogin').style.display='block';
@@ -1236,6 +1292,8 @@ document.getElementById('adminLoginBtn').addEventListener('click',function(){
     document.getElementById('adminError').style.display='none';
     document.getElementById('adminLogin').style.display='none';
     document.getElementById('adminContent').style.display='block';
+    loadPromoStats();
+    loadPendingPromos();
     loadActiveBonuses();
   }else{
     document.getElementById('adminError').style.display='block';
@@ -1276,8 +1334,150 @@ document.getElementById('wdBtn').addEventListener('click',async function(){
   soundCoin();
   alert('✅ Готово!\n\n'+nick+'\nБыло: 🪙 '+oldBalance+'\nСписано: 🪙 '+amt+'\nОсталось: 🪙 '+player.balance);
 });
+
+// === ПРОМОКОДЫ В АДМИНКЕ ===
+document.getElementById('promoType').addEventListener('change',function(){
+  document.getElementById('promoItemFields').style.display=this.value==='item'?'block':'none';
+});
+document.getElementById('promoCreateBtn').addEventListener('click',async function(){
+  const code=document.getElementById('promoCode').value.trim().toUpperCase();
+  const type=document.getElementById('promoType').value;
+  const value=parseInt(document.getElementById('promoValue').value)||0;
+  const maxUses=parseInt(document.getElementById('promoMax').value)||0;
+  const source=document.getElementById('promoSource').value.trim()||'общий';
+  const successEl=document.getElementById('promoSuccess');
+  const errorEl=document.getElementById('promoError');
+  successEl.style.display='none';
+  errorEl.style.display='none';
+  if(!code){errorEl.textContent='❌ Введите код';errorEl.style.display='block';return;}
+  let rewardData=null;
+  if(type==='item'){
+    const itemName=document.getElementById('promoItemName').value.trim();
+    const itemImg=document.getElementById('promoItemImg').value.trim();
+    const itemVal=parseInt(document.getElementById('promoItemVal').value)||0;
+    const itemRarity=document.getElementById('promoItemRarity').value;
+    if(!itemName||!itemImg){errorEl.textContent='❌ Заполните название и картинку скина';errorEl.style.display='block';return;}
+    const colors={'Обычный':'#8B7355','Редкий':'#00cc66','Эпический':'#a78bfa','Легендарный':'#FFD700'};
+    rewardData={name:itemName,img:itemImg,rarity:itemRarity,color:colors[itemRarity]||'#8B7355',value:itemVal};
+  }
+  const {data,error}=await supabaseClient.from('promocodes').insert({
+    code:code,reward_type:type,reward_value:type==='item'?0:value,
+    reward_data:rewardData,max_uses:maxUses,source:source
+  }).select().single();
+  if(error){
+    if(error.code==='23505')errorEl.textContent='❌ Такой код уже существует';
+    else errorEl.textContent='❌ Ошибка: '+error.message;
+    errorEl.style.display='block';
+    return;
+  }
+  successEl.style.display='block';
+  document.getElementById('promoCode').value='';
+  document.getElementById('promoSource').value='';
+  document.getElementById('promoItemName').value='';
+  document.getElementById('promoItemImg').value='';
+  loadPromoStats();
+  soundCoin();
+});
+
+async function loadPromoStats(){
+  const container=document.getElementById('promoList');
+  if(!container)return;
+  const {data:promos,error}=await supabaseClient.from('promocodes').select('*').order('created_at',{ascending:false});
+  if(error||!promos){container.innerHTML='<div class="empty">Ошибка загрузки</div>';return;}
+  if(promos.length===0){container.innerHTML='<div class="empty">Нет промокодов</div>';return;}
+  const typeIcons={coins:'🪙',deposit_bonus:'💰',item:'🎁'};
+  container.innerHTML=promos.map(p=>{
+    const icon=typeIcons[p.reward_type]||'🎟';
+    let valText='';
+    if(p.reward_type==='coins')valText='+'+p.reward_value+' монет';
+    else if(p.reward_type==='deposit_bonus')valText='+'+p.reward_value+'% к пополнению';
+    else if(p.reward_type==='item'&&p.reward_data)valText=p.reward_data.name;
+    return '<div class="promo-admin-block">'+
+      '<div class="promo-admin-code"><span>'+icon+' '+p.code+'</span><button onclick="deletePromo(\''+p.code+'\')" style="background:#b34747;border:none;color:white;padding:4px 10px;border-radius:20px;cursor:pointer;font-size:0.7rem;">🗑 Удалить</button></div>'+
+      '<div class="promo-admin-meta">Награда: '+valText+'</div>'+
+      '<div class="promo-admin-stat">📊 Активаций: '+p.used_count+(p.max_uses>0?' / '+p.max_uses:' (безлимит)')+'</div>'+
+      '<div class="promo-admin-meta" style="font-style:italic;">Источник: '+(p.source||'—')+'</div>'+
+      '<div class="promo-admin-buttons"><button onclick="showPromoUsers(\''+p.code+'\',\''+p.id+'\')">👥 Кто использовал</button></div>'+
+      '<div class="promo-users-list" id="promo-users-'+p.id+'"></div>'+
+    '</div>';
+  }).join('');
+}
+
+window.showPromoUsers=async function(code,id){
+  const container=document.getElementById('promo-users-'+id);
+  if(!container)return;
+  if(container.style.display==='block'){container.style.display='none';return;}
+  const {data:uses}=await supabaseClient.from('promocode_uses').select('nick,used_at').eq('code_id',id).order('used_at',{ascending:false});
+  if(!uses||uses.length===0){
+    container.innerHTML='<div style="color:#96a9d1;font-size:0.75rem;padding:6px;">Никто не использовал</div>';
+  }else{
+    container.innerHTML=uses.map(u=>'<div class="promo-user-row"><span class="nick">'+u.nick+'</span><span class="date">'+new Date(u.used_at).toLocaleString('ru-RU')+'</span></div>').join('');
+  }
+  container.style.display='block';
+};
+
+window.deletePromo=async function(code){
+  if(!confirm('Удалить промокод '+code+'?'))return;
+  const {error}=await supabaseClient.from('promocodes').delete().eq('code',code);
+  if(error){alert('❌ Ошибка: '+error.message);return;}
+  loadPromoStats();
+  loadPendingPromos();
+  soundClick();
+};
+
+async function loadPendingPromos(){
+  const container=document.getElementById('pendingPromoList');
+  if(!container)return;
+  const {data:players}=await supabaseClient.from('players').select('nick,pending_promo').neq('pending_promo','').not('pending_promo','is',null);
+  const filtered=(players||[]).filter(p=>p.pending_promo&&p.pending_promo.trim()!=='');
+  if(filtered.length===0){container.innerHTML='<div class="empty">Нет ожидающих</div>';return;}
+  container.innerHTML=filtered.map(p=>{
+    const safeNick=p.nick.replace(/'/g,"\\'");
+    return '<div class="pending-promo-card">'+
+      '<div class="pp-nick">👤 '+p.nick+'</div>'+
+      '<div class="pp-code">🎟 Код: '+p.pending_promo+'</div>'+
+      '<button onclick="applyPendingPromo(\''+safeNick+'\',\''+p.pending_promo+'\')" style="background:linear-gradient(135deg,#FFD700,#FFA500);border:none;color:#0a0a0f;padding:8px 16px;border-radius:20px;cursor:pointer;font-weight:900;font-size:0.8rem;font-family:\'Orbitron\',sans-serif;width:100%;">✅ ВЫДАТЬ БОНУС</button>'+
+    '</div>';
+  }).join('');
+}
+
+window.applyPendingPromo=async function(nick,code){
+  if(!confirm('Выдать бонус игроку '+nick+' по коду '+code+'?'))return;
+  const {data:promo}=await supabaseClient.from('promocodes').select('*').eq('code',code).maybeSingle();
+  if(!promo){alert('❌ Промокод не найден (возможно, удалён)');return;}
+  await loadCloudData().then(d=>{if(d)cloudData=d;});
+  const player=getPlayer(nick);
+  let message='';
+  if(promo.reward_type==='coins'){
+    player.balance=(player.balance||0)+promo.reward_value;
+    message='✅ Начислено '+promo.reward_value+' монет';
+  }else if(promo.reward_type==='deposit_bonus'){
+    player.deposit_bonus_percent=promo.reward_value;
+    player.deposit_bonus_code=code;
+    message='✅ Активирован бонус +'+promo.reward_value+'% к пополнению';
+  }else if(promo.reward_type==='item'&&promo.reward_data){
+    player.inventory=player.inventory||[];
+    player.inventory.push(promo.reward_data);
+    message='✅ Выдан скин: '+promo.reward_data.name;
+  }
+  player.pending_promo='';
+  await savePlayerByNick(nick);
+  if(nick===currentNick){
+    balance=player.balance;
+    inventory=player.inventory;
+    updateBalanceUI();
+    renderInventory();
+    renderUpgradeInventory();
+    renderActiveBonus();
+  }
+  alert(message);
+  loadPendingPromos();
+  soundCoin();
+};
+
 async function loadActiveBonuses(){
-  const container=document.getElementById('activeBonusesList');if(!container)return;
+  const container=document.getElementById('activeBonusesList');
+  if(!container)return;
   try{
     const {data}=await supabaseClient.from('players').select('nick, deposit_bonus_percent, deposit_bonus_code').gt('deposit_bonus_percent',0);
     if(!data||data.length===0){container.innerHTML='<div class="empty">Нет активных бонусов</div>';return;}
@@ -1289,6 +1489,7 @@ window.clearBonus=async function(nick){
   await supabaseClient.from('players').update({deposit_bonus_percent:0,deposit_bonus_code:''}).eq('nick',nick);
   loadActiveBonuses();
 };
+
 document.getElementById('upgradeLevels').addEventListener('click',function(e){
   const level=e.target.closest('.upgrade-level');if(!level)return;
   document.querySelectorAll('.upgrade-level').forEach(el=>el.classList.remove('selected'));
@@ -1333,12 +1534,9 @@ async function activatePromo(){
     const data=await res.json();
     if(!res.ok){msg.textContent=data.error||'❌ Ошибка';msg.style.color='#ff4444';soundLose();return;}
     msg.textContent=data.message;msg.style.color='#00ff88';
-    balance=data.newBalance;
     const player=getPlayer(currentNick);
-    player.balance=balance;
-    player.deposit_bonus_percent=data.deposit_bonus_percent||0;
-    player.deposit_bonus_code=data.deposit_bonus_code||'';
-    updateBalanceUI();renderInventory();renderUpgradeInventory();renderActiveBonus();soundCoin();input.value='';
+    player.pending_promo=code;
+    soundCoin();input.value='';
   }catch(e){msg.textContent='❌ Ошибка сети';msg.style.color='#ff4444';}
   finally{btn.disabled=false;btn.textContent='АКТИВИРОВАТЬ';}
 }
@@ -1351,6 +1549,7 @@ function renderActiveBonus(){
 }
 document.getElementById('promoBtn').addEventListener('click',activatePromo);
 document.getElementById('promoInput').addEventListener('keypress',function(e){if(e.key==='Enter')activatePromo();});
+
 async function init(){
   await loadCloudData().then(d=>{if(d)cloudData=d;});
   const savedNick=localStorage.getItem('oxdrop_nick');
@@ -1420,4 +1619,4 @@ async function init(){
 init();
 </script>
 </body>
-  </html>
+</html>
