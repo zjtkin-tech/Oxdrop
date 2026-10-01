@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OXDROP — Кабинет партнёра</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Rajdhani',sans-serif}
+body{min-height:100vh;background:#0a0a0f;color:#eaf0ff;display:flex;justify-content:center;align-items:flex-start;padding:15px;background-image:radial-gradient(ellipse at top,#1a1a2e 0%,#0a0a0f 60%)}
+.container{max-width:900px;width:100%;border-radius:40px;padding:25px;background:rgba(15,15,25,0.85);border:1px solid rgba(255,215,0,0.2);box-shadow:0 0 40px rgba(255,180,0,0.08);margin-top:20px}
+h1{font-family:'Orbitron',sans-serif;text-align:center;font-size:2.2rem;background:linear-gradient(135deg,#FFD700,#FFA500,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px;letter-spacing:3px;font-weight:900}
+h2{font-family:'Orbitron',sans-serif;color:#FFD700;text-align:center;font-size:1.3rem;margin-bottom:20px;letter-spacing:2px}
+.login-box{max-width:400px;margin:0 auto;background:rgba(20,20,30,0.95);border:2px solid rgba(255,215,0,0.3);border-radius:30px;padding:30px 25px;box-shadow:0 0 35px rgba(255,180,0,0.15)}
+.login-box input{width:100%;padding:15px;border-radius:16px;border:2px solid #2f3a55;background:#0e121f;color:white;font-size:1rem;text-align:center;margin-bottom:12px;font-family:'Rajdhani',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.login-box input:focus{outline:none;border-color:#FFD700;box-shadow:0 0 25px rgba(255,215,0,0.4)}
+.login-box button{width:100%;padding:15px;border-radius:50px;border:none;background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0a0f;font-weight:900;font-size:1.05rem;cursor:pointer;text-transform:uppercase;letter-spacing:2px;font-family:'Orbitron',sans-serif;box-shadow:0 4px 0 #8B6508;transition:0.2s}
+.login-box button:active{transform:translateY(2px);box-shadow:0 2px 0 #8B6508}
+.login-box button:disabled{opacity:0.6;pointer-events:none}
+.msg{text-align:center;font-size:0.9rem;margin-top:10px;min-height:20px;font-weight:600}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+@media(max-width:600px){.stats-grid{grid-template-columns:1fr}}
+.stat-card{background:rgba(10,10,15,0.7);border:1px solid rgba(255,215,0,0.3);border-radius:20px;padding:18px;text-align:center}
+.stat-label{color:#96a9d1;font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:700}
+.stat-value{color:#FFD700;font-size:1.8rem;font-weight:900;font-family:'Orbitron',sans-serif;text-shadow:0 0 15px rgba(255,215,0,0.4)}
+.stat-value.green{color:#00ff88;text-shadow:0 0 15px rgba(0,255,136,0.4)}
+.stat-value.blue{color:#7DD3FC;text-shadow:0 0 15px rgba(125,211,252,0.4)}
+.section{background:rgba(10,10,15,0.7);border-radius:25px;padding:20px;margin-bottom:15px;border:1px solid #2f3a55}
+.section-title{color:#96a9d1;font-size:0.85rem;text-transform:uppercase;letter-spacing:2px;font-weight:700;margin-bottom:15px}
+.player-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(0,0,0,0.3);border-radius:12px;margin-bottom:6px;font-size:0.85rem;border-left:3px solid #4a5a7a;gap:10px;flex-wrap:wrap}
+.player-row.paid{border-left-color:#00ff88}
+.player-row.waiting{border-left-color:#ffd966}
+.player-left{flex:1;min-width:0}
+.player-nick{color:#eaf0ff;font-weight:700}
+.player-date{color:#96a9d1;font-size:0.72rem}
+.player-right{text-align:right;flex-shrink:0}
+.player-status{font-weight:700;font-size:0.9rem}
+.player-amount{color:#FFD700;font-weight:900;font-size:0.9rem;margin-top:2px}
+.empty{color:#96a9d1;text-align:center;padding:20px;font-style:italic;font-size:0.9rem}
+.logout-btn{background:linear-gradient(135deg,#b34747,#8a2a2a);border:none;color:white;padding:10px 24px;border-radius:30px;font-weight:700;cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:0.9rem}
+.top-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.code-badge{color:#FFD700;font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.2rem;background:rgba(255,215,0,0.1);padding:10px 20px;border-radius:30px;border:1px solid rgba(255,215,0,0.4);letter-spacing:1px}
+.refresh-btn{background:linear-gradient(135deg,#229ED9,#1a7aab);border:none;color:white;padding:10px 20px;border-radius:30px;font-weight:700;cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:0.85rem;box-shadow:0 4px 0 #0e5273}
+.refresh-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #0e5273}
+.help-text{color:#96a9d1;font-size:0.8rem;text-align:center;margin-top:15px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div id="loginScreen">
+<h1>🐂 OXDROP</h1>
+<h2>🔑 Кабинет партнёра</h2>
+<div class="login-box">
+<input type="text" id="loginCode" placeholder="Ваш промокод" autocomplete="off">
+<input type="password" id="loginPass" placeholder="Пароль" autocomplete="off">
+<button id="loginBtn">ВОЙТИ</button>
+<div class="msg" id="loginMsg"></div>
+</div>
+<div class="help-text">
+Введите промокод и пароль, которые вам выдал администратор OXDROP.
+</div>
+</div>
+
+<div id="statsScreen" style="display:none;">
+<div class="top-bar">
+<div class="code-badge">🎟 <span id="codeDisplay">—</span></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;">
+<button class="refresh-btn" onclick="loadStats()">🔄 Обновить</button>
+<button class="logout-btn" onclick="logout()">🚪 Выйти</button>
+</div>
+</div>
+
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-label">📊 Всего активаций</div><div class="stat-value" id="statActivations">0</div></div>
+<div class="stat-card"><div class="stat-label">👥 Уникальных игроков</div><div class="stat-value" id="statPlayers">0</div></div>
+<div class="stat-card"><div class="stat-label">💰 Пополнили баланс</div><div class="stat-value blue" id="statPaid">0</div></div>
+<div class="stat-card"><div class="stat-label">💵 Сумма пополнений</div><div class="stat-value blue" id="statSum">0 ₽</div></div>
+<div class="stat-card" style="grid-column:1/-1;">
+<div class="stat-label">💸 Ваш процент (<span id="percentDisplay">0</span>%)</div>
+<div class="stat-value green" id="statEarn">0 ₽</div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">📋 Список игроков</div>
+<div id="playersList"><div class="empty">Загрузка...</div></div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+const SUPABASE_URL = 'https://tnuznuqqcqftepwjoabw.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_3qd00AWKUcBxgNZkrPMbQA_4XayvZ6P';
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentCode = '';
+let currentPercent = 0;
+let currentPromoId = null;
+
+document.getElementById('loginBtn').addEventListener('click', async function() {
+  const code = document.getElementById('loginCode').value.trim().toUpperCase();
+  const pass = document.getElementById('loginPass').value.trim();
+  const msg = document.getElementById('loginMsg');
+  const btn = this;
+  
+  if (!code || !pass) { 
+    msg.textContent = '❌ Заполните все поля'; 
+    msg.style.color = '#ff4444'; 
+    return; 
+  }
+  
+  msg.textContent = '⏳ Проверка...'; 
+  msg.style.color = '#96a9d1';
+  btn.disabled = true;
+  
+  try {
+    const { data: promo, error } = await supabaseClient
+      .from('promocodes')
+      .select('*')
+      .eq('code', code)
+      .maybeSingle();
+    
+    if (error) throw error;
+    if (!promo) { 
+      msg.textContent = '❌ Промокод не найден'; 
+      msg.style.color = '#ff4444'; 
+      return; 
+    }
+    if (!promo.partner_password || promo.partner_password.trim() === '') {
+      msg.textContent = '❌ Это не партнёрский код'; 
+      msg.style.color = '#ff4444'; 
+      return; 
+    }
+    if (promo.partner_password !== pass) {
+      msg.textContent = '❌ Неверный пароль'; 
+      msg.style.color = '#ff4444'; 
+      return; 
+    }
+    
+    currentCode = code;
+    currentPercent = promo.partner_percent || 0;
+    currentPromoId = promo.id;
+    
+    localStorage.setItem('oxdrop_blogger_code', code);
+    localStorage.setItem('oxdrop_blogger_pass', pass);
+    
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('statsScreen').style.display = 'block';
+    document.getElementById('codeDisplay').textContent = code;
+    document.getElementById('percentDisplay').textContent = currentPercent;
+    
+    await loadStats();
+  } catch(e) {
+    console.error(e);
+    msg.textContent = '❌ Ошибка сети'; 
+    msg.style.color = '#ff4444';
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+async function loadStats() {
+  if (!currentPromoId) return;
+  
+  try {
+    // Все активации промокода
+    const { data: uses } = await supabaseClient
+      .from('promocode_uses')
+      .select('nick,used_at')
+      .eq('code_id', currentPromoId)
+      .order('used_at', { ascending: false });
+    const usesList = uses || [];
+    
+    // Пополнения по этому промокоду
+    const { data: deposits } = await supabaseClient
+      .from('deposits')
+      .select('nick,amount,created_at')
+      .eq('partner_code', currentCode)
+      .order('created_at', { ascending: false });
+    const depositsList = deposits || [];
+    
+    // Считаем суммы
+    const totalActivations = usesList.length;
+    const uniquePlayers = new Set(usesList.map(u => u.nick)).size;
+    const paidPlayers = new Set(depositsList.map(d => d.nick)).size;
+    const totalSum = depositsList.reduce((s, d) => s + (d.amount || 0), 0);
+    const earn = Math.floor(totalSum * currentPercent / 100);
+    
+    document.getElementById('statActivations').textContent = totalActivations;
+    document.getElementById('statPlayers').textContent = uniquePlayers;
+    document.getElementById('statPaid').textContent = paidPlayers;
+    document.getElementById('statSum').textContent = totalSum.toLocaleString('ru-RU') + ' ₽';
+    document.getElementById('statEarn').textContent = earn.toLocaleString('ru-RU') + ' ₽';
+    
+    // Список игроков
+    const depositsByNick = {};
+    depositsList.forEach(d => {
+      depositsByNick[d.nick] = (depositsByNick[d.nick] || 0) + (d.amount || 0);
+    });
+    
+    const listEl = document.getElementById('playersList');
+    if (usesList.length === 0) {
+      listEl.innerHTML = '<div class="empty">Пока никто не активировал ваш код</div>';
+      return;
+    }
+    
+    listEl.innerHTML = usesList.map(u => {
+      const amount = depositsByNick[u.nick] || 0;
+      const cls = amount > 0 ? 'paid' : 'waiting';
+      const status = amount > 0 ? '✅' : '⏳';
+      const date = new Date(u.used_at).toLocaleDateString('ru-RU');
+      return '<div class="player-row ' + cls + '">' +
+        '<div class="player-left"><div class="player-nick">👤 ' + u.nick + '</div><div class="player-date">' + date + '</div></div>' +
+        '<div class="player-right"><div class="player-status">' + status + '</div>' + (amount > 0 ? '<div class="player-amount">' + amount.toLocaleString('ru-RU') + ' ₽</div>' : '') + '</div>' +
+      '</div>';
+    }).join('');
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+function logout() {
+  currentCode = '';
+  currentPercent = 0;
+  currentPromoId = null;
+  localStorage.removeItem('oxdrop_blogger_code');
+  localStorage.removeItem('oxdrop_blogger_pass');
+  document.getElementById('loginCode').value = '';
+  document.getElementById('loginPass').value = '';
+  document.getElementById('loginMsg').textContent = '';
+  document.getElementById('loginScreen').style.display = 'block';
+  document.getElementById('statsScreen').style.display = 'none';
+}
+
+// Автовход если данные сохранены
+async function autoLogin() {
+  const savedCode = localStorage.getItem('oxdrop_blogger_code');
+  const savedPass = localStorage.getItem('oxdrop_blogger_pass');
+  if (savedCode && savedPass) {
+    document.getElementById('loginCode').value = savedCode;
+    document.getElementById('loginPass').value = savedPass;
+    document.getElementById('loginBtn').click();
+  }
+}
+autoLogin();
+</script>
+</body>
+  </html>
