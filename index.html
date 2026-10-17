@@ -27,7 +27,6 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background-image:radial-gradient(2px 2px at 20% 30%,rgba(255,215,0,0.25),transparent),radial-gradient(1px 1px at 60% 70%,rgba(255,215,0,0.15),transparent),radial-gradient(1.5px 1.5px at 80% 20%,rgba(255,180,0,0.2),transparent);background-size:250px 250px,400px 400px,300px 300px;z-index:-1;pointer-events:none;opacity:0.5}
 h1,h2,h3{font-family:'Orbitron',sans-serif;letter-spacing:1px}
 .container{max-width:950px;width:100%;border-radius:40px;padding:25px;background:rgba(15,15,25,0.85);border:1px solid rgba(255,215,0,0.2);box-shadow:0 0 40px rgba(255,180,0,0.08);position:relative;z-index:1}
-
 .auth-screen{display:none;flex-direction:column;gap:15px;padding:30px 15px;min-height:70vh;justify-content:center;align-items:center;position:relative}
 .auth-screen.show{display:flex}
 .auth-logo{text-align:center;margin-bottom:20px;animation:logoFloat 3s ease-in-out infinite}
@@ -35,7 +34,6 @@ h1,h2,h3{font-family:'Orbitron',sans-serif;letter-spacing:1px}
 .auth-logo .sub{color:#ffd966;font-size:0.85rem;letter-spacing:6px;margin-top:8px;text-transform:uppercase;opacity:0.8;font-weight:600}
 @keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 @keyframes goldShine{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-
 .auth-card{background:rgba(20,20,30,0.95);border:2px solid rgba(255,215,0,0.3);border-radius:30px;padding:30px 25px;width:100%;max-width:420px;position:relative;box-shadow:0 0 35px rgba(255,180,0,0.15);animation:cardFadeIn 0.6s ease-out}
 @keyframes cardFadeIn{from{opacity:0;transform:translateY(20px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
 .auth-card h2{color:#FFD700;text-align:center;font-size:1.4rem;margin-bottom:20px;letter-spacing:2px}
@@ -49,7 +47,6 @@ h1,h2,h3{font-family:'Orbitron',sans-serif;letter-spacing:1px}
 .auth-switch{text-align:center;color:#96a9d1;font-size:0.9rem;margin-top:15px;cursor:pointer;transition:0.2s}
 .auth-switch:hover{color:#FFD700;text-shadow:0 0 10px rgba(255,215,0,0.5)}
 .msg{text-align:center;font-size:0.9rem;min-height:24px;margin-top:10px;font-weight:600}
-
 .game-screen{display:none}
 .game-screen.show{display:block}
 h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135deg,#FFD700,#FFA500,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200% 200%;animation:goldShine 3s ease-in-out infinite;margin-bottom:15px;cursor:pointer;font-weight:900;letter-spacing:3px;text-shadow:0 0 30px rgba(255,215,0,0.3);font-family:'Orbitron',sans-serif}
@@ -60,7 +57,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .logout-btn{background:linear-gradient(135deg,#b34747,#8a2a2a);border:1px solid rgba(255,80,80,0.3);color:white;padding:7px 18px;border-radius:20px;font-weight:700;font-size:0.85rem;cursor:pointer;font-family:'Rajdhani',sans-serif}
 .sound-btn{background:rgba(30,38,59,0.9);border:1px solid #2f3a55;color:#b9c8e6;padding:7px 18px;border-radius:20px;font-weight:700;font-size:0.85rem;cursor:pointer;transition:0.2s;font-family:'Rajdhani',sans-serif}
 .sound-btn.off{opacity:0.5}
-
 .menu-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:10px;background:rgba(30,38,59,0.9);border-radius:15px;border:1px solid #2f3a55;margin-bottom:10px;align-items:center}
 .menu-toggle span{display:block;width:28px;height:3px;background:#FFD700;border-radius:5px;transition:0.3s}
 .menu-toggle.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
@@ -71,29 +67,19 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .mobile-menu button{background:rgba(30,38,59,0.9);border:1px solid #2f3a55;color:#b9c8e6;padding:12px;border-radius:20px;font-weight:700;font-size:0.9rem;cursor:pointer;text-align:center;font-family:'Rajdhani',sans-serif;transition:0.2s}
 .mobile-menu button:hover{border-color:#FFD700;color:#FFD700}
 .mobile-menu button.cases-btn{background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0a0f;border-color:#FFD700}
-
 .donate-notice{background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,165,0,0.05));border:1px solid rgba(255,215,0,0.4);border-radius:20px;padding:12px 18px;margin:12px 0;text-align:center}
 .donate-notice p{color:#FFD700;font-size:0.85rem;font-weight:600}
-
 .stats-row{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0;padding:14px 15px;background:rgba(10,10,15,0.6);border-radius:20px;border:1px solid rgba(255,215,0,0.15);justify-content:space-around}
 .stats-row .stat-item{color:#96a9d1;font-size:0.75rem;text-align:center;text-transform:uppercase;letter-spacing:1px}
 .stats-row .stat-item .stat-value{color:#FFD700;font-weight:900;display:block;font-size:1.15rem;margin-top:4px;font-family:'Orbitron',sans-serif;text-shadow:0 0 10px rgba(255,215,0,0.4)}
-
 .tabs{display:flex;gap:8px;margin:18px 0 5px;flex-wrap:wrap}
 .tabs button{flex:1;padding:12px;border:none;border-radius:30px;font-weight:700;font-size:0.85rem;cursor:pointer;transition:0.3s;background:rgba(30,38,59,0.9);color:#96a9d1;border:2px solid #2f3a55;white-space:nowrap;font-family:'Rajdhani',sans-serif;letter-spacing:0.5px}
 .tabs button.active{background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0a0f;border-color:#FFD700;box-shadow:0 0 25px rgba(255,215,0,0.5);transform:scale(1.03)}
-
 .tab-content{display:none}
 .tab-content.active{display:block}
-
 .balance-box{text-align:right;color:#b9c8e6;font-size:1.1rem;margin-bottom:15px;display:flex;justify-content:flex-end;align-items:center;gap:12px;flex-wrap:wrap}
 .balance-box span{background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,165,0,0.05));padding:8px 24px;border-radius:60px;border:2px solid rgba(255,215,0,0.5);color:#FFD700;font-weight:900;font-size:1.5rem;font-family:'Orbitron',sans-serif;text-shadow:0 0 15px rgba(255,215,0,0.5);box-shadow:0 0 25px rgba(255,215,0,0.2)}
-.donate-btn{background:linear-gradient(135deg,#ff6b35,#f7931e);border:none;color:white;padding:8px 20px;border-radius:40px;font-weight:700;font-size:0.9rem;text-decoration:none;cursor:pointer;font-family:'Rajdhani',sans-serif}
-/* ... (CSS продолжается в Части 2) ... */
-</style>
-</head>
-<body>
-<!-- HTML-код сайта начинается здесь и продолжается в Части 2 --> .case-menu{display:flex;gap:10px;margin:20px 0;flex-wrap:wrap;justify-content:center}
+.donate-btn{background:linear-gradient(135deg,#ff6b35,#f7931e);border:none;color:white;padding:8px 20px;border-radius:40px;font-weight:700;font-size:0.9rem;text-decoration:none;cursor:pointer;font-family:'Rajdhani',sans-serif} .case-menu{display:flex;gap:10px;margin:20px 0;flex-wrap:wrap;justify-content:center}
 .case-menu button{background:rgba(20,20,30,0.9);border:2px solid #2f3a55;color:#b9c8e6;width:95px;height:140px;padding:8px 6px;border-radius:25px;font-weight:700;font-size:0.75rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;position:relative;transition:0.3s;font-family:'Rajdhani',sans-serif;overflow:hidden}
 .case-menu button img{width:55px;height:55px;object-fit:contain;border-radius:12px;background:rgba(12,16,30,0.7);padding:5px;flex-shrink:0}
 .case-menu button .case-name{font-size:0.6rem;color:#96a9d1;text-align:center;line-height:1.1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%;padding:0 2px}
@@ -101,7 +87,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .case-menu button .preview-btn{font-size:0.5rem;background:rgba(30,38,59,0.9);border:1px solid #4f5b7a;color:white;padding:2px 12px;border-radius:20px;margin-top:auto;cursor:pointer}
 .case-menu button .badge{position:absolute;top:-6px;right:-6px;background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0a0f;font-size:0.5rem;font-weight:900;padding:3px 8px;border-radius:20px;box-shadow:0 0 15px rgba(255,215,0,0.6)}
 .case-menu button.active{border-color:#FFD700;background:rgba(30,25,10,0.95);box-shadow:0 0 30px rgba(255,215,0,0.35);transform:translateY(-5px)}
-
 .roulette-container{position:relative;margin:15px 0;padding:20px 0;background:rgba(10,10,15,0.9);border-radius:30px;border:2px solid rgba(255,215,0,0.2);overflow:hidden}
 .roulette-viewport{overflow:hidden;position:relative;padding:0 10px}
 .roulette-track{display:flex;gap:10px;will-change:transform}
@@ -113,16 +98,13 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .roulette-pointer::after{content:'▲';position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);color:#FFD700;font-size:1.5rem;text-shadow:0 0 15px #FFD700}
 .roulette-item.winner{border-color:#FFD700;box-shadow:0 0 40px #FFD700,0 0 80px rgba(255,215,0,0.5);transform:scale(1.05);animation:winnerPulse 1s ease-in-out infinite}
 @keyframes winnerPulse{0%,100%{box-shadow:0 0 40px #FFD700,0 0 80px rgba(255,215,0,0.4)}50%{box-shadow:0 0 60px #FFD700,0 0 120px rgba(255,215,0,0.6)}}
-
 @keyframes caseShake{0%,100%{transform:translateX(0) rotate(0deg)}10%,30%,50%,70%,90%{transform:translateX(-6px) rotate(-0.5deg)}20%,40%,60%,80%{transform:translateX(6px) rotate(0.5deg)}}
 .roulette-container.shaking{animation:caseShake 0.4s ease-in-out infinite;box-shadow:0 0 40px rgba(255,215,0,0.4);border-color:#FFD700}
-
 .item-price{font-size:1.1rem;font-weight:700;margin-top:10px;color:#b9c8e6;background:rgba(14,18,31,0.9);padding:8px 24px;border-radius:40px;border:2px solid rgba(255,215,0,0.4);display:none;font-family:'Rajdhani',sans-serif}
 .item-price.show{display:block}
 .item-price .value{color:#FFD700;text-shadow:0 0 10px rgba(255,215,0,0.5)}
 .sell-btn{background:linear-gradient(135deg,#4CAF50,#2e7d32);border:none;color:white;padding:10px 28px;border-radius:40px;font-weight:700;font-size:0.9rem;cursor:pointer;margin-top:10px;display:none;box-shadow:0 4px 0 #1b5e20;font-family:'Rajdhani',sans-serif}
 .sell-btn.show{display:inline-block}
-
 .case-btn{display:block;width:100%;padding:18px;font-size:1.3rem;font-weight:900;background:linear-gradient(135deg,#FFD700,#FFA500,#FFB700);background-size:200% 200%;border:none;border-radius:60px;color:#0a0a0f;cursor:pointer;box-shadow:0 8px 0 #8B6508,0 0 30px rgba(255,180,0,0.35);text-transform:uppercase;font-family:'Orbitron',sans-serif;letter-spacing:2px;animation:goldShine 3s ease-in-out infinite;transition:0.2s}
 .case-btn:active{transform:translateY(3px);box-shadow:0 5px 0 #8B6508}
 .case-btn:disabled{opacity:0.5;pointer-events:none}
@@ -130,19 +112,16 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .multi-count-btn.active{background:linear-gradient(135deg,#FFD700,#FFA500)!important;color:#0a0a0f!important;border-color:#FFD700!important;box-shadow:0 0 20px rgba(255,215,0,0.5)!important;transform:scale(1.05)}
 .multi-count-btn:disabled{opacity:0.4;cursor:not-allowed}
 .result-area{display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:15px;min-height:80px}
-
 .history{margin-top:20px;background:rgba(10,10,15,0.7);border-radius:25px;padding:16px 20px;border:1px solid rgba(255,215,0,0.2)}
 .history h3{color:#96a9d1;font-weight:400;font-size:0.85rem;margin-bottom:10px;font-family:'Rajdhani',sans-serif;text-transform:uppercase;letter-spacing:1px}
 .history-items{display:flex;flex-wrap:wrap;gap:6px}
 .history-items span{background:rgba(30,38,59,0.9);padding:5px 14px;border-radius:40px;font-size:0.8rem;color:#d3defa;border-left:3px solid #FFD700;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .price-tag{text-align:center;color:#FFD700;font-size:1.15rem;margin:12px 0;font-weight:700;text-shadow:0 0 15px rgba(255,215,0,0.4);font-family:'Orbitron',sans-serif;letter-spacing:1px}
-
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:1000;justify-content:center;align-items:center;padding:20px}
 .modal.show{display:flex}
 .modal-content{background:linear-gradient(145deg,#1a1f2f,#0a0a0f);border-radius:30px;padding:25px;max-width:600px;width:100%;max-height:80vh;overflow-y:auto;border:2px solid rgba(255,215,0,0.3);box-shadow:0 0 50px rgba(255,215,0,0.15)}
 .modal-content h2{color:#FFD700;margin-bottom:15px;text-align:center;font-family:'Orbitron',sans-serif;text-shadow:0 0 20px rgba(255,215,0,0.4)}
 .modal-close{float:right;background:linear-gradient(135deg,#b34747,#8a2a2a);border:none;color:white;padding:5px 15px;border-radius:30px;font-size:1.2rem;cursor:pointer}
-
 .inv-list{display:flex;flex-direction:column;gap:8px;margin:15px 0;max-height:400px;overflow-y:auto}
 .inv-item{display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,15,0.7);padding:12px 16px;border-radius:15px;border-left:4px solid #4a5a7a;cursor:pointer;transition:0.2s;position:relative;overflow:hidden}
 .inv-item:hover{background:rgba(30,38,59,0.9)}
@@ -153,13 +132,11 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .inv-item .inv-value{color:#FFD700;font-weight:700;font-size:0.9rem;flex-shrink:0;white-space:nowrap;margin-right:8px}
 .inv-item .inv-sell{background:linear-gradient(135deg,#4CAF50,#2e7d32);border:none;color:white;padding:5px 16px;border-radius:20px;cursor:pointer;font-weight:700;flex-shrink:0}
 .empty-inv{color:#96a9d1;text-align:center;padding:40px 20px;font-style:italic}
-
 .preview-item{display:flex;align-items:center;gap:10px;background:rgba(10,10,15,0.7);padding:10px 12px;border-radius:15px;margin-bottom:8px;border-left:4px solid #4a5a7a;overflow:hidden}
 .preview-item img{width:42px;height:42px;object-fit:contain;border-radius:8px;flex-shrink:0}
 .preview-item .p-name{color:#eaf0ff;font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.85rem}
 .preview-item .p-rarity{font-size:0.65rem;padding:2px 8px;border-radius:20px;background:rgba(30,38,59,0.9);color:#96a9d1;flex-shrink:0;white-space:nowrap}
 .preview-item .p-value{color:#FFD700;font-weight:700;font-size:0.85rem;flex-shrink:0;white-space:nowrap}
-
 .upgrade-levels{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin:20px 0}
 @media(max-width:600px){.upgrade-levels{grid-template-columns:1fr 1fr}}
 .upgrade-level{background:rgba(10,10,15,0.7);border:2px solid #2f3a55;border-radius:20px;padding:14px 8px;text-align:center;cursor:pointer;color:#b9c8e6;transition:0.2s}
@@ -167,7 +144,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .upgrade-level.selected{border-color:#FFD700;background:rgba(30,25,10,0.95);box-shadow:0 0 25px rgba(255,215,0,0.4)}
 .upgrade-level .level-mult{font-size:1.3rem;font-weight:900;color:#FFD700;font-family:'Orbitron',sans-serif;text-shadow:0 0 10px rgba(255,215,0,0.4)}
 .upgrade-level .level-desc{font-size:0.65rem;color:#96a9d1;margin-top:4px}
-
 .wheel-container{display:none;margin-top:25px;padding:25px;background:rgba(10,10,15,0.9);border-radius:30px;border:2px solid rgba(255,215,0,0.3)}
 .wheel-container.show{display:block}
 .wheel-title{color:#FFD700;text-align:center;font-size:1rem;font-weight:700;margin-bottom:15px;font-family:'Orbitron',sans-serif;letter-spacing:3px;text-shadow:0 0 15px rgba(255,215,0,0.5)}
@@ -184,7 +160,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .result-box.fail{background:rgba(255,34,0,0.15);border:2px solid #ff2200;box-shadow:0 0 25px rgba(255,34,0,0.3)}
 .result-box .result-title{font-size:1.3rem;font-weight:900;font-family:'Orbitron',sans-serif}
 .result-box .result-desc{color:#b9c8e6;font-size:0.9rem;margin-top:6px}
-
 .upgrade-win-display{display:none;margin-top:20px;padding:20px;background:linear-gradient(135deg,rgba(0,255,136,0.1),rgba(10,10,15,0.9));border:2px solid #00ff88;border-radius:25px;text-align:center;box-shadow:0 0 30px rgba(0,255,136,0.25)}
 .upgrade-win-display.show{display:block;animation:winPop 0.5s ease-out}
 @keyframes winPop{0%{transform:scale(0.8);opacity:0}50%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
@@ -192,7 +167,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .upgrade-win-display .uw-name{color:#eaf0ff;font-weight:900;font-size:1.05rem;margin-bottom:5px;font-family:'Rajdhani',sans-serif}
 .upgrade-win-display .uw-value{color:#FFD700;font-weight:900;font-size:1.3rem;font-family:'Orbitron',sans-serif;text-shadow:0 0 15px rgba(255,215,0,0.5)}
 .upgrade-win-display .uw-label{color:#00ff88;font-weight:700;font-size:0.8rem;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;font-family:'Orbitron',sans-serif}
-
 .withdraw-page{max-width:600px;margin:0 auto}
 .withdraw-title{color:#FFD700;text-align:center;font-size:1.5rem;font-weight:900;margin-bottom:15px;text-transform:uppercase;letter-spacing:4px;font-family:'Orbitron',sans-serif;text-shadow:0 0 25px rgba(255,215,0,0.4)}
 .withdraw-balance-card{background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(10,10,15,0.95));border:2px solid rgba(255,215,0,0.5);border-radius:25px;padding:22px;text-align:center;margin-bottom:20px;box-shadow:0 0 30px rgba(255,215,0,0.15)}
@@ -222,7 +196,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .withdraw-submit:active{transform:translateY(3px);box-shadow:0 3px 0 #0e5273}
 .withdraw-note{margin-top:15px;padding:14px 16px;background:linear-gradient(135deg,rgba(34,158,217,0.12),rgba(10,10,15,0.4));border:1px solid rgba(34,158,217,0.4);border-radius:15px;text-align:center}
 .withdraw-note p{color:#7DD3FC;font-size:0.8rem;line-height:1.4}
-
 .top3-page{max-width:700px;margin:0 auto;padding:20px 0}
 .top3-page-title{color:#FFD700;text-align:center;font-size:1.7rem;font-weight:900;margin-bottom:10px;text-transform:uppercase;letter-spacing:4px;text-shadow:0 0 30px rgba(255,215,0,0.5);font-family:'Orbitron',sans-serif}
 .top3-page-sub{text-align:center;color:#96a9d1;font-size:0.9rem;margin-bottom:25px}
@@ -242,7 +215,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .top3-card .tc-label{color:#96a9d1;font-size:0.75rem;text-transform:uppercase;letter-spacing:1px}
 .top3-card .tc-img{width:60px;height:60px;object-fit:contain;border-radius:12px;background:rgba(10,10,15,0.7);padding:5px;border:2px solid #4a5a7a;flex-shrink:0}
 .top3-empty-page{text-align:center;color:#96a9d1;padding:60px 20px;font-size:1rem;font-style:italic}
-
 .promo-block{margin-top:20px;background:rgba(10,10,15,0.7);border-radius:25px;padding:20px;border:1px solid rgba(255,215,0,0.25)}
 .promo-block h3{color:#96a9d1;font-weight:400;font-size:0.9rem;margin-bottom:12px;font-family:'Rajdhani',sans-serif;text-transform:uppercase;letter-spacing:1px}
 .promo-row{display:flex;gap:8px;flex-wrap:wrap}
@@ -254,7 +226,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .active-bonus-box.show{display:block}
 .active-bonus-title{color:#00ff88;font-weight:900;font-size:1rem;font-family:'Orbitron',sans-serif}
 .active-bonus-sub{color:#96a9d1;font-size:0.75rem;margin-top:5px}
-
 .admin-panel{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:9999;justify-content:center;align-items:center;padding:15px}
 .admin-panel.open{display:flex}
 .admin-box{background:linear-gradient(145deg,#1a1f2f,#0a0a0f);border-radius:30px;padding:30px;max-width:450px;width:100%;border:2px solid rgba(255,215,0,0.3);text-align:center;max-height:90vh;overflow-y:auto;box-shadow:0 0 50px rgba(255,215,0,0.15)}
@@ -275,7 +246,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .admin-box .wr-item{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:rgba(0,0,0,0.4);border-radius:10px;margin-bottom:6px;font-size:0.8rem;color:#eaf0ff;gap:8px;flex-wrap:wrap}
 .admin-box .wr-item .wr-nick{color:#FFD700;font-weight:700}
 .status-bar{text-align:center;color:#96a9d1;font-size:0.75rem;margin-top:10px;padding:5px;min-height:20px}
-
 .deposit-modal-content{max-width:500px}
 .deposit-title{color:#FFD700;text-align:center;font-size:1.4rem;margin-bottom:5px;font-family:'Orbitron',sans-serif}
 .deposit-sub{text-align:center;color:#96a9d1;font-size:0.85rem;margin-bottom:20px}
@@ -296,7 +266,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .deposit-method-btn .dm-desc{color:#96a9d1;font-size:0.75rem;line-height:1.3}
 .deposit-note{margin-top:20px;padding:14px 16px;background:linear-gradient(135deg,rgba(255,215,0,0.12),rgba(255,165,0,0.05));border:1px solid rgba(255,215,0,0.4);border-radius:15px;text-align:center}
 .deposit-note p{color:#FFD700;font-size:0.8rem;line-height:1.4}
-
 .promo-admin-block{background:rgba(0,0,0,0.3);border-radius:20px;padding:15px;margin-bottom:12px;text-align:left}
 .promo-admin-code{color:#FFD700;font-weight:900;font-size:1rem;display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
 .promo-admin-meta{color:#96a9d1;font-size:0.75rem;margin-bottom:4px}
@@ -311,7 +280,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 .pending-promo-card .pp-nick{color:#FFD700;font-weight:900;font-size:0.95rem;margin-bottom:4px}
 .pending-promo-card .pp-code{color:#eaf0ff;font-size:0.8rem;margin-bottom:8px}
 #promoItemPreview{display:none;margin-top:10px;padding:12px;background:rgba(0,0,0,0.4);border-radius:15px;align-items:center;gap:12px}
-
 @media(max-width:600px){
   .auth-logo h1{font-size:2.5rem}
   .case-menu button{width:80px;height:120px;padding:6px 4px}
@@ -336,7 +304,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 </head>
 <body>
 <div class="container">
-
 <div class="auth-screen show" id="authScreen">
   <div class="auth-logo">
     <h1>🐂 OXDROP</h1>
@@ -360,7 +327,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
     <div class="auth-switch" id="goLogin">🔑 Уже есть аккаунт? Войти</div>
   </div>
 </div>
-
 <div class="game-screen" id="gameScreen">
 <h1 class="main-title" id="mainTitle">🐂 OXDROP</h1>
 <div class="top-bar">
@@ -462,13 +428,11 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
   <button class="case-btn" id="openCaseBtn">🎲 ОТКРЫТЬ КЕЙС ×1</button>
 </div>
 <div class="history"><h3>📋 История</h3><div class="history-items" id="historyList"></div></div>
-
 <div id="multiResultArea" style="display:none;margin-top:20px;padding:20px;background:rgba(10,10,15,0.9);border-radius:25px;border:2px solid rgba(255,215,0,0.3);">
 <h3 style="color:#FFD700;text-align:center;font-size:1rem;margin-bottom:15px;font-family:'Orbitron',sans-serif;letter-spacing:2px;">🎉 ВЫ ВЫБИЛИ</h3>
 <div id="multiResultList" style="display:flex;flex-direction:column;gap:10px;"></div>
 <button id="multiSellAllBtn" style="width:100%;margin-top:15px;padding:14px;background:linear-gradient(135deg,#4CAF50,#2e7d32);border:none;color:white;border-radius:50px;font-weight:900;font-size:1rem;cursor:pointer;font-family:'Orbitron',sans-serif;letter-spacing:1px;box-shadow:0 5px 0 #1b5e20;">💰 ПРОДАТЬ ВСЁ</button>
 </div>
-
 <div class="promo-block">
 <h3>🎟 Промокод</h3>
 <div class="promo-row">
@@ -482,7 +446,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 </div>
 </div>
 </div>
-
 <div class="tab-content" id="tab-top">
 <div class="top3-page">
 <div class="top3-page-title">🏆 ТОП-3 ИГРОКОВ</div>
@@ -496,7 +459,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 </div>
 </div>
 </div>
-
 <div class="tab-content" id="tab-upgrade">
 <h2 style="color:#FFD700;text-align:center;font-size:1.3rem;margin-bottom:10px;font-family:'Orbitron',sans-serif;">⬆ АПГРЕЙД</h2>
 <div style="text-align:center;color:#FFD700;font-weight:700;margin-bottom:12px;font-size:0.9rem;">
@@ -532,7 +494,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 </div>
 </div>
 </div>
-
 <div class="tab-content" id="tab-inventory">
 <h2 style="color:#FFD700;text-align:center;font-size:1.3rem;margin-bottom:12px;font-family:'Orbitron',sans-serif;">📦 ИНВЕНТАРЬ</h2>
 <div id="inventorySummary" style="display:none;margin-bottom:15px;padding:14px 18px;background:linear-gradient(135deg,rgba(255,215,0,0.1),rgba(10,10,15,0.8));border:1px solid rgba(255,215,0,0.3);border-radius:20px;">
@@ -543,7 +504,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 </div>
 <div class="inv-list" id="inventoryList"><div class="empty-inv">📭 Инвентарь пуст</div></div>
 </div>
-
 <div class="tab-content" id="tab-withdraw">
 <div class="withdraw-page">
 <div class="withdraw-title">💳 ВЫВОД СРЕДСТВ</div>
@@ -585,10 +545,8 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 </div>
 </div>
 </div>
-
 <div class="status-bar" id="statusBar"></div>
 </div>
-
 <div class="admin-panel" id="adminPanel">
 <div class="admin-box">
 <button class="close-btn" id="adminClose">✕</button>
@@ -599,7 +557,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 <div class="error" id="adminError">❌ Неверный пароль!</div>
 </div>
 <div class="admin-content" id="adminContent">
-
 <h3 style="color:#96a9d1;font-size:0.9rem;">💰 Выдать баланс</h3>
 <input type="text" id="adminNick" placeholder="Ник игрока" autocomplete="off">
 <input type="number" id="adminAmount" value="100">
@@ -608,13 +565,11 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 </select>
 <button class="give-btn" id="adminAddBtn">💰 ВЫДАТЬ</button>
 <div class="success" id="adminSuccess">✅ Выдано!</div>
-
 <hr style="border-color:#2f3a55;margin:15px 0;">
 <h3 style="color:#96a9d1;font-size:0.9rem;">💸 Обработать вывод</h3>
 <input type="text" id="wdNick" placeholder="Ник игрока" autocomplete="off">
 <input type="number" id="wdAmount" placeholder="Сумма к списанию">
 <button class="give-btn" id="wdBtn" style="background:linear-gradient(135deg,#b34747,#8a2a2a);">📤 СПИСАТЬ ВЫВОД</button>
-
 <hr style="border-color:#2f3a55;margin:15px 0;">
 <h3 style="color:#96a9d1;font-size:0.9rem;">🎟 Создать промокод</h3>
 <select id="promoType">
@@ -636,23 +591,19 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 <button class="give-btn" id="promoCreateBtn" style="background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0a0f;">🎟 СОЗДАТЬ ПРОМОКОД</button>
 <div class="success" id="promoSuccess" style="display:none;">✅ Промокод создан!</div>
 <div class="error" id="promoError" style="display:none;"></div>
-
 <hr style="border-color:#2f3a55;margin:15px 0;">
 <h3 style="color:#96a9d1;font-size:0.9rem;">📊 Все промокоды</h3>
 <div id="promoList" style="max-height:400px;overflow-y:auto;">
 <div class="empty">Загрузка...</div>
 </div>
-
 <hr style="border-color:#2f3a55;margin:15px 0;">
 <h3 style="color:#96a9d1;font-size:0.9rem;">🎁 Ожидают бонуса</h3>
 <div id="pendingPromoList" style="max-height:300px;overflow-y:auto;">
 <div class="empty">Нет ожидающих</div>
 </div>
-
 </div>
 </div>
 </div>
-
 <div class="modal" id="previewModal">
 <div class="modal-content">
 <button class="modal-close" id="previewClose">✕</button>
@@ -660,7 +611,6 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 <div id="previewList"></div>
 </div>
 </div>
-
 <div class="modal" id="depositModal">
 <div class="modal-content deposit-modal-content">
 <button class="modal-close" id="depositClose">✕</button>
@@ -701,8 +651,8 @@ h1.main-title{text-align:center;font-size:2.4rem;background:linear-gradient(135d
 </div>
 </div>
 </div>
-
-</div> <script>
+</div>
+<script>
 const SUPABASE_URL = 'https://tnuznuqqcqftepwjoabw.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_3qd00AWKUcBxgNZkrPMbQA_4XayvZ6P';
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -751,7 +701,6 @@ async function loadCloudData(){
   }catch(e){console.error('loadCloudData error:',e);setStatus('⚠️ Нет связи с базой');return null;}
 }
 function setStatus(text){const el=document.getElementById('statusBar');if(el)el.textContent=text;}
-
 const cases = [
   { name: 'Мумия', price: 120, items: [
     {name:'Калаш (Радужная ярость)', img:'https://i.postimg.cc/ctWPXj9t/1789877140558.jpg', rarity:'Легендарный', color:'#d4a03a', value:500, chance:3},
@@ -824,13 +773,11 @@ const cases = [
     {name:'Карик', img:'https://i.postimg.cc/4ntJwR3M/lv-0-20260919215514.jpg', rarity:'Легендарный', color:'#FFD700', value:1000, chance:3}
   ]}
 ];
-
 let cloudData={players:{}};
 let balance=0,isOpening=false,currentCaseIndex=0,history=[],inventory=[],lastItem=null,selectedIndices=[],selectedLevel={mult:1.1,chance:90},winStreak=0,currentNick='',currentPass='',top3Mode='total',isSpinning=false,selectedWithdrawMethod='card';
 let stats={visits:0,caseOpens:0,totalSales:0,bestItem:{name:'—',value:0}};
 const WITHDRAW_METHODS={card:{name:'Карта РФ',placeholder:'Номер карты'},game:{name:'В игру',placeholder:'Ссылка на обмен'}};
 const RARITY_COLORS={'Обычный':'#8B7355','Редкий':'#00cc66','Эпический':'#a78bfa','Легендарный':'#FFD700'};
-
 function getPlayer(nick){
   if(!cloudData.players)cloudData.players={};
   if(!cloudData.players[nick])cloudData.players[nick]={balance:0,inventory:[],pass:'',winStreak:0,totalWin:0,bestDrop:null,deposit_bonus_percent:0,deposit_bonus_code:'',pending_promo:'',promo_code:'',got_first_reward:false};
@@ -1321,7 +1268,6 @@ async function openWheel(){
 }
 document.getElementById('openWheelBtn').addEventListener('click',openWheel);
 document.getElementById('wheelSpinBtn').addEventListener('click',openWheel);
-
 document.getElementById('mainTitle').addEventListener('dblclick',function(){
   document.getElementById('adminPanel').classList.add('open');
   document.getElementById('adminLogin').style.display='block';
@@ -1357,7 +1303,6 @@ document.getElementById('adminAddBtn').addEventListener('click',async function()
   if(oldBal+amt<0){alert('❌ Нельзя списать больше, чем есть (🪙 '+oldBal+')');return;}
   player.balance=oldBal+amt;
   await savePlayerByNick(nick);
-  
   if(amt > 0 && promoCode){
     const {error:depErr}=await supabaseClient.from('deposits').insert({
       nick:nick,
@@ -1368,7 +1313,6 @@ document.getElementById('adminAddBtn').addEventListener('click',async function()
     });
     if(depErr)console.error('deposit error:',depErr);
   }
-  
   document.getElementById('adminSuccess').style.display='block';
   setTimeout(()=>document.getElementById('adminSuccess').style.display='none',3000);
   if(nick===currentNick){balance=player.balance;updateBalanceUI();}
@@ -1392,8 +1336,6 @@ document.getElementById('wdBtn').addEventListener('click',async function(){
   soundCoin();
   alert('✅ Готово!\n\n'+nick+'\nБыло: 🪙 '+oldBalance+'\nСписано: 🪙 '+amt+'\nОсталось: 🪙 '+player.balance);
 });
-
-// === СПИСОК ПРОМОКОДОВ ДЛЯ ВЫДАЧИ БАЛАНСА ===
 async function loadPromoSelectList(){
   const select=document.getElementById('adminPromoSelect');
   if(!select)return;
@@ -1406,8 +1348,6 @@ async function loadPromoSelectList(){
     select.appendChild(opt);
   });
 }
-
-// === ПРОМОКОДЫ В АДМИНКЕ ===
 function fillPromoItemSelect(){
   const select=document.getElementById('promoItemSelect');
   if(!select)return;
@@ -1497,7 +1437,6 @@ document.getElementById('promoCreateBtn').addEventListener('click',async functio
   loadPromoSelectList();
   soundCoin();
 });
-
 async function loadPromoStats(){
   const container=document.getElementById('promoList');
   if(!container)return;
@@ -1521,7 +1460,6 @@ async function loadPromoStats(){
     '</div>';
   }).join('');
 }
-
 window.showPromoUsers=async function(code,id){
   const container=document.getElementById('promo-users-'+id);
   if(!container)return;
@@ -1534,7 +1472,6 @@ window.showPromoUsers=async function(code,id){
   }
   container.style.display='block';
 };
-
 window.deletePromo=async function(code){
   if(!confirm('Удалить промокод '+code+'?'))return;
   const {error}=await supabaseClient.from('promocodes').delete().eq('code',code);
@@ -1544,7 +1481,6 @@ window.deletePromo=async function(code){
   loadPendingPromos();
   soundClick();
 };
-
 async function loadPendingPromos(){
   const container=document.getElementById('pendingPromoList');
   if(!container)return;
@@ -1560,7 +1496,6 @@ async function loadPendingPromos(){
     '</div>';
   }).join('');
 }
-
 window.applyPendingPromo=async function(nick,code){
   if(!confirm('Выдать бонус игроку '+nick+' по коду '+code+'?'))return;
   const {data:promo}=await supabaseClient.from('promocodes').select('*').eq('code',code).maybeSingle();
@@ -1594,7 +1529,6 @@ window.applyPendingPromo=async function(nick,code){
   loadPendingPromos();
   soundCoin();
 };
-
 async function loadActiveBonuses(){
   const container=document.getElementById('activeBonusesList');
   if(!container)return;
@@ -1609,7 +1543,6 @@ window.clearBonus=async function(nick){
   await supabaseClient.from('players').update({deposit_bonus_percent:0,deposit_bonus_code:''}).eq('nick',nick);
   loadActiveBonuses();
 };
-
 document.getElementById('upgradeLevels').addEventListener('click',function(e){
   const level=e.target.closest('.upgrade-level');if(!level)return;
   document.querySelectorAll('.upgrade-level').forEach(el=>el.classList.remove('selected'));
@@ -1674,7 +1607,6 @@ function renderActiveBonus(){
 }
 document.getElementById('promoBtn').addEventListener('click',activatePromo);
 document.getElementById('promoInput').addEventListener('keypress',function(e){if(e.key==='Enter')activatePromo();});
-
 async function init(){
   await loadCloudData().then(d=>{if(d)cloudData=d;});
   const savedNick=localStorage.getItem('oxdrop_nick');
