@@ -382,7 +382,10 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <div class="item-price" id="itemPrice">💰 Стоимость: <span class="value" id="priceValue">🪙 0</span></div>
 <button class="sell-btn" id="sellBtn">💰 Продать предмет</button>
 </div>
-<button class="case-btn" id="openCaseBtn">🎲 Открыть кейс</button>
+<div style="display: flex; gap: 10px;">
+    <button class="case-btn" id="openCaseBtn" style="flex: 1;">🎲 Открыть</button>
+    <button class="case-btn" id="openCase3Btn" style="flex: 1; background: linear-gradient(135deg, #ff6b35, #f7931e); box-shadow: 0 8px 0 #c0551a;">🎲 Открыть x3</button>
+</div>
 <div class="history"><h3>📋 История</h3><div class="history-items" id="historyList"></div></div>
 </div>
 
