@@ -262,6 +262,11 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 .admin-box .wr-actions button.reject{background:#b34747}
 .admin-box .empty{color:#96a9d1;text-align:center;padding:15px;font-size:0.8rem}
 .status-bar{text-align:center;color:#96a9d1;font-size:0.75rem;margin-top:10px;padding:5px;min-height:20px}
+
+/* Стили для выбора количества кейсов */
+.qty-selector {display:flex; justify-content:center; gap:10px; margin: 15px 0;}
+.qty-btn {background:rgba(30,38,59,0.85); border:2px solid #2f3a55; color:#b9c8e6; width:50px; height:50px; border-radius:15px; font-weight:700; font-size:1.2rem; cursor:pointer; transition:0.2s;}
+.qty-btn.active {background:linear-gradient(135deg,#f5b342,#e8922a); color:#0b0e1a; border-color:#f5b342; box-shadow:0 0 15px #f5b34266; transform:scale(1.1);}
 </style>
 </head>
 <body> <div class="container">
@@ -371,7 +376,16 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <span class="preview-btn" onclick="event.stopPropagation(); openPreview(6)">🔍</span>
 </button>
 </div>
+
 <div class="price-tag">💰 Цена: <span id="priceDisplay">🪙 120</span></div>
+
+<!-- ВЫБОР КОЛИЧЕСТВА КЕЙСОВ -->
+<div class="qty-selector">
+    <button class="qty-btn active" data-qty="1">1</button>
+    <button class="qty-btn" data-qty="2">2</button>
+    <button class="qty-btn" data-qty="3">3</button>
+</div>
+
 <div class="roulette-container">
 <div class="roulette-viewport">
 <div class="roulette-track" id="rouletteTrack"></div>
@@ -382,10 +396,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#f7d875,#f
 <div class="item-price" id="itemPrice">💰 Стоимость: <span class="value" id="priceValue">🪙 0</span></div>
 <button class="sell-btn" id="sellBtn">💰 Продать предмет</button>
 </div>
-<div style="display: flex; gap: 10px;">
-    <button class="case-btn" id="openCaseBtn" style="flex: 1;">🎲 Открыть</button>
-    <button class="case-btn" id="openCase3Btn" style="flex: 1; background: linear-gradient(135deg, #ff6b35, #f7931e); box-shadow: 0 8px 0 #c0551a;">🎲 Открыть x3</button>
-</div>
+<button class="case-btn" id="openCaseBtn">🎲 Открыть кейс</button>
 <div class="history"><h3>📋 История</h3><div class="history-items" id="historyList"></div></div>
 </div>
 
@@ -744,6 +755,7 @@ let cloudData = { players: {}, withdraw_requests: [] };
 let balance = 0;
 let isOpening = false;
 let currentCaseIndex = 0;
+let currentQuantity = 1; // Сколько кейсов открываем
 let history = [];
 let inventory = [];
 let lastItem = null;
@@ -1199,10 +1211,12 @@ async function spinRoulette(chosen, caseIndex) {
     const winnerEl = track.children[winnerPosition];
     if (winnerEl) winnerEl.classList.add('winner');
 }
+
 async function openCase() {
     if (isOpening) return;
-    const price = cases[currentCaseIndex].price;
+    const price = cases[currentCaseIndex].price * currentQuantity;
     if (balance < price) { alert('❌ Недостаточно баланса!'); return; }
+    
     balance -= price;
     updateBalanceUI();
     isOpening = true;
@@ -1216,29 +1230,40 @@ async function openCase() {
     await new Promise(r => setTimeout(r, 1200));
     if (rouletteContainer) rouletteContainer.classList.remove('shaking');
     soundLaunch();
-    await new Promise(r => setTimeout(r, 150));
+    
+    let totalWon = 0;
+    lastItem = null;
 
-    const chosen = getRandomItem(currentCaseIndex);
-    await spinRoulette(chosen, currentCaseIndex);
-    soundWin();
-    inventory.push(Object.assign({}, chosen));
-    addWin(chosen.value, chosen);
+    for (let i = 0; i < currentQuantity; i++) {
+        const chosen = getRandomItem(currentCaseIndex);
+        await spinRoulette(chosen, currentCaseIndex);
+        inventory.push(Object.assign({}, chosen));
+        addWin(chosen.value, chosen);
+        totalWon += chosen.value;
+        lastItem = chosen;
+        
+        history.unshift(chosen.name + ' (' + chosen.rarity + ') - 🪙 ' + chosen.value);
+        if (history.length > 12) history.pop();
+        document.getElementById('historyList').innerHTML = history.map(t => '<span>' + t + '</span>').join('');
+        stats.caseOpens++;
+        if (chosen.value > stats.bestItem.value) stats.bestItem = { name: chosen.name, value: chosen.value };
+    }
+    
     await savePlayer();
-    document.getElementById('priceValue').textContent = '🪙 ' + chosen.value;
+    soundWin();
+    
+    document.getElementById('priceValue').textContent = '🪙 ' + totalWon;
     document.getElementById('itemPrice').classList.add('show');
-    document.getElementById('sellBtn').classList.add('show');
-    lastItem = chosen;
-    history.unshift(chosen.name + ' (' + chosen.rarity + ') - 🪙 ' + chosen.value);
-    if (history.length > 12) history.pop();
-    document.getElementById('historyList').innerHTML = history.map(t => '<span>' + t + '</span>').join('');
+    if (currentQuantity === 1) document.getElementById('sellBtn').classList.add('show');
+    else document.getElementById('sellBtn').classList.remove('show');
+
     isOpening = false;
     document.getElementById('openCaseBtn').disabled = false;
-    stats.caseOpens++;
-    if (chosen.value > stats.bestItem.value) stats.bestItem = { name: chosen.name, value: chosen.value };
     updateStatsUI();
     renderInventory();
     renderUpgradeInventory();
 }
+
 async function sellLastItem() {
     if (!lastItem) return;
     const idx = inventory.findIndex(i => i.name === lastItem.name);
@@ -1481,13 +1506,25 @@ function openPreview(i) {
 document.getElementById('previewClose').addEventListener('click', () => document.getElementById('previewModal').classList.remove('show'));
 function switchCase(i) {
     currentCaseIndex = i;
-    document.getElementById('priceDisplay').textContent = '🪙 ' + cases[i].price;
+    document.getElementById('priceDisplay').textContent = '🪙 ' + (cases[i].price * currentQuantity);
     document.getElementById('itemPrice').classList.remove('show');
     document.getElementById('sellBtn').classList.remove('show');
     lastItem = null;
     document.querySelectorAll('.case-menu button').forEach((b, j) => b.classList.toggle('active', j === i));
     fillRoulette(i);
 }
+
+// ===== ВЫБОР КОЛИЧЕСТВА =====
+document.querySelectorAll('.qty-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        if (isOpening) return;
+        document.querySelectorAll('.qty-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentQuantity = parseInt(this.dataset.qty);
+        document.getElementById('priceDisplay').textContent = '🪙 ' + (cases[currentCaseIndex].price * currentQuantity);
+    });
+});
+
 function updateStatsUI() {
     document.getElementById('visitCount').textContent = stats.visits;
     document.getElementById('caseOpenCount').textContent = stats.caseOpens;
