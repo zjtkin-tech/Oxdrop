@@ -1491,6 +1491,11 @@ function updateStatsUI() {
 window.addEventListener('resize', () => { if (!isOpening) fillRoulette(currentCaseIndex); });
 
 async function init() {
+    // Принудительно включаем кнопки до загрузки базы
+    document.getElementById('openCaseBtn').disabled = false;
+    document.getElementById('sellBtn').disabled = false;
+    document.getElementById('openWheelBtn').disabled = false;
+
     await loadCloudData().then(d => { if (d) cloudData = d; });
     
     // === ИНТЕГРАЦИЯ С TELEGRAM ===
