@@ -2,7 +2,9 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <title>Oxdrop</title>
 <meta property="og:title" content="🐂 OXDROP — Открывай кейсы">
 <meta property="og:description" content="Кейсы от 🪙 30. Апгрейд x10. Дропы до 🪙 5000. Заходи и выбей свой скин!">
@@ -20,7 +22,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+input,textarea{-webkit-user-select:text;user-select:text}
 body{min-height:100vh;background:linear-gradient(145deg,#0b0e1a,#1a1f2f);display:flex;justify-content:center;align-items:center;padding:15px}
 .container{max-width:950px;width:100%;border-radius:48px;padding:20px;border:1px solid rgba(255,215,0,0.15);background:rgba(255,255,255,0.05)}
 .auth-screen{display:flex;flex-direction:column;gap:12px;padding:20px 10px}
@@ -1491,62 +1494,66 @@ function updateStatsUI() {
 window.addEventListener('resize', () => { if (!isOpening) fillRoulette(currentCaseIndex); });
 
 async function init() {
-    // Принудительно включаем кнопки до загрузки базы
+    // 1. Сначала принудительно включаем интерфейс, чтобы кнопки работали
     document.getElementById('openCaseBtn').disabled = false;
     document.getElementById('sellBtn').disabled = false;
     document.getElementById('openWheelBtn').disabled = false;
-
-    await loadCloudData().then(d => { if (d) cloudData = d; });
     
-    // === ИНТЕГРАЦИЯ С TELEGRAM ===
+    // 2. Проверяем, запущены ли мы в Telegram
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
-        tg.expand(); // Разворачиваем игру на весь экран
+        tg.expand(); // Разворачиваем на весь экран
+        tg.ready();  // Говорим ТГ, что мы готовы
         
         const tgUser = tg.initDataUnsafe?.user;
         
         if (tgUser) {
-            // Получаем ID игрока из Телеграма
+            // Показываем игру, даже не дожидаясь базы
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'block';
             const tgId = String(tgUser.id);
+            document.getElementById('userNickDisplay').textContent = tgId;
             
-            // Если такого игрока нет в базе — создаем
-            if (!cloudData.players[tgId]) {
-                cloudData.players[tgId] = { 
-                    balance: 0, 
-                    inventory: [], 
-                    pass: 'tg_auth', 
-                    winStreak: 0, 
-                    totalWin: 0, 
-                    bestDrop: null 
-                };
-                await savePlayerByNick(tgId);
-            }
-            
-            // Автоматически входим под этим ID
-            currentNick = tgId;
-            currentPass = 'tg_auth';
-            enterGame();
-            
-            // Прячем кнопку "Выйти", так как в ТГ она не нужна
             const logoutBtn = document.querySelector('.logout-btn');
             if (logoutBtn) logoutBtn.style.display = 'none';
             
-            return; // Завершаем инициализацию
+            // Загружаем базу в фоне
+            loadCloudData().then(d => {
+                if (d) {
+                    cloudData = d;
+                    if (!cloudData.players[tgId]) {
+                        cloudData.players[tgId] = { balance: 0, inventory: [], pass: 'tg_auth', winStreak: 0, totalWin: 0, bestDrop: null };
+                        savePlayerByNick(tgId);
+                    }
+                    // Применяем данные
+                    currentNick = tgId;
+                    currentPass = 'tg_auth';
+                    balance = cloudData.players[tgId].balance || 0;
+                    inventory = cloudData.players[tgId].inventory || [];
+                    updateBalanceUI();
+                    renderInventory();
+                    renderUpgradeInventory();
+                    renderWithdrawHistory();
+                    renderTop3();
+                }
+            });
+        }
+    } else {
+        // Если это обычный браузер
+        loadCloudData().then(d => { if (d) cloudData = d; });
+        const savedNick = localStorage.getItem('oxdrop_nick');
+        if (savedNick && cloudData.players && cloudData.players[savedNick]) {
+            currentNick = savedNick;
+            const p = cloudData.players[savedNick];
+            if (p && p.pass) currentPass = p.pass;
+            enterGame();
+        } else {
+            document.getElementById('authScreen').style.display = 'flex';
+            document.getElementById('gameScreen').style.display = 'none';
         }
     }
-    
-    // === ОБЫЧНЫЙ БРАУЗЕР (если открыли не в ТГ) ===
-    const savedNick = localStorage.getItem('oxdrop_nick');
-    if (savedNick && cloudData.players && cloudData.players[savedNick]) {
-        currentNick = savedNick;
-        const p = cloudData.players[savedNick];
-        if (p && p.pass) currentPass = p.pass;
-        enterGame();
-    } else {
-        document.getElementById('authScreen').style.display = 'flex';
-        document.getElementById('gameScreen').style.display = 'none';
-    }
 
+    // Привязываем все кнопки (они уже активны)
     document.getElementById('openCaseBtn').addEventListener('click', openCase);
     document.getElementById('sellBtn').addEventListener('click', sellLastItem);
     document.querySelectorAll('.case-menu button').forEach((btn, i) => {
@@ -1554,6 +1561,7 @@ async function init() {
     });
     switchCase(0);
 
+    // Настройка звука
     const soundBtn = document.getElementById('soundToggle');
     const savedSound = localStorage.getItem('oxdrop_sound');
     if (savedSound === 'off') {
@@ -1577,6 +1585,7 @@ async function init() {
     });
 
     updateWithdrawUI();
+    fillRoulette(0); // Отрисовываем рулетку сразу
 }
 init();
 </script>
